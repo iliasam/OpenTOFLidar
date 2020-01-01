@@ -269,6 +269,7 @@
           <name>IExtraOptions</name>
           <state>--diag_warning Pe191</state>
           <state>--diag_suppress Pe191</state>
+          <state>--diag_suppress Pa050</state>
         </option>
         <option>
           <name>CCLangConformance</name>

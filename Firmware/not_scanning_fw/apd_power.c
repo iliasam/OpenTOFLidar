@@ -83,6 +83,11 @@ void apd_power_init_all(void)
   apd_power_target_voltage = nvram_data.apd_voltage;
   apd_power_pwm_manual_duty_value = nvram_data.apd_manual_pwm;
   apd_power_feedback_en_flag = nvram_data.apd_feedback_enabled;
+  
+  if (apd_power_feedback_en_flag == 0)
+  {
+    apd_power_set_pwm_value(apd_power_pwm_manual_duty_value);
+  }
 }
 
 

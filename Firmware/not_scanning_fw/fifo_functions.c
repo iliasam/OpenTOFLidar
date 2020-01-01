@@ -5,7 +5,7 @@
 
 // Functions ******************************************************************
 
-// Initialize FIFO viwth given values
+// Initialize FIFO with given values
 // data_buffer - pointer to the buffer to store data
 // size - size of that buffer
 void fifo_init_struct(fifo_struct_t* fifo, uint8_t* data_buffer, uint16_t size)

@@ -168,7 +168,6 @@ void tdc_send_reset(void)
   dwt_delay_ms(100);
 }
 
-
 void tdc_configure(void)
 {
   uint32_t reg0 = 0;
@@ -252,22 +251,6 @@ void tdc_read_two_registers(void)
   configure_reg1_stop();
   dwt_delay_us(20);
   tmp_res1 = (uint16_t)(tdc_read_n_bytes(4, OPCODE_READ_REG + 1) >> 16);
-}
-
-float tdc_calculate_compensated_value(void)
-{
-  //501.289435*0.998168^x
-  //pulse width
-  float width = (float)tmp_res1;
-  
-  if (width > 2000)
-    return 0;
-  
-  float correction = 0.0f;
-  correction+=  501.289435f * powf(0.998168f,width)  - 200;
-  
-  float result = (float)tmp_res0 - correction;
-  return result;
 }
 
 // Configure ALU for calculating Stop1 CH2 (Rising) - Stop1 CH1

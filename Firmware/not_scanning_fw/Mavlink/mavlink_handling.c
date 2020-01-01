@@ -3,6 +3,7 @@
 #include "uart_driver.h"
 #include "apd_power.h"
 #include "dist_measurement.h"
+#include "nvram.h"
 
 // Defines ********************************************************************
 #define MAVLINK_TOF_SYS_ID              1 //system id
@@ -43,6 +44,7 @@ extern uint8_t apd_power_feedback_en_flag;
 
 extern uint16_t tmp_res0;//todo
 extern uint16_t tmp_res1;
+extern uint16_t test_dist_value;
 
 extern tdc_point_t tdc_capture_buf[];
 extern uint16_t dist_meas_batch_points;//max is DIST_MEAS_MAX_BATCH_POINTS
@@ -75,6 +77,16 @@ void mavlink_parse_byte(uint8_t value)
         mavlink_send_device_state();
       }
     }
+    if (mavlink_rx_msg.msgid == MAVLINK_MSG_ID_DEVICE_COMMAND)
+    {
+      mavlink_device_command_t device_command_msg;
+      mavlink_msg_device_command_decode(&mavlink_rx_msg, &device_command_msg);
+      
+      if (device_command_msg.cmd == CMD_SAVE_TO_FLASH)
+      {
+        nvram_prepare_and_save_current_settings();
+      }
+    }
     else if (mavlink_rx_msg.msgid == MAVLINK_MSG_ID_SET_LASER_VOLTAGE)
     {
       mavlink_set_laser_voltage_t data_msg;
@@ -99,12 +111,24 @@ void mavlink_parse_byte(uint8_t value)
       
       apd_comp_threshold_mv = data_msg.voltage_mv;
     }
+    else if (mavlink_rx_msg.msgid == MAVLINK_MSG_ID_SET_WIDTH_CORR_COEFF)
+    {
+      mavlink_set_width_corr_coeff_t data_msg;
+      mavlink_msg_set_width_corr_coeff_decode(&mavlink_rx_msg, &data_msg);
+      dist_measurement_change_width_corr_coeff(data_msg);
+    }
     else if (mavlink_rx_msg.msgid == MAVLINK_MSG_ID_START_BATCH_MEASUREMENT)
     {
       mavlink_start_batch_measurement_t data_msg;
       mavlink_msg_start_batch_measurement_decode(&mavlink_rx_msg, &data_msg);
       
       dist_measurement_start_batch_meas(data_msg.length);
+    }
+    else if (mavlink_rx_msg.msgid == MAVLINK_MSG_ID_SET_REF_OFFSET)
+    {
+      mavlink_set_ref_offset_t data_msg;
+      mavlink_msg_set_ref_offset_decode(&mavlink_rx_msg, &data_msg);
+      dist_measurement_start_measure_ref(data_msg.dist_value);
     }
   }
 }
@@ -120,6 +144,7 @@ void mavlink_send_device_state(void)
   device_state.raw_tof_value = tmp_res0;
   device_state.raw_tof_width_value = tmp_res1;
   device_state.pwm_state = apd_power_feedback_en_flag;
+  device_state.distance = test_dist_value;
   
   mavlink_message_t mav_msg;
 

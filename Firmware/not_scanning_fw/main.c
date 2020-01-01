@@ -34,6 +34,8 @@ float current_laser_volt = LASER_DEFAULT_VOLTAGE;
 //Current comparator threshold voltage, mv
 uint16_t apd_comp_threshold_mv = APD_COMP_DEFAULT_VOLT_MV;
 
+extern uint8_t dist_meas_batch_measurement_needed;
+
 /* Private function prototypes -----------------------------------------------*/
 void measurement_cycle(void);
 void load_nvram_values(void);
@@ -53,6 +55,7 @@ int main(void)
   tdc_send_reset();
   tdc_test();
   
+  dist_measurement_init();
   tdc_configure();
   dwt_delay_ms(500);
   
@@ -61,20 +64,22 @@ int main(void)
     if (TIMER_ELAPSED(timer_1ms))
     {
       START_TIMER(timer_1ms, 1);
-      tdc_start_pulse();
+      //tdc_start_pulse();
+      if (dist_meas_batch_measurement_needed == 0)
+      {
+        //read prev value
+        tdc_read_two_registers();
+        tdc_check_status();
+        dist_measurement_process_current_data();
+        
+        tdc_start_pulse();
+      }
     }
     
     if (TIMER_ELAPSED(timer_10ms))
     {
       START_TIMER(timer_10ms, 10);
-      
-      /*
-      tdc_start_pulse();
-      dwt_delay_ms(1);
-      tdc_read_two_registers();
-      tdc_check_status();
-      */
-      
+
       apd_power_voltage_controlling();
       uart_driver_process();
       mavlink_long_packet_sending_process();
@@ -83,7 +88,7 @@ int main(void)
     if (TIMER_ELAPSED(timer_100ms))
     {
       START_TIMER(timer_100ms, 100);
-      //LED_GPIO->ODR^= LED_PIN;
+      LED_GPIO->ODR^= LED_PIN;
       
       hardware_set_laser_voltage(current_laser_volt);
       hardware_set_apd_comp_voltage(apd_comp_threshold_mv);

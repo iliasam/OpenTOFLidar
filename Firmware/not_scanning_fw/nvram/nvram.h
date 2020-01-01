@@ -26,6 +26,18 @@ typedef struct
   // Comparator threshold voltage, mv
   uint16_t comparator_voltage;
   
+  // Coefficient A
+  float width_coef_a;
+  
+  // Coefficient B
+  float width_coef_b;
+  
+  // Zero distance offset, bin. Only for non-rotating mode
+  uint16_t zero_offset_bin;
+  
+  // Reference object distance value, mm
+  uint16_t ref_obj_dist_mm;
+  
 } nvram_data_t;
 
 extern nvram_data_t nvram_data;
@@ -36,5 +48,6 @@ extern nvram_data_t nvram_data;
 void nvram_use_default_settings(void);
 void nvram_save_current_settings(void);
 void nvram_read_data(void);
+void nvram_prepare_and_save_current_settings(void);
 
 #endif /* __NVRAM_H */

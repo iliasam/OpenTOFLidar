@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<mavlink>
+  <version>1</version>
+  <enums>
+    <enum name="DATA_REQUEST">
+      <entry value="1" name="DATA_REQUEST_DEVICE_STATE">
+        <description>Request for device state</description>
+      </entry>
+    </enum>
+    <enum name="DEVICE_COMMAND_TYPE">
+      <entry value="1" name="CMD_SAVE_TO_FLASH">
+        <description>Save configuration to Flash memory</description>
+      </entry>
+    </enum>
+  </enums>
+  <messages>
+    <message id="2" name="DATA_REQUEST">
+      <description>Request for data</description>
+      <field type="uint8_t" name="data_type" enum="DATA_REQUEST">Type of the needed data</field>
+    </message>
+    <message id="3" name="DEVICE_COMMAND">
+      <description>Send command to the device</description>
+      <field type="uint8_t" name="cmd" enum="DEVICE_COMMAND_TYPE">Command</field>
+      <field type="uint32_t" name="value">Additional value</field>
+    </message>
+    <message id="4" name="LONG_PACKET">
+      <description>Packet of the long data</description>
+      <field type="uint8_t" name="data_code">Type of the data</field>
+      <field type="uint16_t" name="packet_id">Unique code of the big data</field>
+      <field type="uint16_t" name="packet_cnt">Packet counter</field>
+      <field type="uint16_t" name="total_cnt">Total subpackets count</field>
+      <field type="uint8_t" name="payload_size">Size of the data payload</field>
+      <field type="uint8_t[200]" name="data">Data</field>
+    </message>
+    <message id="100" name="SET_APD_VOLTAGE">
+      <description>Set APD voltage</description>
+      <field type="int16_t" name="pwm_value">APD dc-dc PWM value. -1 - do nothing</field>
+      <field type="float" name="voltage">APD voltage in volts. Negative - do nothing</field>
+    </message>
+    <message id="101" name="SET_LASER_VOLTAGE">
+      <description>Set Laser voltage</description>
+      <field type="float" name="voltage">Laser voltage in volts</field>
+    </message>
+    <message id="102" name="SET_COMP_THRESHOLD">
+      <description>Set comparator threshold voltage</description>
+      <field type="uint16_t" name="voltage_mv">Comparator threshold voltage in mv</field>
+    </message>
+    <message id="103" name="START_BATCH_MEASUREMENT">
+      <description>Start batch measurement</description>
+      <field type="uint16_t" name="length">Number of measurements</field>
+    </message>
+    <message id="104" name="START_CORR_BATCH_MEASUREMENT">
+      <description>Start corrected batch measurement</description>
+      <field type="uint16_t" name="length">Number of measurements</field>
+    </message>
+    <message id="105" name="SET_WIDTH_CORR_COEFF">
+      <description>Set coefficients for correcting width change</description>
+      <field type="float" name="coeff_a">Coefficient A</field>
+      <field type="float" name="coeff_b">Coefficient B</field>
+    </message>
+    <message id="106" name="SET_REF_OFFSET">
+      <description>Set reference offset</description>
+      <field type="uint16_t" name="dist_value">Distance to a reference object, mm</field>
+    </message>
+    <message id="150" name="DEVICE_STATE">
+      <description>Message with device info</description>
+      <field type="int16_t" name="pwm_value">APD dc-dc PWM value</field>
+      <field type="uint8_t" name="pwm_state">0-manual mode, 1-auto feedback apd voltage mode</field>
+      <field type="float" name="apd_voltage_targ">Target APD voltage in volts</field>
+      <field type="float" name="apd_voltage_curr">Current APD voltage in volts</field>
+      <field type="float" name="las_voltage">Laser voltage in volts</field>
+      <field type="uint16_t" name="voltage_mv">Comparator threshold voltage in mv</field>
+      <field type="uint16_t" name="raw_tof_value">Raw TOF distance value in bins</field>
+      <field type="uint16_t" name="raw_tof_width_value">Raw TOF pulse width value in bins</field>
+      <field type="float" name="distance">Distance in meters</field>
+    </message>
+  </messages>
+</mavlink>
