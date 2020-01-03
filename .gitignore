@@ -1,2 +1,4 @@
 Firmware/not_scanning_fw/EWARM/STM32F303xC/
 Firmware/not_scanning_fw/EWARM/settings/
+Firmware/scanning_fw/EWARM/settings/
+Firmware/scanning_fw/EWARM/STM32F303xC/
