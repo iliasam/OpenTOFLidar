@@ -34,6 +34,8 @@ float current_laser_volt = LASER_DEFAULT_VOLTAGE;
 //Current comparator threshold voltage, mv
 uint16_t apd_comp_threshold_mv = APD_COMP_DEFAULT_VOLT_MV;
 
+uint16_t device_state_mask = 0;
+
 extern uint8_t dist_meas_batch_measurement_needed;
 
 /* Private function prototypes -----------------------------------------------*/

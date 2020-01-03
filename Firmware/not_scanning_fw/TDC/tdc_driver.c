@@ -1,4 +1,6 @@
 //Written for TDC-GP21
+// Laser current detector is connected to "STOP1" line
+// Photosensor is connected to "STOP2" line
 
 // Includes ------------------------------------------------------------------
 #include "tdc_driver.h"
@@ -149,24 +151,22 @@
 // Highest 3 bits of the number of fire pulses.
 #define REG6_ANZ_FIRE_6_4         12
 
-
 // Private variables ---------------------------------------------------------
 
+// Value readed from 
 uint16_t tmp_res0 = 0;
 uint16_t tmp_res1 = 0;
 
-volatile uint16_t tdc_test_status = 0;
+// Value readed from TDC STATE register
+volatile uint16_t tdc_debug_status = 0;
+
+extern uint16_t device_state_mask;
 
 // Private function prototypes -----------------------------------------------
 void configure_reg1_start(void);
-void configure_reg1_stop(void);
+void configure_reg1_width(void);
 
 // Private functions ---------------------------------------------------------
-void tdc_send_reset(void)
-{
-  send_opcode_to_tdc(OPCODE_RESET);
-  dwt_delay_ms(100);
-}
 
 void tdc_configure(void)
 {
@@ -209,24 +209,39 @@ void tdc_configure(void)
   
 }
 
+void tdc_send_reset(void)
+{
+  send_opcode_to_tdc(OPCODE_RESET);
+  dwt_delay_ms(100);
+}
+
 
 void tdc_check_status(void)
 {
   uint16_t status = (uint16_t)tdc_read_n_bytes(2, OPCODE_READ_REG + 4);
   
-  tdc_test_status = status;
+  tdc_debug_status = status;
   
   if ((status & (1 << 9)) != 0)//timeout
   {
     tmp_res0 = 0xFFFF;
+    device_state_mask |= TDC_STATE_PULSE_TIMEOUT;
   }
+  else
+    device_state_mask &= ~TDC_STATE_PULSE_TIMEOUT;
   
-  uint8_t alu_ptr = (uint8_t)(status & 3);
+  //uint8_t alu_ptr = (uint8_t)(status & 3);
   status = status >> 3;
   
-  uint8_t ch1_hits = (uint8_t)(status & 3);
+  uint8_t ch1_hits = (uint8_t)(status & 3); //stop 1 {laser} hits
   status = status >> 3;
   
+  if (ch1_hits != 1)
+    device_state_mask |= TDC_STATE_LASER_COMP_FAIL;
+  else
+    device_state_mask &= ~TDC_STATE_LASER_COMP_FAIL;
+
+  //stop 2 {photo} hits. Two hits (rise+fall) expected
   uint8_t ch2_hits = (uint8_t)(status & 3);
   status = status >> 3;
 }
@@ -247,20 +262,19 @@ uint16_t tdc_read_raw_value(void)
 void tdc_read_two_registers(void)
 {
   tmp_res0 = (uint16_t)(tdc_read_n_bytes(4, OPCODE_READ_REG + 0) >> 16);
-  
-  configure_reg1_stop();
+  configure_reg1_width();
   dwt_delay_us(20);
   tmp_res1 = (uint16_t)(tdc_read_n_bytes(4, OPCODE_READ_REG + 1) >> 16);
 }
 
-// Configure ALU for calculating Stop1 CH2 (Rising) - Stop1 CH1
+// Configure ALU for calculating Stop1 CH2 (Rising) {photo} - Stop1 CH1 {laser}
 void configure_reg1_start(void)
 {
   uint32_t reg1 = 0;
   //REG 1
   //mode1 -> HIT1 - HIT2
-  reg1|= (uint32_t)9 << REG1_HIT1; // 9 = 1. Stop Ch2
-  reg1|= 1 << REG1_HIT2; // 1 = 1. Stop Ch1
+  reg1|= (uint32_t)9 << REG1_HIT1; // 0x9 -> 1. Stop Ch2
+  reg1|= 1 << REG1_HIT2; // 0x1 -> 1. Stop Ch1
   
   reg1|= 1 << REG1_HITIN1; // 1 hit on ch1 expected (laser)
   reg1|= 2 << REG1_HITIN2; // 2 hits on ch2 expected (photo)  
@@ -273,14 +287,15 @@ void configure_reg1_start(void)
   tdc_write_register(OPCODE_WRITE_REG + 1,  reg1);
 }
 
-// Configure ALU for calculating Stop2 CH2 (Falling) - Stop1 CH2
-void configure_reg1_stop(void)
+// Configure ALU for calculating Stop2 CH2 (Falling) {photo} - Stop1 CH2
+// Used for calculating width
+void configure_reg1_width(void)
 {
   uint32_t reg1 = 0;
   //REG 1
   //mode1 -> HIT1 - HIT2
-  reg1|= (uint32_t)0x0A << REG1_HIT1; // A = 2. Stop Ch2
-  reg1|= (uint32_t)9 << REG1_HIT2; // 9 = 1. Stop Ch2
+  reg1|= (uint32_t)0x0A << REG1_HIT1; // 0xA -> 2. Stop Ch2
+  reg1|= (uint32_t)9 << REG1_HIT2; // 0x9 -> 1. Stop Ch2
   
   reg1|= 1 << REG1_HITIN1; // 1 hit on ch1 expected (laser)
   reg1|= 2 << REG1_HITIN2; // 2 hits on ch2 expected (photo)  
@@ -302,11 +317,9 @@ void tdc_test(void)
   if (test != 0x55)//If something written to the REG1, this walue will be another
   {
     //error
-    test = 0;
+    device_state_mask |= TDC_STATE_INIT_FAIL_FLAG;
   }
   else
   {
-    test = 0;
-    //STM_EVAL_LEDOn(LED6);
   }
 }

@@ -11,6 +11,9 @@
       <entry value="1" name="CMD_SAVE_TO_FLASH">
         <description>Save configuration to Flash memory</description>
       </entry>
+      <entry value="2" name="CMD_MCU_REBOOT">
+        <description>Reboot MCU</description>
+      </entry>
     </enum>
   </enums>
   <messages>
@@ -72,7 +75,8 @@
       <field type="uint16_t" name="voltage_mv">Comparator threshold voltage in mv</field>
       <field type="uint16_t" name="raw_tof_value">Raw TOF distance value in bins</field>
       <field type="uint16_t" name="raw_tof_width_value">Raw TOF pulse width value in bins</field>
-      <field type="float" name="distance">Distance in meters</field>
+      <field type="uint16_t" name="distance">Distance in mm</field>
+      <field type="uint16_t" name="state">Device state</field>
     </message>
   </messages>
 </mavlink>

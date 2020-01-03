@@ -41,6 +41,7 @@ extern float apd_power_target_voltage;
 extern float current_laser_volt;
 extern uint16_t apd_comp_threshold_mv;
 extern uint8_t apd_power_feedback_en_flag;
+extern uint16_t device_state_mask;
 
 extern uint16_t tmp_res0;//todo
 extern uint16_t tmp_res1;
@@ -85,6 +86,10 @@ void mavlink_parse_byte(uint8_t value)
       if (device_command_msg.cmd == CMD_SAVE_TO_FLASH)
       {
         nvram_prepare_and_save_current_settings();
+      }
+      else if (device_command_msg.cmd == CMD_MCU_REBOOT)
+      {
+        NVIC_SystemReset();
       }
     }
     else if (mavlink_rx_msg.msgid == MAVLINK_MSG_ID_SET_LASER_VOLTAGE)
@@ -145,6 +150,7 @@ void mavlink_send_device_state(void)
   device_state.raw_tof_width_value = tmp_res1;
   device_state.pwm_state = apd_power_feedback_en_flag;
   device_state.distance = test_dist_value;
+  device_state.state = device_state_mask;
   
   mavlink_message_t mav_msg;
 
@@ -159,7 +165,7 @@ void mavlink_send_device_state(void)
 
 
 // Send mavlink message (place it to tx fifo)
-//Return 0 if addition fails
+// Return 0 if addition fails
 uint8_t mavlink_send_message(mavlink_message_t *msg)
 {
     if (msg == NULL)

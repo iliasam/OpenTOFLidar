@@ -585,18 +585,19 @@ static void mavlink_test_device_state(uint8_t system_id, uint8_t component_id, m
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_device_state_t packet_in = {
-        17.0,45.0,73.0,101.0,18067,18171,18275,18379,77
+        17.0,45.0,73.0,17859,17963,18067,18171,18275,18379,77
     };
     mavlink_device_state_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.apd_voltage_targ = packet_in.apd_voltage_targ;
         packet1.apd_voltage_curr = packet_in.apd_voltage_curr;
         packet1.las_voltage = packet_in.las_voltage;
-        packet1.distance = packet_in.distance;
         packet1.pwm_value = packet_in.pwm_value;
         packet1.voltage_mv = packet_in.voltage_mv;
         packet1.raw_tof_value = packet_in.raw_tof_value;
         packet1.raw_tof_width_value = packet_in.raw_tof_width_value;
+        packet1.distance = packet_in.distance;
+        packet1.state = packet_in.state;
         packet1.pwm_state = packet_in.pwm_state;
         
         
@@ -612,12 +613,12 @@ static void mavlink_test_device_state(uint8_t system_id, uint8_t component_id, m
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_device_state_pack(system_id, component_id, &msg , packet1.pwm_value , packet1.pwm_state , packet1.apd_voltage_targ , packet1.apd_voltage_curr , packet1.las_voltage , packet1.voltage_mv , packet1.raw_tof_value , packet1.raw_tof_width_value , packet1.distance );
+    mavlink_msg_device_state_pack(system_id, component_id, &msg , packet1.pwm_value , packet1.pwm_state , packet1.apd_voltage_targ , packet1.apd_voltage_curr , packet1.las_voltage , packet1.voltage_mv , packet1.raw_tof_value , packet1.raw_tof_width_value , packet1.distance , packet1.state );
     mavlink_msg_device_state_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_device_state_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.pwm_value , packet1.pwm_state , packet1.apd_voltage_targ , packet1.apd_voltage_curr , packet1.las_voltage , packet1.voltage_mv , packet1.raw_tof_value , packet1.raw_tof_width_value , packet1.distance );
+    mavlink_msg_device_state_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.pwm_value , packet1.pwm_state , packet1.apd_voltage_targ , packet1.apd_voltage_curr , packet1.las_voltage , packet1.voltage_mv , packet1.raw_tof_value , packet1.raw_tof_width_value , packet1.distance , packet1.state );
     mavlink_msg_device_state_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -630,7 +631,7 @@ static void mavlink_test_device_state(uint8_t system_id, uint8_t component_id, m
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_device_state_send(MAVLINK_COMM_1 , packet1.pwm_value , packet1.pwm_state , packet1.apd_voltage_targ , packet1.apd_voltage_curr , packet1.las_voltage , packet1.voltage_mv , packet1.raw_tof_value , packet1.raw_tof_width_value , packet1.distance );
+    mavlink_msg_device_state_send(MAVLINK_COMM_1 , packet1.pwm_value , packet1.pwm_state , packet1.apd_voltage_targ , packet1.apd_voltage_curr , packet1.las_voltage , packet1.voltage_mv , packet1.raw_tof_value , packet1.raw_tof_width_value , packet1.distance , packet1.state );
     mavlink_msg_device_state_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }

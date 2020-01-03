@@ -8,11 +8,12 @@ typedef struct __mavlink_device_state_t {
  float apd_voltage_targ; /*< Target APD voltage in volts*/
  float apd_voltage_curr; /*< Current APD voltage in volts*/
  float las_voltage; /*< Laser voltage in volts*/
- float distance; /*< Distance in meters*/
  int16_t pwm_value; /*< APD dc-dc PWM value*/
  uint16_t voltage_mv; /*< Comparator threshold voltage in mv*/
  uint16_t raw_tof_value; /*< Raw TOF distance value in bins*/
  uint16_t raw_tof_width_value; /*< Raw TOF pulse width value in bins*/
+ uint16_t distance; /*< Distance in mm*/
+ uint16_t state; /*< Device state*/
  uint8_t pwm_state; /*< 0-manual mode, 1-auto feedback apd voltage mode*/
 }) mavlink_device_state_t;
 
@@ -21,8 +22,8 @@ typedef struct __mavlink_device_state_t {
 #define MAVLINK_MSG_ID_150_LEN 25
 #define MAVLINK_MSG_ID_150_MIN_LEN 25
 
-#define MAVLINK_MSG_ID_DEVICE_STATE_CRC 125
-#define MAVLINK_MSG_ID_150_CRC 125
+#define MAVLINK_MSG_ID_DEVICE_STATE_CRC 42
+#define MAVLINK_MSG_ID_150_CRC 42
 
 
 
@@ -30,31 +31,33 @@ typedef struct __mavlink_device_state_t {
 #define MAVLINK_MESSAGE_INFO_DEVICE_STATE { \
     150, \
     "DEVICE_STATE", \
-    9, \
-    {  { "pwm_value", NULL, MAVLINK_TYPE_INT16_T, 0, 16, offsetof(mavlink_device_state_t, pwm_value) }, \
+    10, \
+    {  { "pwm_value", NULL, MAVLINK_TYPE_INT16_T, 0, 12, offsetof(mavlink_device_state_t, pwm_value) }, \
          { "pwm_state", NULL, MAVLINK_TYPE_UINT8_T, 0, 24, offsetof(mavlink_device_state_t, pwm_state) }, \
          { "apd_voltage_targ", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_device_state_t, apd_voltage_targ) }, \
          { "apd_voltage_curr", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_device_state_t, apd_voltage_curr) }, \
          { "las_voltage", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_device_state_t, las_voltage) }, \
-         { "voltage_mv", NULL, MAVLINK_TYPE_UINT16_T, 0, 18, offsetof(mavlink_device_state_t, voltage_mv) }, \
-         { "raw_tof_value", NULL, MAVLINK_TYPE_UINT16_T, 0, 20, offsetof(mavlink_device_state_t, raw_tof_value) }, \
-         { "raw_tof_width_value", NULL, MAVLINK_TYPE_UINT16_T, 0, 22, offsetof(mavlink_device_state_t, raw_tof_width_value) }, \
-         { "distance", NULL, MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_device_state_t, distance) }, \
+         { "voltage_mv", NULL, MAVLINK_TYPE_UINT16_T, 0, 14, offsetof(mavlink_device_state_t, voltage_mv) }, \
+         { "raw_tof_value", NULL, MAVLINK_TYPE_UINT16_T, 0, 16, offsetof(mavlink_device_state_t, raw_tof_value) }, \
+         { "raw_tof_width_value", NULL, MAVLINK_TYPE_UINT16_T, 0, 18, offsetof(mavlink_device_state_t, raw_tof_width_value) }, \
+         { "distance", NULL, MAVLINK_TYPE_UINT16_T, 0, 20, offsetof(mavlink_device_state_t, distance) }, \
+         { "state", NULL, MAVLINK_TYPE_UINT16_T, 0, 22, offsetof(mavlink_device_state_t, state) }, \
          } \
 }
 #else
 #define MAVLINK_MESSAGE_INFO_DEVICE_STATE { \
     "DEVICE_STATE", \
-    9, \
-    {  { "pwm_value", NULL, MAVLINK_TYPE_INT16_T, 0, 16, offsetof(mavlink_device_state_t, pwm_value) }, \
+    10, \
+    {  { "pwm_value", NULL, MAVLINK_TYPE_INT16_T, 0, 12, offsetof(mavlink_device_state_t, pwm_value) }, \
          { "pwm_state", NULL, MAVLINK_TYPE_UINT8_T, 0, 24, offsetof(mavlink_device_state_t, pwm_state) }, \
          { "apd_voltage_targ", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_device_state_t, apd_voltage_targ) }, \
          { "apd_voltage_curr", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_device_state_t, apd_voltage_curr) }, \
          { "las_voltage", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_device_state_t, las_voltage) }, \
-         { "voltage_mv", NULL, MAVLINK_TYPE_UINT16_T, 0, 18, offsetof(mavlink_device_state_t, voltage_mv) }, \
-         { "raw_tof_value", NULL, MAVLINK_TYPE_UINT16_T, 0, 20, offsetof(mavlink_device_state_t, raw_tof_value) }, \
-         { "raw_tof_width_value", NULL, MAVLINK_TYPE_UINT16_T, 0, 22, offsetof(mavlink_device_state_t, raw_tof_width_value) }, \
-         { "distance", NULL, MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_device_state_t, distance) }, \
+         { "voltage_mv", NULL, MAVLINK_TYPE_UINT16_T, 0, 14, offsetof(mavlink_device_state_t, voltage_mv) }, \
+         { "raw_tof_value", NULL, MAVLINK_TYPE_UINT16_T, 0, 16, offsetof(mavlink_device_state_t, raw_tof_value) }, \
+         { "raw_tof_width_value", NULL, MAVLINK_TYPE_UINT16_T, 0, 18, offsetof(mavlink_device_state_t, raw_tof_width_value) }, \
+         { "distance", NULL, MAVLINK_TYPE_UINT16_T, 0, 20, offsetof(mavlink_device_state_t, distance) }, \
+         { "state", NULL, MAVLINK_TYPE_UINT16_T, 0, 22, offsetof(mavlink_device_state_t, state) }, \
          } \
 }
 #endif
@@ -73,22 +76,24 @@ typedef struct __mavlink_device_state_t {
  * @param voltage_mv Comparator threshold voltage in mv
  * @param raw_tof_value Raw TOF distance value in bins
  * @param raw_tof_width_value Raw TOF pulse width value in bins
- * @param distance Distance in meters
+ * @param distance Distance in mm
+ * @param state Device state
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_device_state_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               int16_t pwm_value, uint8_t pwm_state, float apd_voltage_targ, float apd_voltage_curr, float las_voltage, uint16_t voltage_mv, uint16_t raw_tof_value, uint16_t raw_tof_width_value, float distance)
+                               int16_t pwm_value, uint8_t pwm_state, float apd_voltage_targ, float apd_voltage_curr, float las_voltage, uint16_t voltage_mv, uint16_t raw_tof_value, uint16_t raw_tof_width_value, uint16_t distance, uint16_t state)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_DEVICE_STATE_LEN];
     _mav_put_float(buf, 0, apd_voltage_targ);
     _mav_put_float(buf, 4, apd_voltage_curr);
     _mav_put_float(buf, 8, las_voltage);
-    _mav_put_float(buf, 12, distance);
-    _mav_put_int16_t(buf, 16, pwm_value);
-    _mav_put_uint16_t(buf, 18, voltage_mv);
-    _mav_put_uint16_t(buf, 20, raw_tof_value);
-    _mav_put_uint16_t(buf, 22, raw_tof_width_value);
+    _mav_put_int16_t(buf, 12, pwm_value);
+    _mav_put_uint16_t(buf, 14, voltage_mv);
+    _mav_put_uint16_t(buf, 16, raw_tof_value);
+    _mav_put_uint16_t(buf, 18, raw_tof_width_value);
+    _mav_put_uint16_t(buf, 20, distance);
+    _mav_put_uint16_t(buf, 22, state);
     _mav_put_uint8_t(buf, 24, pwm_state);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_DEVICE_STATE_LEN);
@@ -97,11 +102,12 @@ static inline uint16_t mavlink_msg_device_state_pack(uint8_t system_id, uint8_t 
     packet.apd_voltage_targ = apd_voltage_targ;
     packet.apd_voltage_curr = apd_voltage_curr;
     packet.las_voltage = las_voltage;
-    packet.distance = distance;
     packet.pwm_value = pwm_value;
     packet.voltage_mv = voltage_mv;
     packet.raw_tof_value = raw_tof_value;
     packet.raw_tof_width_value = raw_tof_width_value;
+    packet.distance = distance;
+    packet.state = state;
     packet.pwm_state = pwm_state;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_DEVICE_STATE_LEN);
@@ -125,23 +131,25 @@ static inline uint16_t mavlink_msg_device_state_pack(uint8_t system_id, uint8_t 
  * @param voltage_mv Comparator threshold voltage in mv
  * @param raw_tof_value Raw TOF distance value in bins
  * @param raw_tof_width_value Raw TOF pulse width value in bins
- * @param distance Distance in meters
+ * @param distance Distance in mm
+ * @param state Device state
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_device_state_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   int16_t pwm_value,uint8_t pwm_state,float apd_voltage_targ,float apd_voltage_curr,float las_voltage,uint16_t voltage_mv,uint16_t raw_tof_value,uint16_t raw_tof_width_value,float distance)
+                                   int16_t pwm_value,uint8_t pwm_state,float apd_voltage_targ,float apd_voltage_curr,float las_voltage,uint16_t voltage_mv,uint16_t raw_tof_value,uint16_t raw_tof_width_value,uint16_t distance,uint16_t state)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_DEVICE_STATE_LEN];
     _mav_put_float(buf, 0, apd_voltage_targ);
     _mav_put_float(buf, 4, apd_voltage_curr);
     _mav_put_float(buf, 8, las_voltage);
-    _mav_put_float(buf, 12, distance);
-    _mav_put_int16_t(buf, 16, pwm_value);
-    _mav_put_uint16_t(buf, 18, voltage_mv);
-    _mav_put_uint16_t(buf, 20, raw_tof_value);
-    _mav_put_uint16_t(buf, 22, raw_tof_width_value);
+    _mav_put_int16_t(buf, 12, pwm_value);
+    _mav_put_uint16_t(buf, 14, voltage_mv);
+    _mav_put_uint16_t(buf, 16, raw_tof_value);
+    _mav_put_uint16_t(buf, 18, raw_tof_width_value);
+    _mav_put_uint16_t(buf, 20, distance);
+    _mav_put_uint16_t(buf, 22, state);
     _mav_put_uint8_t(buf, 24, pwm_state);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_DEVICE_STATE_LEN);
@@ -150,11 +158,12 @@ static inline uint16_t mavlink_msg_device_state_pack_chan(uint8_t system_id, uin
     packet.apd_voltage_targ = apd_voltage_targ;
     packet.apd_voltage_curr = apd_voltage_curr;
     packet.las_voltage = las_voltage;
-    packet.distance = distance;
     packet.pwm_value = pwm_value;
     packet.voltage_mv = voltage_mv;
     packet.raw_tof_value = raw_tof_value;
     packet.raw_tof_width_value = raw_tof_width_value;
+    packet.distance = distance;
+    packet.state = state;
     packet.pwm_state = pwm_state;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_DEVICE_STATE_LEN);
@@ -174,7 +183,7 @@ static inline uint16_t mavlink_msg_device_state_pack_chan(uint8_t system_id, uin
  */
 static inline uint16_t mavlink_msg_device_state_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_device_state_t* device_state)
 {
-    return mavlink_msg_device_state_pack(system_id, component_id, msg, device_state->pwm_value, device_state->pwm_state, device_state->apd_voltage_targ, device_state->apd_voltage_curr, device_state->las_voltage, device_state->voltage_mv, device_state->raw_tof_value, device_state->raw_tof_width_value, device_state->distance);
+    return mavlink_msg_device_state_pack(system_id, component_id, msg, device_state->pwm_value, device_state->pwm_state, device_state->apd_voltage_targ, device_state->apd_voltage_curr, device_state->las_voltage, device_state->voltage_mv, device_state->raw_tof_value, device_state->raw_tof_width_value, device_state->distance, device_state->state);
 }
 
 /**
@@ -188,7 +197,7 @@ static inline uint16_t mavlink_msg_device_state_encode(uint8_t system_id, uint8_
  */
 static inline uint16_t mavlink_msg_device_state_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_device_state_t* device_state)
 {
-    return mavlink_msg_device_state_pack_chan(system_id, component_id, chan, msg, device_state->pwm_value, device_state->pwm_state, device_state->apd_voltage_targ, device_state->apd_voltage_curr, device_state->las_voltage, device_state->voltage_mv, device_state->raw_tof_value, device_state->raw_tof_width_value, device_state->distance);
+    return mavlink_msg_device_state_pack_chan(system_id, component_id, chan, msg, device_state->pwm_value, device_state->pwm_state, device_state->apd_voltage_targ, device_state->apd_voltage_curr, device_state->las_voltage, device_state->voltage_mv, device_state->raw_tof_value, device_state->raw_tof_width_value, device_state->distance, device_state->state);
 }
 
 /**
@@ -203,22 +212,24 @@ static inline uint16_t mavlink_msg_device_state_encode_chan(uint8_t system_id, u
  * @param voltage_mv Comparator threshold voltage in mv
  * @param raw_tof_value Raw TOF distance value in bins
  * @param raw_tof_width_value Raw TOF pulse width value in bins
- * @param distance Distance in meters
+ * @param distance Distance in mm
+ * @param state Device state
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_device_state_send(mavlink_channel_t chan, int16_t pwm_value, uint8_t pwm_state, float apd_voltage_targ, float apd_voltage_curr, float las_voltage, uint16_t voltage_mv, uint16_t raw_tof_value, uint16_t raw_tof_width_value, float distance)
+static inline void mavlink_msg_device_state_send(mavlink_channel_t chan, int16_t pwm_value, uint8_t pwm_state, float apd_voltage_targ, float apd_voltage_curr, float las_voltage, uint16_t voltage_mv, uint16_t raw_tof_value, uint16_t raw_tof_width_value, uint16_t distance, uint16_t state)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_DEVICE_STATE_LEN];
     _mav_put_float(buf, 0, apd_voltage_targ);
     _mav_put_float(buf, 4, apd_voltage_curr);
     _mav_put_float(buf, 8, las_voltage);
-    _mav_put_float(buf, 12, distance);
-    _mav_put_int16_t(buf, 16, pwm_value);
-    _mav_put_uint16_t(buf, 18, voltage_mv);
-    _mav_put_uint16_t(buf, 20, raw_tof_value);
-    _mav_put_uint16_t(buf, 22, raw_tof_width_value);
+    _mav_put_int16_t(buf, 12, pwm_value);
+    _mav_put_uint16_t(buf, 14, voltage_mv);
+    _mav_put_uint16_t(buf, 16, raw_tof_value);
+    _mav_put_uint16_t(buf, 18, raw_tof_width_value);
+    _mav_put_uint16_t(buf, 20, distance);
+    _mav_put_uint16_t(buf, 22, state);
     _mav_put_uint8_t(buf, 24, pwm_state);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_DEVICE_STATE, buf, MAVLINK_MSG_ID_DEVICE_STATE_MIN_LEN, MAVLINK_MSG_ID_DEVICE_STATE_LEN, MAVLINK_MSG_ID_DEVICE_STATE_CRC);
@@ -227,11 +238,12 @@ static inline void mavlink_msg_device_state_send(mavlink_channel_t chan, int16_t
     packet.apd_voltage_targ = apd_voltage_targ;
     packet.apd_voltage_curr = apd_voltage_curr;
     packet.las_voltage = las_voltage;
-    packet.distance = distance;
     packet.pwm_value = pwm_value;
     packet.voltage_mv = voltage_mv;
     packet.raw_tof_value = raw_tof_value;
     packet.raw_tof_width_value = raw_tof_width_value;
+    packet.distance = distance;
+    packet.state = state;
     packet.pwm_state = pwm_state;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_DEVICE_STATE, (const char *)&packet, MAVLINK_MSG_ID_DEVICE_STATE_MIN_LEN, MAVLINK_MSG_ID_DEVICE_STATE_LEN, MAVLINK_MSG_ID_DEVICE_STATE_CRC);
@@ -246,7 +258,7 @@ static inline void mavlink_msg_device_state_send(mavlink_channel_t chan, int16_t
 static inline void mavlink_msg_device_state_send_struct(mavlink_channel_t chan, const mavlink_device_state_t* device_state)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_device_state_send(chan, device_state->pwm_value, device_state->pwm_state, device_state->apd_voltage_targ, device_state->apd_voltage_curr, device_state->las_voltage, device_state->voltage_mv, device_state->raw_tof_value, device_state->raw_tof_width_value, device_state->distance);
+    mavlink_msg_device_state_send(chan, device_state->pwm_value, device_state->pwm_state, device_state->apd_voltage_targ, device_state->apd_voltage_curr, device_state->las_voltage, device_state->voltage_mv, device_state->raw_tof_value, device_state->raw_tof_width_value, device_state->distance, device_state->state);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_DEVICE_STATE, (const char *)device_state, MAVLINK_MSG_ID_DEVICE_STATE_MIN_LEN, MAVLINK_MSG_ID_DEVICE_STATE_LEN, MAVLINK_MSG_ID_DEVICE_STATE_CRC);
 #endif
@@ -260,18 +272,19 @@ static inline void mavlink_msg_device_state_send_struct(mavlink_channel_t chan, 
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_device_state_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  int16_t pwm_value, uint8_t pwm_state, float apd_voltage_targ, float apd_voltage_curr, float las_voltage, uint16_t voltage_mv, uint16_t raw_tof_value, uint16_t raw_tof_width_value, float distance)
+static inline void mavlink_msg_device_state_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  int16_t pwm_value, uint8_t pwm_state, float apd_voltage_targ, float apd_voltage_curr, float las_voltage, uint16_t voltage_mv, uint16_t raw_tof_value, uint16_t raw_tof_width_value, uint16_t distance, uint16_t state)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
     _mav_put_float(buf, 0, apd_voltage_targ);
     _mav_put_float(buf, 4, apd_voltage_curr);
     _mav_put_float(buf, 8, las_voltage);
-    _mav_put_float(buf, 12, distance);
-    _mav_put_int16_t(buf, 16, pwm_value);
-    _mav_put_uint16_t(buf, 18, voltage_mv);
-    _mav_put_uint16_t(buf, 20, raw_tof_value);
-    _mav_put_uint16_t(buf, 22, raw_tof_width_value);
+    _mav_put_int16_t(buf, 12, pwm_value);
+    _mav_put_uint16_t(buf, 14, voltage_mv);
+    _mav_put_uint16_t(buf, 16, raw_tof_value);
+    _mav_put_uint16_t(buf, 18, raw_tof_width_value);
+    _mav_put_uint16_t(buf, 20, distance);
+    _mav_put_uint16_t(buf, 22, state);
     _mav_put_uint8_t(buf, 24, pwm_state);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_DEVICE_STATE, buf, MAVLINK_MSG_ID_DEVICE_STATE_MIN_LEN, MAVLINK_MSG_ID_DEVICE_STATE_LEN, MAVLINK_MSG_ID_DEVICE_STATE_CRC);
@@ -280,11 +293,12 @@ static inline void mavlink_msg_device_state_send_buf(mavlink_message_t *msgbuf, 
     packet->apd_voltage_targ = apd_voltage_targ;
     packet->apd_voltage_curr = apd_voltage_curr;
     packet->las_voltage = las_voltage;
-    packet->distance = distance;
     packet->pwm_value = pwm_value;
     packet->voltage_mv = voltage_mv;
     packet->raw_tof_value = raw_tof_value;
     packet->raw_tof_width_value = raw_tof_width_value;
+    packet->distance = distance;
+    packet->state = state;
     packet->pwm_state = pwm_state;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_DEVICE_STATE, (const char *)packet, MAVLINK_MSG_ID_DEVICE_STATE_MIN_LEN, MAVLINK_MSG_ID_DEVICE_STATE_LEN, MAVLINK_MSG_ID_DEVICE_STATE_CRC);
@@ -304,7 +318,7 @@ static inline void mavlink_msg_device_state_send_buf(mavlink_message_t *msgbuf, 
  */
 static inline int16_t mavlink_msg_device_state_get_pwm_value(const mavlink_message_t* msg)
 {
-    return _MAV_RETURN_int16_t(msg,  16);
+    return _MAV_RETURN_int16_t(msg,  12);
 }
 
 /**
@@ -354,7 +368,7 @@ static inline float mavlink_msg_device_state_get_las_voltage(const mavlink_messa
  */
 static inline uint16_t mavlink_msg_device_state_get_voltage_mv(const mavlink_message_t* msg)
 {
-    return _MAV_RETURN_uint16_t(msg,  18);
+    return _MAV_RETURN_uint16_t(msg,  14);
 }
 
 /**
@@ -364,7 +378,7 @@ static inline uint16_t mavlink_msg_device_state_get_voltage_mv(const mavlink_mes
  */
 static inline uint16_t mavlink_msg_device_state_get_raw_tof_value(const mavlink_message_t* msg)
 {
-    return _MAV_RETURN_uint16_t(msg,  20);
+    return _MAV_RETURN_uint16_t(msg,  16);
 }
 
 /**
@@ -374,17 +388,27 @@ static inline uint16_t mavlink_msg_device_state_get_raw_tof_value(const mavlink_
  */
 static inline uint16_t mavlink_msg_device_state_get_raw_tof_width_value(const mavlink_message_t* msg)
 {
-    return _MAV_RETURN_uint16_t(msg,  22);
+    return _MAV_RETURN_uint16_t(msg,  18);
 }
 
 /**
  * @brief Get field distance from device_state message
  *
- * @return Distance in meters
+ * @return Distance in mm
  */
-static inline float mavlink_msg_device_state_get_distance(const mavlink_message_t* msg)
+static inline uint16_t mavlink_msg_device_state_get_distance(const mavlink_message_t* msg)
 {
-    return _MAV_RETURN_float(msg,  12);
+    return _MAV_RETURN_uint16_t(msg,  20);
+}
+
+/**
+ * @brief Get field state from device_state message
+ *
+ * @return Device state
+ */
+static inline uint16_t mavlink_msg_device_state_get_state(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_uint16_t(msg,  22);
 }
 
 /**
@@ -399,11 +423,12 @@ static inline void mavlink_msg_device_state_decode(const mavlink_message_t* msg,
     device_state->apd_voltage_targ = mavlink_msg_device_state_get_apd_voltage_targ(msg);
     device_state->apd_voltage_curr = mavlink_msg_device_state_get_apd_voltage_curr(msg);
     device_state->las_voltage = mavlink_msg_device_state_get_las_voltage(msg);
-    device_state->distance = mavlink_msg_device_state_get_distance(msg);
     device_state->pwm_value = mavlink_msg_device_state_get_pwm_value(msg);
     device_state->voltage_mv = mavlink_msg_device_state_get_voltage_mv(msg);
     device_state->raw_tof_value = mavlink_msg_device_state_get_raw_tof_value(msg);
     device_state->raw_tof_width_value = mavlink_msg_device_state_get_raw_tof_width_value(msg);
+    device_state->distance = mavlink_msg_device_state_get_distance(msg);
+    device_state->state = mavlink_msg_device_state_get_state(msg);
     device_state->pwm_state = mavlink_msg_device_state_get_pwm_state(msg);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_DEVICE_STATE_LEN? msg->len : MAVLINK_MSG_ID_DEVICE_STATE_LEN;
