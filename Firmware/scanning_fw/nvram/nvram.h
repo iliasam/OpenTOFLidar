@@ -38,6 +38,15 @@ typedef struct
   // Reference object distance value, mm
   uint16_t ref_obj_dist_mm;
   
+  // Manual setted PWM duty / min safe value
+  uint16_t motor_manulal_pwm_duty;
+  
+  // Motor target speed, rotations per second
+  float motor_target_speed;
+  
+  //Enable auto speed control
+  uint8_t motor_feedback_enabled;
+  
 } nvram_data_t;
 
 extern nvram_data_t nvram_data;

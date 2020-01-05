@@ -4,14 +4,16 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-#include "hardware.h"
 #include "nvram.h"
+#include "hardware.h"
 #include "apd_power.h"
 #include "spi_driver.h"
 #include "tdc_driver.h"
 #include "uart_driver.h"
 #include "dist_measurement.h"
 #include "mavlink_handling.h"
+#include "motor_controlling.h"
+#include "encoder_processing.h"
 
 #include <stdio.h>
 
@@ -52,11 +54,13 @@ int main(void)
   
   apd_power_init_all();
   uart_driver_init();
+  encoder_proc_init();
   
   init_tdc_periph();
   tdc_send_reset();
   tdc_test();
   
+  motor_ctrl_init();
   dist_measurement_init();
   tdc_configure();
   dwt_delay_ms(500);
@@ -85,6 +89,7 @@ int main(void)
       apd_power_voltage_controlling();
       uart_driver_process();
       mavlink_long_packet_sending_process();
+      encoder_proc_perodic_handling();
     }
     
     if (TIMER_ELAPSED(timer_100ms))
@@ -94,6 +99,7 @@ int main(void)
       
       hardware_set_laser_voltage(current_laser_volt);
       hardware_set_apd_comp_voltage(apd_comp_threshold_mv);
+      motor_ctrl_handling();
 
       dist_measurement_handler();
     }

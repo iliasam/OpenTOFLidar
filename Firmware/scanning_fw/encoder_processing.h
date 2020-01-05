@@ -1,20 +1,20 @@
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __HARDWARE_H
-#define __HARDWARE_H
+#ifndef __ENCODER_PROCESSING_H
+#define __ENCODER_PROCESSING_H
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f30x.h"
 #include "config.h"
 
+
 /* Exported types ------------------------------------------------------------*/
+
+
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void hardware_init_all(void);
-void dwt_delay_us(uint32_t us);
-void hardware_set_laser_voltage(float voltage);
-void hardware_set_apd_comp_voltage(uint16_t comp_threshold);
-void dwt_delay_ms(uint32_t ms);
-uint32_t hardware_dwt_get(void);
+void encoder_proc_init(void);
+void encoder_proc_perodic_handling(void);
 
-#endif /* __HARDWARE_H */
+
+#endif /* __ENCODER_PROCESSING_H */

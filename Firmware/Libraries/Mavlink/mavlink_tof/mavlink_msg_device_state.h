@@ -8,7 +8,7 @@ typedef struct __mavlink_device_state_t {
  float apd_voltage_targ; /*< Target APD voltage in volts*/
  float apd_voltage_curr; /*< Current APD voltage in volts*/
  float las_voltage; /*< Laser voltage in volts*/
- int16_t pwm_value; /*< APD dc-dc PWM value*/
+ int16_t pwm_value; /*< APD dc-dc PWM value, timer ticks*/
  uint16_t voltage_mv; /*< Comparator threshold voltage in mv*/
  uint16_t raw_tof_value; /*< Raw TOF distance value in bins*/
  uint16_t raw_tof_width_value; /*< Raw TOF pulse width value in bins*/
@@ -68,7 +68,7 @@ typedef struct __mavlink_device_state_t {
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param msg The MAVLink message to compress the data into
  *
- * @param pwm_value APD dc-dc PWM value
+ * @param pwm_value APD dc-dc PWM value, timer ticks
  * @param pwm_state 0-manual mode, 1-auto feedback apd voltage mode
  * @param apd_voltage_targ Target APD voltage in volts
  * @param apd_voltage_curr Current APD voltage in volts
@@ -123,7 +123,7 @@ static inline uint16_t mavlink_msg_device_state_pack(uint8_t system_id, uint8_t 
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
- * @param pwm_value APD dc-dc PWM value
+ * @param pwm_value APD dc-dc PWM value, timer ticks
  * @param pwm_state 0-manual mode, 1-auto feedback apd voltage mode
  * @param apd_voltage_targ Target APD voltage in volts
  * @param apd_voltage_curr Current APD voltage in volts
@@ -204,7 +204,7 @@ static inline uint16_t mavlink_msg_device_state_encode_chan(uint8_t system_id, u
  * @brief Send a device_state message
  * @param chan MAVLink channel to send the message
  *
- * @param pwm_value APD dc-dc PWM value
+ * @param pwm_value APD dc-dc PWM value, timer ticks
  * @param pwm_state 0-manual mode, 1-auto feedback apd voltage mode
  * @param apd_voltage_targ Target APD voltage in volts
  * @param apd_voltage_curr Current APD voltage in volts
@@ -314,7 +314,7 @@ static inline void mavlink_msg_device_state_send_buf(mavlink_message_t *msgbuf, 
 /**
  * @brief Get field pwm_value from device_state message
  *
- * @return APD dc-dc PWM value
+ * @return APD dc-dc PWM value, timer ticks
  */
 static inline int16_t mavlink_msg_device_state_get_pwm_value(const mavlink_message_t* msg)
 {

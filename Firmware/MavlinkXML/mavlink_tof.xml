@@ -6,6 +6,9 @@
       <entry value="1" name="DATA_REQUEST_DEVICE_STATE">
         <description>Request for device state</description>
       </entry>
+      <entry value="2" name="DATA_REQUEST_MOTOR_STATE">
+        <description>Request for motor state</description>
+      </entry>
     </enum>
     <enum name="DEVICE_COMMAND_TYPE">
       <entry value="1" name="CMD_SAVE_TO_FLASH">
@@ -65,9 +68,17 @@
       <description>Set reference offset</description>
       <field type="uint16_t" name="dist_value">Distance to a reference object, mm</field>
     </message>
+    <message id="110" name="SET_MOTOR_DUTY">
+      <description>Set motor PWM duty and switch to manual mode</description>
+      <field type="uint16_t" name="duty">PWM duty, timer ticks</field>
+    </message>
+    <message id="111" name="SET_MOTOR_SPEED">
+      <description>Set motor speed and switch to auto mode</description>
+      <field type="float" name="speed">Rotations per second</field>
+    </message>
     <message id="150" name="DEVICE_STATE">
       <description>Message with device info</description>
-      <field type="int16_t" name="pwm_value">APD dc-dc PWM value</field>
+      <field type="int16_t" name="pwm_value">APD dc-dc PWM value, timer ticks</field>
       <field type="uint8_t" name="pwm_state">0-manual mode, 1-auto feedback apd voltage mode</field>
       <field type="float" name="apd_voltage_targ">Target APD voltage in volts</field>
       <field type="float" name="apd_voltage_curr">Current APD voltage in volts</field>
@@ -76,6 +87,14 @@
       <field type="uint16_t" name="raw_tof_value">Raw TOF distance value in bins</field>
       <field type="uint16_t" name="raw_tof_width_value">Raw TOF pulse width value in bins</field>
       <field type="uint16_t" name="distance">Distance in mm</field>
+      <field type="uint16_t" name="state">Device state</field>
+    </message>
+    <message id="151" name="MOTOR_STATE">
+      <description>Message with motor info</description>
+      <field type="uint16_t" name="pwm_duty">Current PWM value, timer ticks</field>
+      <field type="float" name="motor_speed">Current speed value, rotations per second</field>
+      <field type="uint16_t" name="setted_pwm_duty">Manual setted PWM value/min PWM value, timer ticks</field>
+      <field type="float" name="setted_motor_speed">Manual setted auto speed value, rotations per second</field>
       <field type="uint16_t" name="state">Device state</field>
     </message>
   </messages>

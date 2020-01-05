@@ -3,6 +3,7 @@
 #include "uart_driver.h"
 #include "apd_power.h"
 #include "dist_measurement.h"
+#include "motor_controlling.h"
 #include "nvram.h"
 
 // Defines ********************************************************************
@@ -47,6 +48,11 @@ extern uint16_t tmp_res0;//todo
 extern uint16_t tmp_res1;
 extern uint16_t test_dist_value;
 
+extern float motor_ctrl_current_speed;
+extern uint16_t motor_ctrl_current_pwm_duty;
+extern uint16_t motor_ctrl_manual_pwm_duty;
+extern float motor_ctrl_target_speed;
+
 extern tdc_point_t tdc_capture_buf[];
 extern uint16_t dist_meas_batch_points;//max is DIST_MEAS_MAX_BATCH_POINTS
 
@@ -59,6 +65,7 @@ mavlink_message_t mavlink_rx_msg;
 // Functions ******************************************************************
 uint8_t  mavlink_send_message(mavlink_message_t *msg);
 void mavlink_send_device_state(void);
+void mavlink_send_motor_state(void);
 uint8_t mavlink_driver_try_send_subpacket(uint8_t *data, uint16_t cnt, uint16_t payload_size);
 
 
@@ -76,6 +83,10 @@ void mavlink_parse_byte(uint8_t value)
       if (data_request_msg.data_type == DATA_REQUEST_DEVICE_STATE)
       {
         mavlink_send_device_state();
+      }
+      else if (data_request_msg.data_type == DATA_REQUEST_MOTOR_STATE)
+      {
+        mavlink_send_motor_state();
       }
     }
     if (mavlink_rx_msg.msgid == MAVLINK_MSG_ID_DEVICE_COMMAND)
@@ -135,6 +146,18 @@ void mavlink_parse_byte(uint8_t value)
       mavlink_msg_set_ref_offset_decode(&mavlink_rx_msg, &data_msg);
       dist_measurement_start_measure_ref(data_msg.dist_value);
     }
+    else if (mavlink_rx_msg.msgid == MAVLINK_MSG_ID_SET_MOTOR_DUTY)
+    {
+      mavlink_set_motor_duty_t data_msg;
+      mavlink_msg_set_motor_duty_decode(&mavlink_rx_msg, &data_msg);
+      motor_ctrl_manual_set_pwm_duty(data_msg.duty);
+    }
+    else if (mavlink_rx_msg.msgid == MAVLINK_MSG_ID_SET_MOTOR_SPEED)
+    {
+      mavlink_set_motor_speed_t data_msg;
+      mavlink_msg_set_motor_speed_decode(&mavlink_rx_msg, &data_msg);
+      motor_ctrl_set_auto_speed(data_msg.speed);
+    }
   }
 }
 
@@ -159,6 +182,26 @@ void mavlink_send_device_state(void)
             MAVLINK_TOF_COMP_ID,
             &mav_msg,
             &device_state);
+  
+  mavlink_send_message(&mav_msg);
+}
+
+void mavlink_send_motor_state(void)
+{
+  mavlink_motor_state_t motor_state;
+  motor_state.motor_speed = motor_ctrl_current_speed;
+  motor_state.pwm_duty = motor_ctrl_current_pwm_duty;
+  motor_state.setted_pwm_duty = motor_ctrl_manual_pwm_duty;
+  motor_state.setted_motor_speed = motor_ctrl_target_speed;
+  motor_state.state = device_state_mask;
+  
+  mavlink_message_t mav_msg;
+
+  mavlink_msg_motor_state_encode(
+            MAVLINK_TOF_SYS_ID,
+            MAVLINK_TOF_COMP_ID,
+            &mav_msg,
+            &motor_state);
   
   mavlink_send_message(&mav_msg);
 }
@@ -244,15 +287,6 @@ uint8_t mavlink_driver_try_send_subpacket(uint8_t *data, uint16_t cnt, uint16_t 
 //send batch data
 void mavlink_send_batch_data(void)
 {
-  /*
-  if (mavlink_driver_tx_single_photo_state != MAVLINK_DRIVER_TX_SINGLE_IDLE)
-  {
-  //ставим в очередь
-  mavlink_driver_single_hist_request_pending = MAVLINK_DRIVER_PACKET_QUEUE_WAIT;
-  return;
-}
-  */
-  
   // Prepare long packet for tx
   mavlink_tx_batch_state = MAVLINK_TX_BATCH_READY_TO_TX;
   mavlink_long_packet_state.data_code = MAVLINK_LONG_PACKET_BATCH_CODE;

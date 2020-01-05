@@ -84,7 +84,7 @@ void dist_measurement_handler(void)
 }
 
 // Called by mavlink command
-// This command only enables racture process
+// This command only enables capture process
 // It is donne in "dist_measurement_do_batch_meas()"
 void dist_measurement_start_batch_meas(uint16_t size)
 {
@@ -94,7 +94,7 @@ void dist_measurement_start_batch_meas(uint16_t size)
   dist_meas_batch_measurement_needed = 1;
 }
 
-//Do batch measurement
+// Do batch measurement
 // Called periodically form dist_measurement_handler()
 void dist_measurement_do_batch_meas(void)
 {
@@ -109,7 +109,7 @@ void dist_measurement_do_batch_meas(void)
   }
 }
 
-//Start measurememt reference distance and zero offset
+//Start measurement reference distance and zero offset
 // dist_mm - real dist to ref object
 void dist_measurement_start_measure_ref(uint16_t dist_mm)
 {

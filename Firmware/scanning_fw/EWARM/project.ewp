@@ -1089,6 +1089,9 @@
       <name>$PROJ_DIR$\..\dist_measurement.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\encoder_processing.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\fifo_functions.c</name>
     </file>
     <file>
@@ -1096,6 +1099,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\main.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\motor_controlling.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\stm32f30x_it.c</name>

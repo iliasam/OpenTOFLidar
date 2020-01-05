@@ -42,6 +42,8 @@
 #define APD_POWER_TIMER_AF_SOURCE       GPIO_PinSource7
 #define APD_POWER_TIMER_PIN_AFIO        GPIO_AF_2
 
+//Timer channel is hardcoded !!
+
 #define APD_POWER_TIMER_PWM_REG         CCR2
 
 #define APD_DEFAULT_VOLTAGE             (90.0f)//V
@@ -114,6 +116,67 @@
 #define UART_RX_INT_NAME                USART2_IRQn
 #define UART_RX_INT_HANDLER             USART2_IRQHandler
 
+// Encoder comparator  ********************************************************
+
+#define ENCODER_COMP_GPIO_CLK           RCC_AHBPeriph_GPIOA
+
+#define ENCODER_COMP_PIN                GPIO_Pin_0
+#define ENCODER_COMP_GPIO               GPIOA
+// Comparator 7
+#define ENCODER_COMP                    COMP_Selection_COMP7
+// Comarator negative sourse
+#define ENCODER_COMP_NEG_SRC            COMP_InvertingInput_1_4VREFINT
+// Comarator positive sourse
+#define ENCODER_COMP_POS_SRC            COMP_NonInvertingInput_IO1
+
+// Comparator is connected to TIM1 {line is pecific for COMP7}
+#define ENCODER_COMP_OUTPUT             COMP_Output_TIM1IC2 
+
+// Encoder comparator  *********************************************
+// Timer is used for processing events from ecnoder comparator 
+#define ENCODER_COMP_TIMER_CLK          RCC_APB2Periph_TIM1
+
+#define ENCODER_COMP_TIMER              TIM1
+#define ENCODER_COMP_TIMER_FREQ         (1e6) //Hz
+
+#define ENCODER_COMP_TIMER_PRESCALER    (uint16_t)(((SystemCoreClock) / \
+                              ENCODER_COMP_TIMER_FREQ) - 1)//APB2 = HCLK
+
+#define ENCODER_COMP_TIMER_CH           TIM_Channel_2
+#define ENCODER_COMP_TIMER_IT_FLAG      TIM_IT_CC2
+#define ENCODER_COMP_TIMER_IRQ          TIM1_CC_IRQn
+#define ENCODER_COMP_IRQ_HANDLER        TIM1_CC_IRQHandler
+#define ENCODER_COMP_GET_CAPTURD_VALUE  TIM_GetCapture2
+
+// Incuding closed one
+#define ENCODER_HOLES_CNT               65
+
+// MOTOR PWM TIMER ***********************************************************
+// Timer used to control speed of the BLDC motor
+#define MOTOR_TIMER_CLK                 RCC_APB1Periph_TIM2
+
+#define MOTOR_TIMER                     TIM2
+#define MOTOR_TIMER_PRESCALER           (1)
+#define MOTOR_TIMER_FREQ                20000  //Hz
+
+#define MOTOR_TIMER_GPIO_CLK            RCC_AHBPeriph_GPIOA
+#define MOTOR_TIMER_GPIO                GPIOA
+#define MOTOR_TIMER_PIN                 GPIO_Pin_1
+#define MOTOR_TIMER_AF_SOURCE           GPIO_PinSource1
+#define MOTOR_TIMER_PIN_AFIO            GPIO_AF_1
+
+//Timer channel is hardcoded !!
+
+#define MOTOR_TIMER_PWM_REG             CCR2
+
+#define MOTOR_DEFAULT_PWM_DUTY          (340)
+// Rotations per second
+#define MOTOR_DEFAULT_SPEED             (15.0f)
+// Integration coefficient
+#define MOTOR_CONTROLLING_I_COEF        (1.5f)
+
+// Rotations per second
+#define MOTOR_MAX_SPEED                 (30.0f)
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/

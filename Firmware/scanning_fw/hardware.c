@@ -10,7 +10,6 @@ void hardware_init_rcc(void);
 void hardware_init_led(void);
 
 void hardware_dwt_init(void);
-uint32_t hardware_dwt_get(void);
 uint8_t hardware_dwt_comapre(int32_t tp);
 void hardware_init_dac(void);
 void hardware_enable_tdc_clock(void);

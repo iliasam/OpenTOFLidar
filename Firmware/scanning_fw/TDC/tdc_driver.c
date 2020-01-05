@@ -225,10 +225,10 @@ void tdc_check_status(void)
   if ((status & (1 << 9)) != 0)//timeout
   {
     tmp_res0 = 0xFFFF;
-    device_state_mask |= TDC_STATE_PULSE_TIMEOUT;
+    device_state_mask |= TDC_STATE_PULSE_TIMEOUT_FLAG;
   }
   else
-    device_state_mask &= ~TDC_STATE_PULSE_TIMEOUT;
+    device_state_mask &= ~TDC_STATE_PULSE_TIMEOUT_FLAG;
   
   //uint8_t alu_ptr = (uint8_t)(status & 3);
   status = status >> 3;
@@ -237,9 +237,9 @@ void tdc_check_status(void)
   status = status >> 3;
   
   if (ch1_hits != 1)
-    device_state_mask |= TDC_STATE_LASER_COMP_FAIL;
+    device_state_mask |= TDC_STATE_LASER_COMP_FAIL_FLAG;
   else
-    device_state_mask &= ~TDC_STATE_LASER_COMP_FAIL;
+    device_state_mask &= ~TDC_STATE_LASER_COMP_FAIL_FLAG;
 
   //stop 2 {photo} hits. Two hits (rise+fall) expected
   uint8_t ch2_hits = (uint8_t)(status & 3);
