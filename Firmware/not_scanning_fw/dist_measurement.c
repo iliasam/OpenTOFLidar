@@ -53,7 +53,7 @@ float dist_meas_width_coef_b = 0.0f;
 
 extern uint16_t tmp_res0;
 extern uint16_t tmp_res1;
-extern uint8_t sync_pulses_enabled_flag;
+//extern uint8_t sync_pulses_enabled_flag;
 
 /* Private function prototypes -----------------------------------------------*/
 void dist_measurement_do_batch_meas(void);

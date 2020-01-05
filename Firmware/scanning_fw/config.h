@@ -178,6 +178,9 @@
 // Rotations per second
 #define MOTOR_MAX_SPEED                 (30.0f)
 
+// Rotations per second
+#define MOTOR_MIN_SPEED                 (5.0f)
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/

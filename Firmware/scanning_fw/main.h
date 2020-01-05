@@ -10,18 +10,24 @@ extern volatile uint32_t ms_tick;
 
 /* Exported constants --------------------------------------------------------*/
 // Bad communication with TDC after init
-#define TDC_STATE_INIT_FAIL_FLAG        (1 << 0)
+#define TDC_STATE_INIT_FAIL_FLAG        (1 << 0) // 1
 // No return signal was found
-#define TDC_STATE_PULSE_TIMEOUT_FLAG    (1 << 1)
+#define TDC_STATE_PULSE_TIMEOUT_FLAG    (1 << 1) // 2
 
 // Wrong hits number from laser comparator
-#define TDC_STATE_LASER_COMP_FAIL_FLAG  (1 << 2)
+#define TDC_STATE_LASER_COMP_FAIL_FLAG  (1 << 2) // 4
 
 // Wrong number of encoder events. Encoder is dirty or wrong installed
-#define ENCODER_SYNC_FAIL_FLAG          (1 << 3)
+#define ENCODER_SYNC_FAIL_FLAG          (1 << 3) // 8
 
 // Mirror is stopped or encoder is not working
 #define MIROR_STOPPED_FLAG              (1 << 4)
+
+// Mirror speed is too low or too high
+#define MIROR_WRONG_SPEED               (1 << 5)
+
+// No calibration values are set
+#define NO_CALIBRATION_FLAG             (1 << 6)
 
 /* Exported macro ------------------------------------------------------------*/
 #define START_TIMER(x, duration)  (x = (ms_tick + duration))

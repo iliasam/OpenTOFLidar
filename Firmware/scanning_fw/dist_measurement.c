@@ -5,6 +5,7 @@
 #include "tdc_driver.h"
 #include "mavlink_handling.h"
 #include "nvram.h"
+#include "main.h"
 
 
 /* Private typedef -----------------------------------------------------------*/
@@ -53,7 +54,7 @@ float dist_meas_width_coef_b = 0.0f;
 
 extern uint16_t tmp_res0;
 extern uint16_t tmp_res1;
-extern uint8_t sync_pulses_enabled_flag;
+extern uint16_t device_state_mask;
 
 /* Private function prototypes -----------------------------------------------*/
 void dist_measurement_do_batch_meas(void);
@@ -69,6 +70,11 @@ void dist_measurement_init(void)
   dist_meas_width_coef_b = nvram_data.width_coef_b;
   dist_meas_zero_offset_bin = nvram_data.zero_offset_bin;
   dist_meas_ref_dist_mm = nvram_data.ref_obj_dist_mm;
+  
+  if (dist_meas_width_coef_a == 0.0f)
+  {
+    device_state_mask |= NO_CALIBRATION_FLAG;
+  }
 }
 
 //check if measurement needed
@@ -215,4 +221,5 @@ void dist_measurement_change_width_corr_coeff(
   
   dist_meas_width_coef_a = data_msg.coeff_a;
   dist_meas_width_coef_b = data_msg.coeff_b;
+  device_state_mask &= ~NO_CALIBRATION_FLAG;
 }

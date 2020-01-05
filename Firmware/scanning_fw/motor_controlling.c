@@ -1,4 +1,5 @@
-
+// Controlling mirror speed by changing PWM duty
+// BLDC Motor controller is DRV11873
 
 /* Includes ------------------------------------------------------------------*/
 #include "motor_controlling.h"
@@ -10,7 +11,6 @@
 
 /* Private typedef -----------------------------------------------------------*/
 #define MOTOR_FAIL_MASK         (ENCODER_SYNC_FAIL_FLAG | MIROR_STOPPED_FLAG)
-
 
 typedef enum
 {
@@ -77,6 +77,12 @@ void motor_ctrl_init(void)
 void motor_ctrl_handling(void)
 {
   motor_ctrl_current_speed = US_IN_SEC / encoder_proc_rotation_period_us;
+  
+  if ((motor_ctrl_current_speed > MOTOR_MAX_SPEED) || 
+      (motor_ctrl_current_speed < MOTOR_MIN_SPEED))
+    device_state_mask |= MIROR_WRONG_SPEED;
+  else
+    device_state_mask &= ~MIROR_WRONG_SPEED;
 
   if (motor_ctrl_auto_speed_enabled)
     motor_ctrl_speed_controlling();

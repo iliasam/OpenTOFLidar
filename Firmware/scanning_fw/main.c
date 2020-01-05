@@ -14,6 +14,7 @@
 #include "mavlink_handling.h"
 #include "motor_controlling.h"
 #include "encoder_processing.h"
+#include "capture_controlling.h"
 
 #include <stdio.h>
 
@@ -61,6 +62,7 @@ int main(void)
   tdc_test();
   
   motor_ctrl_init();
+  capture_ctr_init();
   dist_measurement_init();
   tdc_configure();
   dwt_delay_ms(500);

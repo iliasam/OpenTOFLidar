@@ -1162,6 +1162,9 @@
       <name>$PROJ_DIR$\..\apd_power.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\capture_controlling.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\config.h</name>
     </file>
     <file>
