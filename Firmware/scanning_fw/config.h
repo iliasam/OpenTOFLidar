@@ -4,8 +4,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 
-#define LED_GPIO                GPIOA
-#define LED_PIN                 GPIO_Pin_3
+#define LED_GPIO                        GPIOA
+#define LED_PIN                         GPIO_Pin_3
 
 // APD ADC DC-DC feedback *****************************************************
 
@@ -111,9 +111,9 @@
 
 #define UART_AFIO                       GPIO_AF_7
 
-#define UART_BAUD                       115200
+#define UART_BAUD                       (500000)
 
-#define UART_RX_INT_NAME                USART2_IRQn
+#define UART_RX_IRQ                     USART2_IRQn
 #define UART_RX_INT_HANDLER             USART2_IRQHandler
 
 // Encoder comparator  ********************************************************
@@ -125,7 +125,7 @@
 // Comparator 7
 #define ENCODER_COMP                    COMP_Selection_COMP7
 // Comarator negative sourse
-#define ENCODER_COMP_NEG_SRC            COMP_InvertingInput_1_4VREFINT
+#define ENCODER_COMP_NEG_SRC            COMP_InvertingInput_1_2VREFINT
 // Comarator positive sourse
 #define ENCODER_COMP_POS_SRC            COMP_NonInvertingInput_IO1
 
@@ -145,7 +145,7 @@
 #define ENCODER_COMP_TIMER_CH           TIM_Channel_2
 #define ENCODER_COMP_TIMER_IT_FLAG      TIM_IT_CC2
 #define ENCODER_COMP_TIMER_IRQ          TIM1_CC_IRQn
-#define ENCODER_COMP_IRQ_HANDLER        TIM1_CC_IRQHandler
+#define ENCODER_COMP_TIMER_IRQ_HANDLER  TIM1_CC_IRQHandler
 #define ENCODER_COMP_GET_CAPTURD_VALUE  TIM_GetCapture2
 
 // Incuding closed one
@@ -180,6 +180,35 @@
 
 // Rotations per second
 #define MOTOR_MIN_SPEED                 (5.0f)
+
+// CAPTURE TIMER ***********************************************************
+// Timer used to start distance measurements
+// It is synchronized with encoder events
+
+// Scanning angular resolution, in deg
+#define CAPTURE_ANG_RESOL               (1.0)
+
+#define CAPTURE_TIMER_CLK               RCC_APB2Periph_TIM8
+
+#define CAPTURE_TIMER                   TIM8
+#define CAPTURE_TIMER_PRESCALER         ENCODER_COMP_TIMER_PRESCALER
+
+#define CAPTURE_TIMER_IT_FLAG           TIM_IT_Update
+#define CAPTURE_TIMER_IRQ               TIM8_UP_IRQn
+#define CAPTURE_TIMER_IRQ_HANDLER       TIM8_UP_IRQHandler
+
+
+// test ***********************************************************
+
+#define TEST_GPIO                       GPIOA
+#define TEST_PIN                        GPIO_Pin_2
+
+// IRQ Priority ***********************************************************
+
+// pre-emption priority
+#define UART_RX_IRQ_PRIORITY            5
+#define CAPTURE_TIMER_IRQ_PRIORITY      15
+#define ENCODER_COMP_TIMER_IRQ_PRIORITY 10
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/

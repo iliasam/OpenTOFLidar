@@ -6,13 +6,9 @@
 #include "stm32f30x.h"
 #include "config.h"
 #include "mavlink.h"
+#include "tdc_driver.h"
 
 /* Exported types ------------------------------------------------------------*/
-typedef struct
-{
-  uint16_t start_value;
-  uint16_t width_value;
-} tdc_point_t;
 
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
@@ -27,7 +23,8 @@ void dist_measurement_change_width_corr_coeff(
 uint16_t dist_measurement_calc_dist(float corr_dist_bin);
 float dist_measurement_calc_corrected_dist_bin(
   uint16_t dist_bin, uint16_t width_bin);
-void dist_measurement_process_current_data(void);
+uint16_t dist_measurement_process_current_data(void);
 void dist_measurement_start_measure_ref(uint16_t dist_mm);
+uint16_t dist_measurement_process_data(uint16_t start, uint16_t width);
 
 #endif /* __DIST_MEASUREMENT_H */

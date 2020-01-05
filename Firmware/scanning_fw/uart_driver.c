@@ -36,6 +36,7 @@ void uart_driver_init(void)
     
   GPIO_InitTypeDef GPIO_InitStructure;
   USART_InitTypeDef USART_InitStructure;
+  NVIC_InitTypeDef NVIC_InitStructure;
 
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 
@@ -64,13 +65,19 @@ void uart_driver_init(void)
   USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
   USART_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;
   USART_Init(UART_NAME, &USART_InitStructure);
-  USART_Cmd(UART_NAME, ENABLE);
+
   
   USART_OverrunDetectionConfig(UART_NAME, USART_OVRDetection_Disable);
   
   USART_ITConfig(UART_NAME, USART_IT_RXNE, ENABLE);
-  NVIC_EnableIRQ(UART_RX_INT_NAME);
   
+  NVIC_InitStructure.NVIC_IRQChannel = UART_RX_IRQ;
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = UART_RX_IRQ_PRIORITY;
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  NVIC_Init(&NVIC_InitStructure);
+  
+  USART_Cmd(UART_NAME, ENABLE);
 }
 
 void uart_driver_init_fifo(void)
@@ -112,6 +119,7 @@ uint8_t uart_driver_add_data_for_tx(uint8_t* data, uint16_t size)
   return fifo_add_data((fifo_struct_t*)&uart_tx_fifo, data, size);
 }
 
+// Called from RX interrupt
 void uart_driver_add_rx_byte(uint8_t rx_byte)
 {
   fifo_add_byte((fifo_struct_t*)&uart_rx_fifo, rx_byte);

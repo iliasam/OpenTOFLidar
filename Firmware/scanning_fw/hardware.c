@@ -18,7 +18,9 @@ void hardware_enable_tdc_clock(void);
 
 void hardware_init_all(void)
 {
-  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
+  /*!< 4 bits for pre-emption priority
+       0 bits for subpriority */
+  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
   
   hardware_init_rcc();
   
@@ -49,6 +51,9 @@ void hardware_init_led(void)
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(LED_GPIO, &GPIO_InitStructure);
   
+  GPIO_InitStructure.GPIO_Pin = TEST_PIN;
+  GPIO_Init(TEST_GPIO, &GPIO_InitStructure);
+  
   GPIO_ResetBits(LED_GPIO, LED_PIN);
 }
 
@@ -63,21 +68,11 @@ void hardware_init_rcc(void)
   while (RCC_GetSYSCLKSource() != 0x00) {}
   RCC_DeInit();
 
-  /*
-  // PLL config 8 MHz / 2 * 16 = 64 MHz
-  RCC_PLLConfig(RCC_PLLSource_HSI_Div2, RCC_PLLMul_16); 
-  RCC_PLLCmd(ENABLE);
-  while (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET) {}
-  RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
-  while (RCC_GetSYSCLKSource() != 0x08) {}
-  SystemCoreClockUpdate();
-  */
-  
   //enable HSE
   RCC_HSEConfig(RCC_HSE_ON);
   RCC_WaitForHSEStartUp();
   while (RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET) {}
-  RCC_PLLConfig(RCC_PLLSource_PREDIV1,RCC_PLLMul_9); // PLL config 8*9=72
+  RCC_PLLConfig(RCC_PLLSource_PREDIV1,RCC_PLLMul_9); // PLL config 8*9=72 MHz
   RCC_PLLCmd(ENABLE);
   while (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET) {}
   //switch to HSE

@@ -178,14 +178,23 @@ void dist_measurement_calculate_zero_offset(uint16_t ref_dist_bin)
     dist_meas_zero_offset_bin = 0;
 }
 
-//testing function
-void dist_measurement_process_current_data(void)
+//testing
+uint16_t dist_measurement_process_current_data(void)
 {
+  return dist_measurement_process_data(tmp_res0, tmp_res1);
+}
+
+uint16_t dist_measurement_process_data(uint16_t start, uint16_t width)
+{
+  if ((start == 0) || (width == 0))
+    return 0;
+  
   float corr_dist_bin = 
-    dist_measurement_calc_corrected_dist_bin(tmp_res0, tmp_res1);
+    dist_measurement_calc_corrected_dist_bin(start, width);
   
   uint16_t dist_mm = dist_measurement_calc_dist(corr_dist_bin);
   test_dist_value = dist_mm;
+  return dist_mm;
 }
 
 // CORRECTIONS **********************************************************

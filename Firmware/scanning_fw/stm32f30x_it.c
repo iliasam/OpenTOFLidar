@@ -174,7 +174,6 @@ void UART_RX_INT_HANDLER(void)
     USART_ClearITPendingBit(UART_NAME, USART_IT_RXNE);
     uint8_t rx_byte = UART_NAME->RDR;
     uart_driver_add_rx_byte(rx_byte);
-    //parse_rx_uart_data(rx_byte);
   }
   if (USART_GetFlagStatus(UART_NAME, USART_FLAG_ORE) != RESET)
   {

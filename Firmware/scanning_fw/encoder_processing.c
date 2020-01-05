@@ -4,6 +4,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "encoder_processing.h"
+#include "capture_controlling.h"
 #include "hardware.h"
 #include "nvram.h"
 #include "main.h"
@@ -53,7 +54,8 @@ void encoder_proc_init(void)
   encoder_proc_init_encoder_timer();
 }
 
-void ENCODER_COMP_IRQ_HANDLER(void)
+// Interrupt from timer (connected to encoder comparator)
+void ENCODER_COMP_TIMER_IRQ_HANDLER(void)
 {
   if (TIM_GetITStatus(ENCODER_COMP_TIMER, ENCODER_COMP_TIMER_IT_FLAG) != RESET)
   {
@@ -73,10 +75,12 @@ void ENCODER_COMP_IRQ_HANDLER(void)
     {
       //Zero cross detected
       encoder_proc_zero_crossing();
+      //dist_measurement_process_current_data();
+      capture_ctr_encoder_zero_event();
     }
     else
     {
-      //set_degree_timer_period(time_tmp-1);
+      capture_ctr_encoder_event(encoder_proc_event_cnt, enc_period);
     }
   }// end of interrupt check
 }
@@ -175,12 +179,12 @@ void encoder_proc_init_encoder_timer(void)
   TIM_ITConfig(ENCODER_COMP_TIMER, ENCODER_COMP_TIMER_IT_FLAG, ENABLE);
   
   NVIC_InitStructure.NVIC_IRQChannel = ENCODER_COMP_TIMER_IRQ;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 15;
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 
+    ENCODER_COMP_TIMER_IRQ_PRIORITY;
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
   
-  NVIC_EnableIRQ(ENCODER_COMP_TIMER_IRQ);
   TIM_Cmd(ENCODER_COMP_TIMER, ENABLE);
 }
 

@@ -259,12 +259,19 @@ uint16_t tdc_read_raw_value(void)
   return (uint16_t)(value >> 16);
 }
 
-void tdc_read_two_registers(void)
+tdc_point_t tdc_read_two_registers(void)
 {
+  // time of flight
   tmp_res0 = (uint16_t)(tdc_read_n_bytes(4, OPCODE_READ_REG + 0) >> 16);
   configure_reg1_width();
   dwt_delay_us(20);
+  // pulse width
   tmp_res1 = (uint16_t)(tdc_read_n_bytes(4, OPCODE_READ_REG + 1) >> 16);
+  
+  tdc_point_t tmp_point;
+  tmp_point.start_value = tmp_res0;
+  tmp_point.width_value = tmp_res1;
+  return tmp_point;
 }
 
 // Configure ALU for calculating Stop1 CH2 (Rising) {photo} - Stop1 CH1 {laser}

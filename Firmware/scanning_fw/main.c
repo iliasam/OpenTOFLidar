@@ -49,6 +49,7 @@ void load_nvram_values(void);
 
 int main(void)
 {
+  // Sysclk = 72 MHz
   hardware_init_all();
   nvram_read_data();
   load_nvram_values();
@@ -72,6 +73,7 @@ int main(void)
     if (TIMER_ELAPSED(timer_1ms))
     {
       START_TIMER(timer_1ms, 1);
+      /*
       //tdc_start_pulse();
       if (dist_meas_batch_measurement_needed == 0)
       {
@@ -82,6 +84,8 @@ int main(void)
         
         tdc_start_pulse();
       }
+      */
+      capture_ctr_data_processing();
     }
     
     if (TIMER_ELAPSED(timer_10ms))

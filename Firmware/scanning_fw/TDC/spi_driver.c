@@ -145,7 +145,7 @@ void init_tdc_spi(void)
   SPI_InitStruct.SPI_CPOL = SPI_CPOL_Low;
   SPI_InitStruct.SPI_CPHA = SPI_CPHA_2Edge;
   SPI_InitStruct.SPI_NSS = SPI_NSS_Soft;
-  SPI_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_8;
+  SPI_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_4;
   SPI_InitStruct.SPI_FirstBit = SPI_FirstBit_MSB;// data is transmitted MSB first
   SPI_Init(TDC_SPI_NAME, &SPI_InitStruct);
   SPI_RxFIFOThresholdConfig(TDC_SPI_NAME, SPI_RxFIFOThreshold_QF);
