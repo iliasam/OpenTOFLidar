@@ -4,6 +4,7 @@
 #include "encoder_processing.h"
 #include "capture_controlling.h"
 #include "dist_measurement.h"
+#include "mavlink_handling.h"
 #include "hardware.h"
 #include "nvram.h"
 #include "math.h"
@@ -59,6 +60,7 @@ void capture_ctr_refresh_timer(uint16_t new_period);
 void capture_ctr_make_measurement(float angle);
 void capture_ctr_switch_buffers(void);
 void capture_ctr_reset_timer(void);
+void capture_ctr_switch_dist_buffers(void);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -66,6 +68,13 @@ void capture_ctr_reset_timer(void);
 void capture_ctr_init(void)
 {
   capture_ctr_init_capture_timer();
+  
+  //testing
+  for (uint16_t i = 0; i < CAPT_POINTS_CNT; i++)
+  {
+    scan_dist_buffer0[i] = 800;
+    scan_dist_buffer1[i] = 2500;
+  }
 }
 
 // Must be called periodically
@@ -76,8 +85,12 @@ void capture_ctr_data_processing(void)
   else
     dist_measurenent_enabled = 1;
   
-  if (scan_dist_raw_data_ready_flag)
+  // "scan_dist_raw_data_ready_flag" is set after zero crossing
+  // we hope that scan data are already send
+  if (scan_dist_raw_data_ready_flag && dist_measurenent_enabled)
   {
+    
+    // Can take a lot of time
     for (uint16_t i = 0; i < CAPT_POINTS_CNT; i++)
     {
       capture_ctr_dist_write_ptr[i] = 
@@ -85,6 +98,9 @@ void capture_ctr_data_processing(void)
           capture_ctr_read_ptr[i].start_value, 
           capture_ctr_read_ptr[i].width_value);
     }
+    
+    capture_ctr_switch_dist_buffers();
+    mavlink_send_scan_data(capture_ctr_dist_read_ptr, CAPT_POINTS_CNT);
     
     scan_dist_raw_data_ready_flag = 0;
   }
@@ -150,6 +166,22 @@ void capture_ctr_switch_buffers(void)
   {
     capture_ctr_write_ptr = scan_raw_buffer0;
     capture_ctr_read_ptr  = scan_raw_buffer1;
+  }
+  // Fuffers have the same size
+  memset(capture_ctr_write_ptr, 0, sizeof(scan_raw_buffer0));
+}
+
+void capture_ctr_switch_dist_buffers(void)
+{
+  if (capture_ctr_dist_write_ptr == scan_dist_buffer0)
+  {
+    capture_ctr_dist_write_ptr = scan_dist_buffer1;
+    capture_ctr_dist_read_ptr  = scan_dist_buffer0;
+  }
+  else
+  {
+    capture_ctr_dist_write_ptr = scan_dist_buffer0;
+    capture_ctr_dist_read_ptr  = scan_dist_buffer1;
   }
 }
 

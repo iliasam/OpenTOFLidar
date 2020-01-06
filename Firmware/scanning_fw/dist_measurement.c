@@ -113,6 +113,7 @@ void dist_measurement_do_batch_meas(void)
     tdc_capture_buf[i].start_value = tmp_res0;
     tdc_capture_buf[i].width_value = tmp_res1;
   }
+  dist_measurement_process_current_data();
 }
 
 //Start measurement reference distance and zero offset

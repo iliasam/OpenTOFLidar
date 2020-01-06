@@ -29,6 +29,18 @@ typedef enum
     MAVLINK_TX_BATCH_PROGRESS,
 } mavlink_tx_batch_state_t;
 
+typedef enum 
+{
+    // No tx
+    MAVLINK_TX_SCAN_IDLE = 0,
+    
+    // Data is ready for tx
+    MAVLINK_TX_SCAN_READY_TO_TX,
+    
+    // Process of tx is running
+    MAVLINK_TX_SCN_PROGRESS,
+} mavlink_tx_scan_state_t;
+
 typedef struct
 {
     uint8_t data_code;
@@ -63,6 +75,10 @@ extern uint16_t dist_meas_batch_points;//max is DIST_MEAS_MAX_BATCH_POINTS
 mavlink_long_packet_params_t mavlink_long_packet_state;
 
 mavlink_tx_batch_state_t mavlink_tx_batch_state = MAVLINK_TX_BATCH_IDLE;
+mavlink_tx_scan_state_t  mavlink_tx_scan_state = MAVLINK_TX_SCAN_IDLE;
+
+// Flag - long packet tx is active
+uint8_t mavlink_long_packet_tx_active = 0;
 
 mavlink_message_t mavlink_rx_msg;
 
@@ -229,7 +245,7 @@ uint8_t mavlink_send_message(mavlink_message_t *msg)
 // Long packet sending by mavlink
 void mavlink_long_packet_sending_process(void)
 {
-  if (mavlink_tx_batch_state == MAVLINK_TX_BATCH_PROGRESS)
+  if (mavlink_long_packet_tx_active != 0)
   {
     if (mavlink_long_packet_state.packet_cnt < mavlink_long_packet_state.total_cnt)
     {
@@ -262,7 +278,8 @@ void mavlink_long_packet_sending_process(void)
     else
     {
       // All packets are sent
-      mavlink_tx_batch_state = MAVLINK_TX_BATCH_IDLE;
+      //mavlink_tx_batch_state = MAVLINK_TX_BATCH_IDLE;
+      mavlink_long_packet_tx_active = 0;
     }
   }
 }
@@ -292,18 +309,37 @@ uint8_t mavlink_driver_try_send_subpacket(uint8_t *data, uint16_t cnt, uint16_t 
 void mavlink_send_batch_data(void)
 {
   // Prepare long packet for tx
-  mavlink_tx_batch_state = MAVLINK_TX_BATCH_READY_TO_TX;
   mavlink_long_packet_state.data_code = MAVLINK_LONG_PACKET_BATCH_CODE;
   mavlink_long_packet_state.data_ptr = (uint8_t*)&tdc_capture_buf[0];
   mavlink_long_packet_state.current_packet_id++;
   
-  // Округлить к большему
+  // Round to bigger value
   mavlink_long_packet_state.total_data_size = dist_meas_batch_points * sizeof(tdc_point_t);
   mavlink_long_packet_state.total_cnt = 
     (dist_meas_batch_points * sizeof(tdc_point_t) + MAVLINK_MSG_LONG_PACKET_FIELD_DATA_LEN - 1) / 
       MAVLINK_MSG_LONG_PACKET_FIELD_DATA_LEN;
   
   mavlink_long_packet_state.packet_cnt = 0;
-  mavlink_tx_batch_state = MAVLINK_TX_BATCH_PROGRESS;
-  //mavlink_driver_single_hist_request_pending = MAVLINK_DRIVER_PACKET_IDLE;
+  //mavlink_tx_batch_state = MAVLINK_TX_BATCH_READY_TO_TX;
+  mavlink_long_packet_tx_active = 1;
+}
+
+// send scan data
+// points_cnt - number of captured point, not bytes
+void mavlink_send_scan_data(uint16_t* data_source, uint16_t points_cnt)
+{
+  // Prepare long packet for tx
+  mavlink_long_packet_state.data_code = MAVLINK_LONG_PACKET_SCAN_CODE;
+  mavlink_long_packet_state.data_ptr = (uint8_t*)data_source;
+  mavlink_long_packet_state.current_packet_id++;
+  
+  // Round to bigger value
+  mavlink_long_packet_state.total_data_size = points_cnt * sizeof(uint16_t);
+  mavlink_long_packet_state.total_cnt = 
+    (points_cnt * sizeof(uint16_t) + MAVLINK_MSG_LONG_PACKET_FIELD_DATA_LEN - 1) / 
+      MAVLINK_MSG_LONG_PACKET_FIELD_DATA_LEN;
+  
+  mavlink_long_packet_state.packet_cnt = 0;
+  //mavlink_tx_scan_state = MAVLINK_TX_SCAN_READY_TO_TX;
+  mavlink_long_packet_tx_active = 1;
 }
