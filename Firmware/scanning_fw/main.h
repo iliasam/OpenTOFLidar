@@ -21,13 +21,19 @@ extern volatile uint32_t ms_tick;
 #define ENCODER_SYNC_FAIL_FLAG          (1 << 3) // 8
 
 // Mirror is stopped or encoder is not working
-#define MIROR_STOPPED_FLAG              (1 << 4)
+#define MIRROR_STOPPED_FLAG              (1 << 4) //16
 
 // Mirror speed is too low or too high
-#define MIROR_WRONG_SPEED               (1 << 5)
+#define MIRROR_WRONG_SPEED               (1 << 5) //32
 
 // No calibration values are set
 #define NO_CALIBRATION_FLAG             (1 << 6)
+
+// Mask to disable distance measurements
+#define LASER_DISABLE_MASK              (TDC_STATE_INIT_FAIL_FLAG | \
+                                         ENCODER_SYNC_FAIL_FLAG | \
+                                         MIRROR_STOPPED_FLAG | \
+                                         MIRROR_WRONG_SPEED)
 
 /* Exported macro ------------------------------------------------------------*/
 #define START_TIMER(x, duration)  (x = (ms_tick + duration))

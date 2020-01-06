@@ -109,7 +109,7 @@
 
 #define UART_AFIO                       GPIO_AF_7
 
-#define UART_BAUD                       115200
+#define UART_BAUD                       500000
 
 #define UART_RX_INT_NAME                USART2_IRQn
 #define UART_RX_INT_HANDLER             USART2_IRQHandler

@@ -80,14 +80,6 @@ void hardware_init_rcc(void)
   while (RCC_GetSYSCLKSource() != 0x08) {}
 }
 
-//Init DWT counter
-void hardware_dwt_init(void)
-{
-    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
-    DWT->CYCCNT = 0;
-    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
-}
-
 void hardware_init_dac(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
@@ -166,6 +158,14 @@ void hardware_enable_tdc_clock(void)
 
 
 // ***************************************************************************
+
+//Init DWT counter
+void hardware_dwt_init(void)
+{
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+    DWT->CYCCNT = 0;
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+}
 
 uint32_t hardware_dwt_get(void)
 {

@@ -17,16 +17,23 @@
 // TX FIFO buffer size, bytes
 #define UART_TX_FIFO_SIZE                     512
 
+// TX FIFO buffer size, bytes
+#define UART_TX_DMA_BUF_SIZE                     600
+
 // Private variables ---------------------------------------------------------
 volatile uint8_t uart_rx_fifo_buf[UART_RX_FIFO_SIZE];
 volatile uint8_t uart_tx_fifo_buf[UART_TX_FIFO_SIZE];
+
+// TX DMA buffer
+uint8_t uart_tx_dma_buf[UART_TX_DMA_BUF_SIZE];
 
 volatile fifo_struct_t uart_rx_fifo;
 fifo_struct_t uart_tx_fifo;
 
 // Private function prototypes -----------------------------------------------
 void uart_driver_init_fifo(void);
-void uart_driver_tx_process(void);
+void init_uart_dma(void);
+void uart_driver_start_dma_tx(uint8_t *data, uint16_t size);
 
 // Private functions ---------------------------------------------------------
 
@@ -38,6 +45,7 @@ void uart_driver_init(void)
   USART_InitTypeDef USART_InitStructure;
   NVIC_InitTypeDef NVIC_InitStructure;
 
+  RCC_AHBPeriphClockCmd(UART_GPIO_CLK, ENABLE);
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 
   /* Configure USART Tx as alternate function  */
@@ -66,7 +74,6 @@ void uart_driver_init(void)
   USART_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;
   USART_Init(UART_NAME, &USART_InitStructure);
 
-  
   USART_OverrunDetectionConfig(UART_NAME, USART_OVRDetection_Disable);
   
   USART_ITConfig(UART_NAME, USART_IT_RXNE, ENABLE);
@@ -77,7 +84,45 @@ void uart_driver_init(void)
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
   
+  USART_DMACmd(UART_NAME, USART_DMAReq_Tx, ENABLE);
+  init_uart_dma();
+  
   USART_Cmd(UART_NAME, ENABLE);
+}
+
+//Used for TX
+void init_uart_dma(void)
+{
+  DMA_InitTypeDef DMA_InitStructure;
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+  
+  DMA_DeInit(UART_DMA_TX_CHANNEL);//master
+  DMA_StructInit(&DMA_InitStructure);
+  DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&UART_NAME->TDR;
+  DMA_InitStructure.DMA_MemoryBaseAddr = 0;//not used now
+  DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;
+  DMA_InitStructure.DMA_BufferSize = 0;//not used now
+  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+  DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+  DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+  DMA_InitStructure.DMA_Priority = DMA_Priority_Low;
+  DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
+  DMA_Init(UART_DMA_TX_CHANNEL, &DMA_InitStructure);
+}
+
+//Start data tx using DMA
+void uart_driver_start_dma_tx(uint8_t *data, uint16_t size)
+{
+  if (UART_DMA_TX_CHANNEL->CNDTR > 0)
+    return;
+  
+  DMA_Cmd(UART_DMA_TX_CHANNEL, DISABLE);
+  //DMA_ClearITPendingBit(DMA1_IT_TC7); //??
+  UART_DMA_TX_CHANNEL->CNDTR = size;
+  UART_DMA_TX_CHANNEL->CMAR = (uint32_t)data;
+  DMA_Cmd(UART_DMA_TX_CHANNEL, ENABLE);
 }
 
 void uart_driver_init_fifo(void)
@@ -106,11 +151,28 @@ void uart_driver_process(void)
 
 void uart_driver_tx_process(void)
 {
+  if (UART_DMA_TX_CHANNEL->CNDTR > 0) //dma is busy
+    return;
+  
+  if (fifo_get_count((fifo_struct_t*)&uart_tx_fifo) < 5)
+    return;
+  
+  uint16_t size_cnt = 0;
+  uint8_t tx_byte;
+  while (fifo_get_byte(&uart_tx_fifo, &tx_byte))
+  {
+    uart_tx_dma_buf[size_cnt] = tx_byte;
+    size_cnt++;
+  }
+  uart_driver_start_dma_tx(uart_tx_dma_buf, size_cnt);
+  
+  /*
   uint8_t tx_byte;
   while (fifo_get_byte((fifo_struct_t*)&uart_tx_fifo, &tx_byte))
   {
     uart_driver_send_byte(tx_byte);
   }
+  */
 }
 
 // Returns 0 if adition fails

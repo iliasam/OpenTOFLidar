@@ -48,7 +48,7 @@ void load_nvram_values(void);
 /* Private functions ---------------------------------------------------------*/
 
 int main(void)
-{
+{  
   // Sysclk = 72 MHz
   hardware_init_all();
   nvram_read_data();

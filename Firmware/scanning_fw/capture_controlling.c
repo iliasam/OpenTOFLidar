@@ -49,6 +49,10 @@ uint16_t scan_dist_buffer1[CAPT_POINTS_CNT];
 uint16_t *capture_ctr_dist_write_ptr = scan_dist_buffer0;
 uint16_t *capture_ctr_dist_read_ptr  = scan_dist_buffer1;
 
+uint8_t dist_measurenent_enabled = 0;
+
+extern uint16_t device_state_mask;
+
 /* Private function prototypes -----------------------------------------------*/
 void capture_ctr_init_capture_timer(void);
 void capture_ctr_refresh_timer(uint16_t new_period);
@@ -67,6 +71,11 @@ void capture_ctr_init(void)
 // Must be called periodically
 void capture_ctr_data_processing(void)
 {
+  if (device_state_mask & LASER_DISABLE_MASK)
+    dist_measurenent_enabled = 0;
+  else
+    dist_measurenent_enabled = 1;
+  
   if (scan_dist_raw_data_ready_flag)
   {
     for (uint16_t i = 0; i < CAPT_POINTS_CNT; i++)
@@ -90,7 +99,8 @@ void CAPTURE_TIMER_IRQ_HANDLER(void)
     TIM_ClearITPendingBit(CAPTURE_TIMER, CAPTURE_TIMER_IT_FLAG);
     
     capture_ctr_current_angle += CAPTURE_ANG_RESOL;
-    capture_ctr_make_measurement(capture_ctr_current_angle);//take a lot of time
+    if (dist_measurenent_enabled == 1)
+      capture_ctr_make_measurement(capture_ctr_current_angle);//take a lot of time
     
     //TEST_GPIO->ODR^= TEST_PIN;
     TEST_GPIO->ODR &= ~TEST_PIN;

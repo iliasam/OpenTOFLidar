@@ -100,6 +100,7 @@
 // UART  ***********************************************************************
 #define UART_NAME                       USART2
 #define UART_CLK                        RCC_APB1Periph_USART2
+#define UART_GPIO_CLK                   RCC_AHBPeriph_GPIOA
 
 #define UART_TX_PIN                     GPIO_Pin_3
 #define UART_TX_PIN_AF                  GPIO_PinSource3
@@ -115,6 +116,8 @@
 
 #define UART_RX_IRQ                     USART2_IRQn
 #define UART_RX_INT_HANDLER             USART2_IRQHandler
+
+#define UART_DMA_TX_CHANNEL             DMA1_Channel7
 
 // Encoder comparator  ********************************************************
 

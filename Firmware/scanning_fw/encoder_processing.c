@@ -111,11 +111,11 @@ void encoder_proc_perodic_handling(void)
 {
   if ((ms_tick - encoder_proc_event_timestamp_ms) > ENCODER_TIMEOUT_MS)
   {
-    device_state_mask |= MIROR_STOPPED_FLAG;
+    device_state_mask |= MIRROR_STOPPED_FLAG;
   }
   else
   {
-    device_state_mask &= ~MIROR_STOPPED_FLAG;
+    device_state_mask &= ~MIRROR_STOPPED_FLAG;
   }
 }
 

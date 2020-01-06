@@ -84,7 +84,7 @@ void dist_measurement_handler(void)
   {
     dist_measurement_do_batch_meas();
     mavlink_send_batch_data();
-    dist_meas_batch_measurement_needed = DIST_MEAS_REF_MEAS_IDLE;
+    dist_meas_batch_measurement_needed = 0;
   }
   dist_measurement_measure_ref_bins_handler();
 }

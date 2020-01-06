@@ -11,7 +11,11 @@
 
 #define MAVLINK_TOF_COMP_ID             1 //component id
 
+// Batch capture data 
 #define MAVLINK_LONG_PACKET_BATCH_CODE  1
+
+// Scan capture data 
+#define MAVLINK_LONG_PACKET_SCAN_CODE   2
 
 typedef enum 
 {
