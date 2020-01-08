@@ -2,3 +2,7 @@ Firmware/not_scanning_fw/EWARM/STM32F303xC/
 Firmware/not_scanning_fw/EWARM/settings/
 Firmware/scanning_fw/EWARM/settings/
 Firmware/scanning_fw/EWARM/STM32F303xC/
+PC_Utility/LidarScanningTest/.vs/
+PC_Utility/LidarScanningTest/obj/Debug/LidarScanningTest1.Form1.resources
+PC_Utility/LidarScanningTest/obj/Debug/LidarScanningTest1.Properties.Resources.resources
+PC_Utility/LidarScanningTest/obj/Debug/LidarScanningTest1.RadarPlotComponent.resources
