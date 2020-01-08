@@ -14,6 +14,7 @@ uint32_t hardware_dwt_get(void);
 uint8_t hardware_dwt_comapre(int32_t tp);
 void hardware_init_dac(void);
 void hardware_enable_tdc_clock(void);
+void hardware_init_motor_line(void);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -34,12 +35,12 @@ void hardware_init_all(void)
   hardware_dwt_init();
   hardware_init_led();
   hardware_init_dac();
+  hardware_init_motor_line();
   hardware_enable_tdc_clock();
 }
 
 void hardware_init_led(void)
 {
-  
   GPIO_InitTypeDef GPIO_InitStructure;
   
   GPIO_StructInit(&GPIO_InitStructure);
@@ -63,16 +64,6 @@ void hardware_init_rcc(void)
   RCC_SYSCLKConfig(RCC_SYSCLKSource_HSI);
   while (RCC_GetSYSCLKSource() != 0x00) {}
   RCC_DeInit();
-
-  /*
-  // PLL config 8 MHz / 2 * 16 = 64 MHz
-  RCC_PLLConfig(RCC_PLLSource_HSI_Div2, RCC_PLLMul_16); 
-  RCC_PLLCmd(ENABLE);
-  while (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET) {}
-  RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
-  while (RCC_GetSYSCLKSource() != 0x08) {}
-  SystemCoreClockUpdate();
-  */
   
   //enable HSE
   RCC_HSEConfig(RCC_HSE_ON);
@@ -89,9 +80,9 @@ void hardware_init_rcc(void)
 //Init DWT counter
 void hardware_dwt_init(void)
 {
-    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
-    DWT->CYCCNT = 0;
-    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+  CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+  DWT->CYCCNT = 0;
+  DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 }
 
 void hardware_init_dac(void)
@@ -118,6 +109,23 @@ void hardware_init_dac(void)
   DAC_Cmd(DAC_NAME, APD_COMP_DAC_CHANNEL, ENABLE);
 
   hardware_set_laser_voltage(10.0);
+}
+
+// Disable motor pwm
+void hardware_init_motor_line(void)
+{
+  RCC_AHBPeriphClockCmd(MOTOR_TIMER_GPIO_CLK, ENABLE);//PWM pin
+  GPIO_InitTypeDef GPIO_InitStructure;
+  
+  GPIO_StructInit(&GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_Pin = MOTOR_TIMER_PIN;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_Init(MOTOR_TIMER_GPIO, &GPIO_InitStructure);
+  
+  GPIO_ResetBits(MOTOR_TIMER_GPIO, MOTOR_TIMER_PIN);
 }
 
 
@@ -155,6 +163,8 @@ void hardware_set_apd_comp_voltage(uint16_t comp_threshold)
 
 void hardware_enable_tdc_clock(void)
 {
+  RCC_APB1PeriphClockCmd(APD_POWER_TIMER_CLK, ENABLE);//Ftimer = SYSCLK
+    
   GPIO_InitTypeDef GPIO_InitStructure;
   
   //PA8 should be configured in alternate function mode.

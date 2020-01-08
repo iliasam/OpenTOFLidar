@@ -114,6 +114,12 @@
 #define UART_RX_INT_NAME                USART2_IRQn
 #define UART_RX_INT_HANDLER             USART2_IRQHandler
 
+// MOTOR - used for disabling  ************************************************
+
+#define MOTOR_TIMER_GPIO_CLK            RCC_AHBPeriph_GPIOA
+#define MOTOR_TIMER_GPIO                GPIOA
+#define MOTOR_TIMER_PIN                 GPIO_Pin_1
+
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
