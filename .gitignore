@@ -6,3 +6,12 @@ PC_Utility/LidarScanningTest/.vs/
 PC_Utility/LidarScanningTest/obj/Debug/LidarScanningTest1.Form1.resources
 PC_Utility/LidarScanningTest/obj/Debug/LidarScanningTest1.Properties.Resources.resources
 PC_Utility/LidarScanningTest/obj/Debug/LidarScanningTest1.RadarPlotComponent.resources
+PC_Utility/LidarTestingUtility/obj/
+PC_Utility/LidarTestingUtility/packages/
+PC_Utility/LidarTestingUtility/bin/Debug/Accord.Math.Core.xml
+PC_Utility/LidarTestingUtility/bin/Debug/Accord.Math.xml
+PC_Utility/LidarTestingUtility/bin/Debug/Accord.Statistics.xml
+PC_Utility/LidarTestingUtility/.vs/
+PC_Utility/LidarTestingUtility/bin/Debug/Accord.dll.config
+PC_Utility/LidarTestingUtility/bin/Debug/Accord.xml
+PC_Utility/LidarTestingUtility/bin/Debug/TDC_Testing_v1.exe.config
