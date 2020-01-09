@@ -17,6 +17,15 @@ typedef enum
   DIST_MEAS_REF_MEAS_PROCESS,
 } dist_meas_ref_meas_state_t;
 
+typedef struct
+{
+  // time of flight, bins
+  float start_value; 
+  
+   //pulse width, bins
+  float width_value;
+} tdc_point_float_t;
+
 /* Private define ------------------------------------------------------------*/
 
 // Max number of measured points in batch mode
@@ -52,6 +61,11 @@ float dist_meas_width_coef_a = 0.0f;
 // Width correction coefficient B
 float dist_meas_width_coef_b = 0.0f;
 
+// Measured and filetered distance to Reference Plate in bins 
+tdc_point_float_t dist_meas_ref_dist_bin;
+tdc_point_float_t dist_meas_prev_ref_dist_bin;
+float dist_meas_ref_dist_filter_coef = 0.2f;
+
 extern uint16_t tmp_res0;
 extern uint16_t tmp_res1;
 extern uint16_t device_state_mask;
@@ -61,6 +75,11 @@ void dist_measurement_do_batch_meas(void);
 void dist_measurement_calculate_zero_offset(uint16_t ref_dist_bin);
 uint16_t dist_measurement_calc_avr_dist_bin(void);
 void  dist_measurement_measure_ref_bins_handler(void);
+void dist_measurement_recalculate_ref_distance(void);
+float dist_measurement_calc_corrected_dist_bin(
+  uint16_t dist_bin, uint16_t width_bin);
+float dist_measurement_calc_corrected_dist_bin_float(
+  float dist_bin, float width_bin);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -70,6 +89,9 @@ void dist_measurement_init(void)
   dist_meas_width_coef_b = nvram_data.width_coef_b;
   dist_meas_zero_offset_bin = nvram_data.zero_offset_bin;
   dist_meas_ref_dist_mm = nvram_data.ref_obj_dist_mm;
+  
+  memset((void*)&dist_meas_ref_dist_bin, 0, sizeof(dist_meas_ref_dist_bin));
+  memset((void*)&dist_meas_prev_ref_dist_bin, 0, sizeof(dist_meas_prev_ref_dist_bin));
   
   if (dist_meas_width_coef_a == 0.0f)
   {
@@ -87,6 +109,7 @@ void dist_measurement_handler(void)
     dist_meas_batch_measurement_needed = 0;
   }
   dist_measurement_measure_ref_bins_handler();
+  dist_measurement_recalculate_ref_distance();
 }
 
 // Called by mavlink command
@@ -127,6 +150,7 @@ void dist_measurement_start_measure_ref(uint16_t dist_mm)
   }
 }
 
+// Used for controlling manuaal reference object calibration
 void  dist_measurement_measure_ref_bins_handler(void)
 {
   if (dist_meas_need_ref_measurement == DIST_MEAS_REF_MEAS_WAIT_FOR_START)
@@ -150,7 +174,7 @@ void  dist_measurement_measure_ref_bins_handler(void)
   }
 }
 
-//Calculate average distance in bins
+// Calculate average distance in bins
 uint16_t dist_measurement_calc_avr_dist_bin(void)
 {
   uint32_t summ = 0;
@@ -185,6 +209,9 @@ uint16_t dist_measurement_process_current_data(void)
   return dist_measurement_process_data(tmp_res0, tmp_res1);
 }
 
+// Take distance value and return real distance in mm
+// start - time of fligth in bins
+// width - pulse width in bins
 uint16_t dist_measurement_process_data(uint16_t start, uint16_t width)
 {
   if ((start == 0) || (width == 0))
@@ -200,10 +227,41 @@ uint16_t dist_measurement_process_data(uint16_t start, uint16_t width)
 
 // CORRECTIONS **********************************************************
 
+// Update calibration values using Reference Plate
+// "ref_dist_bin" - distance to a Reference Plate
+void dist_measurement_update_ref_value(tdc_point_t ref_dist)
+{
+//REF_PLATE_DIST
+  // Exponetial filter
+  dist_meas_ref_dist_bin.start_value = dist_meas_ref_dist_filter_coef * 
+    (float)ref_dist.start_value + (1.0f - dist_meas_ref_dist_filter_coef) * 
+    dist_meas_prev_ref_dist_bin.start_value;
+  
+  dist_meas_ref_dist_bin.width_value = dist_meas_ref_dist_filter_coef * 
+    (float)ref_dist.width_value + (1.0f - dist_meas_ref_dist_filter_coef) * 
+    dist_meas_prev_ref_dist_bin.width_value;
+  
+  dist_meas_prev_ref_dist_bin = dist_meas_ref_dist_bin;
+}
+
+// Must be periodically called
+void dist_measurement_recalculate_ref_distance(void)
+{
+  // True distance in bins (with no offset)
+  float true_dist_bin = (float)REF_PLATE_DIST / (float)DIST_BIN_LENGTH;
+
+  // Corrected measured distance to reference object in bins
+  float corr_ref_dist_bins = dist_measurement_calc_corrected_dist_bin_float(
+        dist_meas_ref_dist_bin.start_value, dist_meas_ref_dist_bin.width_value);
+  
+  dist_meas_zero_offset_bin = (uint16_t)roundf(corr_ref_dist_bins - true_dist_bin);
+}
+
 // Return distance to an object in mm
 uint16_t dist_measurement_calc_dist(float corr_dist_bin)
 {
-  float dist_mm = (corr_dist_bin - (float)dist_meas_zero_offset_bin) * DIST_BIN_LENGTH;
+  float dist_mm = 
+    (corr_dist_bin - (float)dist_meas_zero_offset_bin) * DIST_BIN_LENGTH;
   return (uint16_t)roundf(dist_mm);
 }
 
@@ -218,8 +276,20 @@ float dist_measurement_calc_corrected_dist_bin(
   
   float correction = exp((dist_meas_width_coef_a - (float)width_bin) / 
     dist_meas_width_coef_b);
-  float result = roundf((float)dist_bin - correction);
-  return (uint16_t)result;
+  float result = (float)dist_bin - correction;
+  return result;
+}
+
+float dist_measurement_calc_corrected_dist_bin_float(
+  float dist_bin, float width_bin)
+{
+  if (dist_meas_width_coef_a == 0.0f)
+    return 0;
+  
+  float correction = exp((dist_meas_width_coef_a - width_bin) / 
+    dist_meas_width_coef_b);
+  float result = dist_bin - correction;
+  return result;
 }
 
 //Change width correction coefficients

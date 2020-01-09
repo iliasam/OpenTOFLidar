@@ -90,7 +90,7 @@ void ENCODER_COMP_TIMER_IRQ_HANDLER(void)
 void encoder_proc_zero_crossing(void)
 {
   // Check number of holes detected
-  if (encoder_proc_event_cnt != (ENCODER_HOLES_CNT - 1))
+  if (encoder_proc_event_cnt != ENCODER_HOLES_CNT)
   {
     device_state_mask |= ENCODER_SYNC_FAIL_FLAG;
   }
@@ -99,7 +99,7 @@ void encoder_proc_zero_crossing(void)
     device_state_mask &= ~ENCODER_SYNC_FAIL_FLAG;
   }
   
-  encoder_proc_event_cnt = 0;
+  encoder_proc_event_cnt = 1; //Real zero hole is not visible
   encoder_proc_rotation_period_us = 
     (hardware_dwt_get() - encoder_proc_zero_prev_timestamp) / 
     (SystemCoreClock / 1000000);

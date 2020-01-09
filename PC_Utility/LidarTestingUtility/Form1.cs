@@ -143,11 +143,11 @@ namespace TDC_Testing_v1
             double start_average_bin = 0;
             double width_average_bin = 0;
 
-            start_std_dev_bin = DataProcessingObj.find_standard_dev(ref start_values);
-            width_std_dev_bin = DataProcessingObj.find_standard_dev(ref width_values);
+            start_std_dev_bin = DataProcessingObj.FindStandardDev(ref start_values);
+            width_std_dev_bin = DataProcessingObj.FindStandardDev(ref width_values);
 
-            start_average_bin = DataProcessingObj.find_average(ref start_values);
-            width_average_bin = DataProcessingObj.find_average(ref width_values);
+            start_average_bin = DataProcessingObj.FindAverage(ref start_values);
+            width_average_bin = DataProcessingObj.FindAverage(ref width_values);
 
             lblResults.Text = "";
             lblResults.Text += $"Elements: {TdcList.Count} \r\n";
@@ -201,7 +201,7 @@ namespace TDC_Testing_v1
             string result_str = "";
             var start_corrected_values = TdcList.Select(item => item.StartCorrected).ToArray();
 
-            double start_corr_average_bin = DataProcessingObj.find_average(ref start_corrected_values);
+            double start_corr_average_bin = DataProcessingObj.FindAverage(ref start_corrected_values);
 
             double min = start_corrected_values.Min();
             double max = start_corrected_values.Max();

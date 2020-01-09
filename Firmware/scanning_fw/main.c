@@ -73,18 +73,6 @@ int main(void)
     if (TIMER_ELAPSED(timer_1ms))
     {
       START_TIMER(timer_1ms, 1);
-      /*
-      //tdc_start_pulse();
-      if (dist_meas_batch_measurement_needed == 0)
-      {
-        //read prev value
-        tdc_read_two_registers();
-        tdc_check_status();
-        dist_measurement_process_current_data();
-        
-        tdc_start_pulse();
-      }
-      */
       capture_ctr_data_processing();
     }
     
@@ -106,7 +94,6 @@ int main(void)
       hardware_set_laser_voltage(current_laser_volt);
       hardware_set_apd_comp_voltage(apd_comp_threshold_mv);
       motor_ctrl_handling();
-
       dist_measurement_handler();
     }
   }

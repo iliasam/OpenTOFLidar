@@ -89,6 +89,7 @@ void capture_ctr_data_processing(void)
   // we hope that scan data are already send
   if (scan_dist_raw_data_ready_flag && dist_measurenent_enabled)
   {
+    dist_measurement_update_ref_value(capture_ctr_read_ptr[0]);
     
     // Can take a lot of time
     for (uint16_t i = 0; i < CAPT_POINTS_CNT; i++)
@@ -125,6 +126,7 @@ void CAPTURE_TIMER_IRQ_HANDLER(void)
 
 void capture_ctr_make_measurement(float angle)
 {
+  // Used during encoder "zero" hole time
   if (angle > 360.0)
     angle = angle - 360.0f;
   

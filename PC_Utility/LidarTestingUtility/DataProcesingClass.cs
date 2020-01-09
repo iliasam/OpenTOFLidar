@@ -8,7 +8,7 @@ namespace TDC_Testing_v1
 {
     class DataProcesingClass
     {
-        public double find_average(ref int[] arr)
+        public double FindAverage(ref int[] arr)
         {
             int i;
             Int64 summ_avr = 0;
@@ -19,7 +19,7 @@ namespace TDC_Testing_v1
             return avr;
         }
 
-        public double find_average(ref double[] arr)
+        public double FindAverage(ref double[] arr)
         {
             int i;
             double summ_avr = 0;
@@ -30,19 +30,15 @@ namespace TDC_Testing_v1
             return avr;
         }
 
-        public double find_standard_dev(ref int[] arr)
+        public double FindStandardDev(ref int[] arr)
         {
-            //arr = new int[10];   // arr initialized to a different array
-            Int64 summ_avr = 0;
             double summ_derivation = 0;
             int i;
 
-            for (i = 0; i < arr.Length; i++)
-                summ_avr += (Int64)arr[i];
-            summ_avr = summ_avr / arr.Length;
+            double averageValue = FindAverage(ref arr);
 
             for (i = 0; i < arr.Length; i++)
-                summ_derivation += Math.Pow(((double)summ_avr - (double)arr[i]), 2);
+                summ_derivation += Math.Pow(((double)averageValue - (double)arr[i]), 2);
             summ_derivation = summ_derivation / (arr.Length - 1);
 
             return Math.Sqrt(summ_derivation);
