@@ -1,0 +1,13 @@
+<package>
+  <description brief="open_tof_lidar">
+     open_tof_lidar
+  </description>
+  <author>1</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <depend package="roscpp"/>
+  <depend package="sensor_msgs"/>
+  <rosdep name="boost" />
+</package>
+
+

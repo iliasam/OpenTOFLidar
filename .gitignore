@@ -15,3 +15,7 @@ PC_Utility/LidarTestingUtility/.vs/
 PC_Utility/LidarTestingUtility/bin/Debug/Accord.dll.config
 PC_Utility/LidarTestingUtility/bin/Debug/Accord.xml
 PC_Utility/LidarTestingUtility/bin/Debug/TDC_Testing_v1.exe.config
+PC_Utility/LidarScanningTest/obj/Debug/LidarScanningTest1.csproj.FileListAbsolute.txt
+PC_Utility/LidarScanningTest/obj/Debug/LidarScanningTest1.csproj.CopyComplete
+ROS/open_tof_lidar/bin/
+ROS/open_tof_lidar/build/

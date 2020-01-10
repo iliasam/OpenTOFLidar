@@ -1,0 +1,14 @@
+<launch>
+
+<node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0.0 0.0 0.0 0.0 0.0 0.0 /base_link /lidar 100" />
+
+   <node pkg="open_tof_lidar" type="lidar_publisher"
+    name="lidar_driver" output="screen">
+    <param name="port" value="/dev/ttyUSB0"/>
+    <param name="baud_rate" value="500000"/>
+    <param name="start_angle" value="69"/>
+    <param name="stop_angle" value="286"/>
+<param name="corr_angle" value="3.0"/>
+   </node>
+
+</launch>
