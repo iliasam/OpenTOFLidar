@@ -74,6 +74,8 @@ int main(void)
     {
       START_TIMER(timer_1ms, 1);
       capture_ctr_data_processing();
+      uart_driver_process();
+      mavlink_long_packet_sending_process();
     }
     
     if (TIMER_ELAPSED(timer_10ms))
@@ -81,8 +83,6 @@ int main(void)
       START_TIMER(timer_10ms, 10);
 
       apd_power_voltage_controlling();
-      uart_driver_process();
-      mavlink_long_packet_sending_process();
       encoder_proc_perodic_handling();
     }
     
