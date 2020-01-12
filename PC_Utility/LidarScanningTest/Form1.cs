@@ -304,6 +304,22 @@ namespace LidarScanningTest1
             SendMavlinkPaket(mvp);
         }
 
+        public void SetAPD_TargetVoltage(float voltage_v)
+        {
+            MavLink.Msg_set_apd_voltage mav_msg = new MavLink.Msg_set_apd_voltage();
+
+            mav_msg.pwm_value = -1;//do not change
+            mav_msg.voltage = voltage_v;
+
+            var mvp = new MavlinkPacket
+            {
+                ComponentId = 1,
+                SystemId = 2,//PC
+                Message = mav_msg
+            };
+            SendMavlinkPaket(mvp);
+        }
+
         void SendMavlinkPaket(MavlinkPacket packet)
         {
             byte[] dataToSend = MavlinkObj.Send(packet);
@@ -344,6 +360,12 @@ namespace LidarScanningTest1
         private void numStopAngle_ValueChanged(object sender, EventArgs e)
         {
             radarPlotComponent1.UpdateStartStopLines(CurrStartAngle, CurrStopAngle);
+        }
+
+        private void btnSetAPD_TargVoltage_Click(object sender, EventArgs e)
+        {
+            float ApdTargVoltage = (float)numAPD_TargVoltage.Value;
+            SetAPD_TargetVoltage(ApdTargVoltage);
         }
     }
 }
