@@ -245,12 +245,13 @@ void apd_power_init_dma(void)
 
 void apd_power_start_new_dma_capture(void)
 {
+  ADC_Cmd(APD_FB_ADC_NAME, DISABLE);
   DMA_Cmd(APD_FB_DMA_CHANNEL, DISABLE);
   APD_FB_DMA_CHANNEL->CNDTR = APD_ADC_BUFF_SIZE;
   APD_FB_DMA_CHANNEL->CMAR = (uint32_t)&apd_power_adc_raw_data[0];
   DMA_ClearFlag(APD_FB_DMA_DONE_FLAG);
   
-  ADC_Cmd(APD_FB_ADC_NAME, DISABLE);
+  ADC_StopConversion(APD_FB_ADC_NAME);
   ADC_ClearFlag(APD_FB_ADC_NAME, ADC_FLAG_OVR);
   DMA_Cmd(APD_FB_DMA_CHANNEL, ENABLE);
   ADC_Cmd(APD_FB_ADC_NAME, ENABLE);  
@@ -266,10 +267,13 @@ void apd_power_voltage_controlling(void)
   float adc_voltage = apd_power_convert_apd_voltage(raw_adc);
   apd_power_voltage = adc_voltage;
   
+  /*
   if (DMA_GetFlagStatus(APD_FB_DMA_DONE_FLAG) == SET)
   {
     apd_power_start_new_dma_capture();
   }
+  */
+  apd_power_start_new_dma_capture();
   
   if (apd_power_feedback_en_flag)
     apd_power_voltage_feedback_controlling();

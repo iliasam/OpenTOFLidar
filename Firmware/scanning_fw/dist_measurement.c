@@ -29,8 +29,9 @@ typedef struct
 /* Private define ------------------------------------------------------------*/
 
 // Max number of measured points in batch mode
-#define DIST_MEAS_MAX_BATCH_POINTS      300
+#define DIST_MEAS_MAX_BATCH_POINTS      200
 
+// IMPORTAINT VALUE !!!!!!!!
 // "Length" of one bin in mm
 //#define DIST_BIN_LENGTH                 (13.63f)
 //#define DIST_BIN_LENGTH                 (13.5f)
@@ -46,10 +47,12 @@ uint16_t dist_meas_batch_points = 100;//max is DIST_MEAS_MAX_BATCH_POINTS
 //testing distange to an object in mm
 uint16_t test_dist_value = 0;
 
-// Distance to a reference object
+// Distance to a reference object, used only in non-scanning mode
 uint16_t dist_meas_ref_dist_mm = 0;
 
 // Zero offset, bins
+// It must be subtracted from measured distance in bins to get true distance in bins
+// Updated automatically by measuring distance to the Reference Plate
 uint16_t dist_meas_zero_offset_bin = 0;
 
 dist_meas_ref_meas_state_t dist_meas_need_ref_measurement = 
@@ -150,12 +153,13 @@ void dist_measurement_start_measure_ref(uint16_t dist_mm)
   }
 }
 
-// Used for controlling manuaal reference object calibration
+// Used for controlling manual reference object calibration
+// It is not usefull is scanning mode
 void  dist_measurement_measure_ref_bins_handler(void)
 {
   if (dist_meas_need_ref_measurement == DIST_MEAS_REF_MEAS_WAIT_FOR_START)
   {
-    dist_measurement_start_batch_meas(100);
+    dist_measurement_start_batch_meas(dist_meas_batch_points);
     dist_meas_need_ref_measurement = DIST_MEAS_REF_MEAS_WAIT_FOR_BATCH;
   }
   else if (dist_meas_need_ref_measurement == DIST_MEAS_REF_MEAS_WAIT_FOR_BATCH)
@@ -217,6 +221,7 @@ uint16_t dist_measurement_process_data(uint16_t start, uint16_t width)
   if ((start == 0) || (width == 0))
     return 0;
   
+  // Calculate corrected distance in bins (correct width change)
   float corr_dist_bin = 
     dist_measurement_calc_corrected_dist_bin(start, width);
   
@@ -245,19 +250,22 @@ void dist_measurement_update_ref_value(tdc_point_t ref_dist)
 }
 
 // Must be periodically called
+// Used in scanning mode
+// Calculating "dist_meas_zero_offset_bin" by measuring distance to the Reference Plate
 void dist_measurement_recalculate_ref_distance(void)
 {
   // True distance in bins (with no offset)
   float true_dist_bin = (float)REF_PLATE_DIST / (float)DIST_BIN_LENGTH;
 
-  // Corrected measured distance to reference object in bins
+  // Corrected measured distance to the Reference Platein in bins
   float corr_ref_dist_bins = dist_measurement_calc_corrected_dist_bin_float(
-        dist_meas_ref_dist_bin.start_value, dist_meas_ref_dist_bin.width_value);
+    dist_meas_ref_dist_bin.start_value, dist_meas_ref_dist_bin.width_value);
   
   dist_meas_zero_offset_bin = (uint16_t)roundf(corr_ref_dist_bins - true_dist_bin);
 }
 
 // Return distance to an object in mm
+// "corr_dist_bin" - distance in bins, previosly corrected for width
 uint16_t dist_measurement_calc_dist(float corr_dist_bin)
 {
   float dist_mm = 
@@ -265,34 +273,42 @@ uint16_t dist_measurement_calc_dist(float corr_dist_bin)
   return (uint16_t)roundf(dist_mm);
 }
 
-// Calculate corrected distance in bins
+// Calculate corrected distance in bins (correcting width change)
 // dist_bin - raw distance in bins
 // width_bin - raw pulse width in bins
+// Return distance in bins
 float dist_measurement_calc_corrected_dist_bin(
   uint16_t dist_bin, uint16_t width_bin)
 {
   if (dist_meas_width_coef_a == 0.0f)
-    return 0;
+    return 0.0f;
   
-  float correction = exp((dist_meas_width_coef_a - (float)width_bin) / 
+  float correction = expf((dist_meas_width_coef_a - (float)width_bin) / 
     dist_meas_width_coef_b);
+  //float correction = ((dist_meas_width_coef_a - (float)width_bin) / 
+  //  dist_meas_width_coef_b);
+                         
   float result = (float)dist_bin - correction;
   return result;
 }
 
+// Calculate corrected distance in bins (correcting width change)
+// Now it is used only for calculating zero offset
+// Return distance in bins
 float dist_measurement_calc_corrected_dist_bin_float(
   float dist_bin, float width_bin)
 {
   if (dist_meas_width_coef_a == 0.0f)
     return 0;
   
-  float correction = exp((dist_meas_width_coef_a - width_bin) / 
+  float correction = expf((dist_meas_width_coef_a - width_bin) / 
     dist_meas_width_coef_b);
   float result = dist_bin - correction;
   return result;
 }
 
-//Change width correction coefficients
+// Change width correction coefficients
+// Called by UART command
 void dist_measurement_change_width_corr_coeff(
   mavlink_set_width_corr_coeff_t data_msg)
 {

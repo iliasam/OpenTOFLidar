@@ -58,14 +58,26 @@ void tdc_write_register(uint8_t opcode_address,  uint32_t reg_data)
   }
   
   while (SPI_I2S_GetFlagStatus(TDC_SPI_NAME, SPI_I2S_FLAG_TXE) == RESET);
+  
+  /*
+  //Write ID
   volatile uint8_t tmp = TDC_SPI_NAME->DR;//clear RXNE
   tmp_data = (uint8_t)((reg_data >> 24) & 0xFF);
   SPI_SendData8(TDC_SPI_NAME, tmp_data);
   while (SPI_I2S_GetFlagStatus(TDC_SPI_NAME, SPI_I2S_FLAG_RXNE) == RESET);
+  */
+  
   while (SPI_I2S_GetFlagStatus(TDC_SPI_NAME, SPI_I2S_FLAG_BSY) == SET);
   
   //CSN to HIGH
   GPIO_WriteBit(TDC_SPI_CSN_PORT, TDC_SPI_CSN, Bit_SET);
+}
+
+//Read register without ID (bits 7-0)
+uint32_t tdc_read_register(uint8_t opcode_address)
+{
+  uint32_t read_result = tdc_read_n_bytes(3, opcode_address);
+  return (read_result << 8);
 }
 
 uint32_t tdc_read_n_bytes(uint8_t n_bytes, uint8_t opcode_address)

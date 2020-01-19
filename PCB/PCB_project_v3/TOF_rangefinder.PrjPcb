@@ -30,7 +30,7 @@ DItemRevisionGUID=
 ReportSuppressedErrorsInMessages=0
 FSMCodingStyle=eFMSDropDownList_OneProcess
 FSMEncodingStyle=eFMSDropDownList_OneHot
-OutputPath=Project Outputs for TOF_rangefinder
+OutputPath=
 LogFolderPath=
 ManagedProjectGUID=
 
@@ -293,7 +293,7 @@ SCH_HasExpandLogicalToPhysicalSheets=-1
 SaveSettingsToOutJob=0
 
 [Generic_EDE]
-OutputDir=Project Outputs for TOF_rangefinder
+OutputDir=
 
 [OutputGroup1]
 Name=Netlist Outputs

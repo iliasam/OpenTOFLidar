@@ -33,8 +33,6 @@
             this.cmbPortList = new System.Windows.Forms.ComboBox();
             this.btnOpenClose = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.lblPacketCnt = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblScanPeriod = new System.Windows.Forms.Label();
             this.lblScanFreq = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -60,11 +58,13 @@
             this.lblLaserVolt = new System.Windows.Forms.Label();
             this.radarPlotComponent1 = new LidarScanningTest1.RadarPlotComponent();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.btnSetAPD_TargVoltage = new System.Windows.Forms.Button();
             this.numAPD_TargVoltage = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lblPacketCnt = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblTotalPoints = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.groupBox1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAngCorrection)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -73,6 +73,7 @@
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAPD_TargVoltage)).BeginInit();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -80,9 +81,9 @@
             this.groupBox1.Controls.Add(this.cmbPortList);
             this.groupBox1.Controls.Add(this.btnOpenClose);
             this.groupBox1.Location = new System.Drawing.Point(7, 8);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(267, 50);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
@@ -92,7 +93,7 @@
             // 
             this.cmbPortList.FormattingEnabled = true;
             this.cmbPortList.Location = new System.Drawing.Point(10, 18);
-            this.cmbPortList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cmbPortList.Margin = new System.Windows.Forms.Padding(2);
             this.cmbPortList.Name = "cmbPortList";
             this.cmbPortList.Size = new System.Drawing.Size(176, 21);
             this.cmbPortList.TabIndex = 2;
@@ -101,7 +102,7 @@
             // btnOpenClose
             // 
             this.btnOpenClose.Location = new System.Drawing.Point(190, 14);
-            this.btnOpenClose.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnOpenClose.Margin = new System.Windows.Forms.Padding(2);
             this.btnOpenClose.Name = "btnOpenClose";
             this.btnOpenClose.Size = new System.Drawing.Size(71, 28);
             this.btnOpenClose.TabIndex = 1;
@@ -114,28 +115,10 @@
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // statusStrip1
-            // 
-            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblPacketCnt});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 516);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(893, 22);
-            this.statusStrip1.TabIndex = 1;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // lblPacketCnt
-            // 
-            this.lblPacketCnt.Name = "lblPacketCnt";
-            this.lblPacketCnt.Size = new System.Drawing.Size(93, 17);
-            this.lblPacketCnt.Text = "Packets count: 0";
-            // 
             // lblScanPeriod
             // 
             this.lblScanPeriod.AutoSize = true;
-            this.lblScanPeriod.Location = new System.Drawing.Point(278, 17);
+            this.lblScanPeriod.Location = new System.Drawing.Point(278, 10);
             this.lblScanPeriod.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblScanPeriod.Name = "lblScanPeriod";
             this.lblScanPeriod.Size = new System.Drawing.Size(91, 13);
@@ -173,7 +156,7 @@
             0,
             65536});
             this.numAngCorrection.Location = new System.Drawing.Point(614, 8);
-            this.numAngCorrection.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numAngCorrection.Margin = new System.Windows.Forms.Padding(2);
             this.numAngCorrection.Maximum = new decimal(new int[] {
             20,
             0,
@@ -192,7 +175,7 @@
             // 
             this.btnSaveCoeff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveCoeff.Location = new System.Drawing.Point(672, 8);
-            this.btnSaveCoeff.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnSaveCoeff.Margin = new System.Windows.Forms.Padding(2);
             this.btnSaveCoeff.Name = "btnSaveCoeff";
             this.btnSaveCoeff.Size = new System.Drawing.Size(51, 43);
             this.btnSaveCoeff.TabIndex = 11;
@@ -210,9 +193,9 @@
             this.groupBox2.Controls.Add(this.lblDistValue);
             this.groupBox2.Controls.Add(this.lblRawValue);
             this.groupBox2.Location = new System.Drawing.Point(731, 8);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox2.Size = new System.Drawing.Size(154, 172);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
@@ -246,7 +229,7 @@
             0,
             0});
             this.numericUpDown1.Location = new System.Drawing.Point(38, 93);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             50,
             0,
@@ -301,7 +284,7 @@
             // 
             this.numStartAngle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numStartAngle.Location = new System.Drawing.Point(486, 34);
-            this.numStartAngle.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numStartAngle.Margin = new System.Windows.Forms.Padding(2);
             this.numStartAngle.Maximum = new decimal(new int[] {
             360,
             0,
@@ -332,7 +315,7 @@
             // 
             this.numStopAngle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numStopAngle.Location = new System.Drawing.Point(613, 34);
-            this.numStopAngle.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numStopAngle.Margin = new System.Windows.Forms.Padding(2);
             this.numStopAngle.Maximum = new decimal(new int[] {
             360,
             0,
@@ -465,6 +448,17 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Configure";
             // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 20);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(74, 13);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "Targ. Voltage:";
+            // 
             // btnSetAPD_TargVoltage
             // 
             this.btnSetAPD_TargVoltage.Location = new System.Drawing.Point(142, 18);
@@ -499,16 +493,30 @@
             0,
             0});
             // 
-            // label5
+            // lblPacketCnt
             // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 20);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(74, 13);
-            this.label5.TabIndex = 20;
-            this.label5.Text = "Targ. Voltage:";
+            this.lblPacketCnt.Name = "lblPacketCnt";
+            this.lblPacketCnt.Size = new System.Drawing.Size(93, 17);
+            this.lblPacketCnt.Text = "Packets count: 0";
+            // 
+            // lblTotalPoints
+            // 
+            this.lblTotalPoints.Name = "lblTotalPoints";
+            this.lblTotalPoints.Size = new System.Drawing.Size(100, 17);
+            this.lblTotalPoints.Text = "Total Scan Points:";
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblPacketCnt,
+            this.lblTotalPoints});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 516);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(893, 22);
+            this.statusStrip1.TabIndex = 1;
+            this.statusStrip1.Text = "statusStrip1";
             // 
             // Form1
             // 
@@ -530,12 +538,10 @@
             this.Controls.Add(this.lblScanPeriod);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "TOF LidarScanningTest v1.0";
             this.groupBox1.ResumeLayout(false);
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAngCorrection)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -547,6 +553,8 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAPD_TargVoltage)).EndInit();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -558,8 +566,6 @@
         private System.Windows.Forms.Button btnOpenClose;
         private System.Windows.Forms.ComboBox cmbPortList;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel lblPacketCnt;
         private System.Windows.Forms.Label lblScanPeriod;
         private System.Windows.Forms.Label lblScanFreq;
         private RadarPlotComponent radarPlotComponent1;
@@ -588,6 +594,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnSetAPD_TargVoltage;
         private System.Windows.Forms.NumericUpDown numAPD_TargVoltage;
+        private System.Windows.Forms.ToolStripStatusLabel lblPacketCnt;
+        private System.Windows.Forms.ToolStripStatusLabel lblTotalPoints;
+        private System.Windows.Forms.StatusStrip statusStrip1;
     }
 }
 

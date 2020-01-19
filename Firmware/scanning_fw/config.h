@@ -4,6 +4,9 @@
 
 /* Includes ------------------------------------------------------------------*/
 
+// Number of captured points is defined by angular resolution:
+// constant "CAPTURE_ANG_RESOL" below
+
 // Distance to Reference Plate, mm
 #define REF_PLATE_DIST                  (30)
 
@@ -192,7 +195,7 @@
 // It is synchronized with encoder events
 
 // Scanning angular resolution, in deg
-#define CAPTURE_ANG_RESOL               (1.0)
+#define CAPTURE_ANG_RESOL               (0.5f)
 
 #define CAPTURE_TIMER_CLK               RCC_APB2Periph_TIM8
 

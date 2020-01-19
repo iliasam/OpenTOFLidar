@@ -26,8 +26,10 @@
             this.chkBlackMode = new System.Windows.Forms.CheckBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.lblPointerAnle = new System.Windows.Forms.Label();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.lblPointerAnle = new System.Windows.Forms.Label();
+            this.btnAnglePlus = new System.Windows.Forms.Button();
+            this.btnAngleMinus = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -39,17 +41,19 @@
             // cmbRadiusList
             // 
             this.cmbRadiusList.FormattingEnabled = true;
-            this.cmbRadiusList.Location = new System.Drawing.Point(14, 38);
+            this.cmbRadiusList.Location = new System.Drawing.Point(10, 31);
+            this.cmbRadiusList.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmbRadiusList.Name = "cmbRadiusList";
-            this.cmbRadiusList.Size = new System.Drawing.Size(92, 24);
+            this.cmbRadiusList.Size = new System.Drawing.Size(70, 21);
             this.cmbRadiusList.TabIndex = 2;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 12);
+            this.label1.Location = new System.Drawing.Point(14, 10);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(71, 17);
+            this.label1.Size = new System.Drawing.Size(54, 13);
             this.label1.TabIndex = 3;
             this.label1.Text = "Radius, m";
             // 
@@ -58,9 +62,10 @@
             this.chkBlackMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chkBlackMode.AutoSize = true;
-            this.chkBlackMode.Location = new System.Drawing.Point(12, 82);
+            this.chkBlackMode.Location = new System.Drawing.Point(9, 67);
+            this.chkBlackMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chkBlackMode.Name = "chkBlackMode";
-            this.chkBlackMode.Size = new System.Drawing.Size(103, 21);
+            this.chkBlackMode.Size = new System.Drawing.Size(83, 17);
             this.chkBlackMode.TabIndex = 4;
             this.chkBlackMode.Text = "Black Mode";
             this.chkBlackMode.UseVisualStyleBackColor = true;
@@ -70,9 +75,8 @@
             this.pictureBox1.BackColor = System.Drawing.Color.Silver;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(689, 511);
+            this.pictureBox1.Size = new System.Drawing.Size(485, 415);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
@@ -82,6 +86,7 @@
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -90,43 +95,72 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.btnAngleMinus);
+            this.splitContainer1.Panel2.Controls.Add(this.btnAnglePlus);
             this.splitContainer1.Panel2.Controls.Add(this.trackBar1);
             this.splitContainer1.Panel2.Controls.Add(this.lblPointerAnle);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
             this.splitContainer1.Panel2.Controls.Add(this.chkBlackMode);
             this.splitContainer1.Panel2.Controls.Add(this.cmbRadiusList);
-            this.splitContainer1.Size = new System.Drawing.Size(820, 511);
-            this.splitContainer1.SplitterDistance = 689;
+            this.splitContainer1.Size = new System.Drawing.Size(615, 415);
+            this.splitContainer1.SplitterDistance = 485;
+            this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 5;
-            // 
-            // lblPointerAnle
-            // 
-            this.lblPointerAnle.Location = new System.Drawing.Point(11, 135);
-            this.lblPointerAnle.Name = "lblPointerAnle";
-            this.lblPointerAnle.Size = new System.Drawing.Size(100, 35);
-            this.lblPointerAnle.TabIndex = 6;
-            this.lblPointerAnle.Text = "Pointer angle, deg: 0";
             // 
             // trackBar1
             // 
+            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.trackBar1.LargeChange = 10;
-            this.trackBar1.Location = new System.Drawing.Point(12, 178);
+            this.trackBar1.Location = new System.Drawing.Point(9, 145);
+            this.trackBar1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.trackBar1.Maximum = 358;
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBar1.Size = new System.Drawing.Size(56, 319);
+            this.trackBar1.Size = new System.Drawing.Size(45, 259);
             this.trackBar1.SmallChange = 2;
             this.trackBar1.TabIndex = 7;
             this.trackBar1.TickFrequency = 10;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
+            // lblPointerAnle
+            // 
+            this.lblPointerAnle.Location = new System.Drawing.Point(8, 110);
+            this.lblPointerAnle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPointerAnle.Name = "lblPointerAnle";
+            this.lblPointerAnle.Size = new System.Drawing.Size(75, 28);
+            this.lblPointerAnle.TabIndex = 6;
+            this.lblPointerAnle.Text = "Pointer angle, deg: 0";
+            // 
+            // btnAnglePlus
+            // 
+            this.btnAnglePlus.Location = new System.Drawing.Point(78, 156);
+            this.btnAnglePlus.Name = "btnAnglePlus";
+            this.btnAnglePlus.Size = new System.Drawing.Size(35, 35);
+            this.btnAnglePlus.TabIndex = 8;
+            this.btnAnglePlus.Text = "+";
+            this.btnAnglePlus.UseVisualStyleBackColor = true;
+            this.btnAnglePlus.Click += new System.EventHandler(this.btnAnglePlus_Click);
+            // 
+            // btnAngleMinus
+            // 
+            this.btnAngleMinus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnAngleMinus.Location = new System.Drawing.Point(78, 369);
+            this.btnAngleMinus.Name = "btnAngleMinus";
+            this.btnAngleMinus.Size = new System.Drawing.Size(35, 35);
+            this.btnAngleMinus.TabIndex = 9;
+            this.btnAngleMinus.Text = "-";
+            this.btnAngleMinus.UseVisualStyleBackColor = true;
+            this.btnAngleMinus.Click += new System.EventHandler(this.btnAngleMinus_Click);
+            // 
             // RadarPlotComponent
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "RadarPlotComponent";
-            this.Size = new System.Drawing.Size(820, 511);
+            this.Size = new System.Drawing.Size(615, 415);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -146,5 +180,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label lblPointerAnle;
         private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Button btnAngleMinus;
+        private System.Windows.Forms.Button btnAnglePlus;
     }
 }

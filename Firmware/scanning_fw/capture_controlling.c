@@ -69,7 +69,7 @@ void capture_ctr_init(void)
 {
   capture_ctr_init_capture_timer();
   
-  //testing
+  //values for testing
   for (uint16_t i = 0; i < CAPT_POINTS_CNT; i++)
   {
     scan_dist_buffer0[i] = 800;
@@ -89,7 +89,9 @@ void capture_ctr_data_processing(void)
   // we hope that scan data are already send
   if (scan_dist_raw_data_ready_flag && dist_measurenent_enabled)
   {
-    dist_measurement_update_ref_value(capture_ctr_read_ptr[0]);
+    //TEST_GPIO->ODR |= TEST_PIN;
+    // First values could be wrong
+    dist_measurement_update_ref_value(capture_ctr_read_ptr[2]);
     
     // Can take a lot of time
     for (uint16_t i = 0; i < CAPT_POINTS_CNT; i++)
@@ -99,7 +101,7 @@ void capture_ctr_data_processing(void)
           capture_ctr_read_ptr[i].start_value, 
           capture_ctr_read_ptr[i].width_value);
     }
-    
+    //TEST_GPIO->ODR &= ~TEST_PIN;
     capture_ctr_switch_dist_buffers();
     mavlink_send_scan_data(capture_ctr_dist_read_ptr, CAPT_POINTS_CNT);
     
@@ -119,7 +121,6 @@ void CAPTURE_TIMER_IRQ_HANDLER(void)
     if (dist_measurenent_enabled == 1)
       capture_ctr_make_measurement(capture_ctr_current_angle);//take a lot of time
     
-    //TEST_GPIO->ODR^= TEST_PIN;
     TEST_GPIO->ODR &= ~TEST_PIN;
   }
 }

@@ -36,10 +36,12 @@ namespace LidarScanningTest1
             cmbRadiusList.Items.Add((double)8.0);
             cmbRadiusList.Items.Add((double)10.0);
             cmbRadiusList.Items.Add((double)20.0);
+            cmbRadiusList.Items.Add((double)30.0);
+            cmbRadiusList.Items.Add((double)40.0);
             cmbRadiusList.SelectedIndex = 0;
         }
 
-        public void DrawRadar(RadarPoint[] points, int angularCorr = 0)
+        public void DrawRadar(RadarPoint[] points, int pointsCnt, int angularCorr = 0)
         {
             int i = 0;
 
@@ -72,14 +74,18 @@ namespace LidarScanningTest1
             if (cmbRadiusList.SelectedItem != null)
                 curentRadius = (int)((double)cmbRadiusList.SelectedItem * 100);//to cm
 
-            for (UInt16 radius = 100; radius < 1000; radius += 100)
+            UInt16 circleStep = 100;//cm
+            if (curentRadius > 500)
+                circleStep = 300;
+
+            for (UInt16 radius = 100; radius <= curentRadius; radius += circleStep)
             {
                 DrawCircle(g, linesPen, BoxWidth / 2 * radius / curentRadius);
             }
 
             
             //Scan points
-            for (i = 0; i < 360; i++)
+            for (i = 0; i < pointsCnt; i++)
             {
                 Pen curPen;
                 if (points[i].black == true)
@@ -91,7 +97,7 @@ namespace LidarScanningTest1
                     DrawXYPoint(curPen, points[i].x, points[i].y);
             }
 
-            int angle = trackBar1.Value / 2 * 2;
+            int angle = trackBar1.Value;
             DrawCenterdLine(yellowPen, angle + angularCorr);
 
             Pen redPen = new System.Drawing.Pen(Color.FromArgb(100, 255, 0, 0), 3);
@@ -162,7 +168,7 @@ namespace LidarScanningTest1
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            int angle = trackBar1.Value / 2 * 2;
+            int angle = trackBar1.Value;
             lblPointerAnle.Text = "Pointer angle, deg: " + angle.ToString();
         }
 
@@ -172,7 +178,7 @@ namespace LidarScanningTest1
         /// <returns>Return value in degrees</returns>
         public int GetPointerAngle()
         {
-            int angle = trackBar1.Value / 2 * 2;
+            int angle = trackBar1.Value;
             return angle;
         }
 
@@ -185,6 +191,20 @@ namespace LidarScanningTest1
         {
             StartLineAngle = startAngle;
             StopLineAngle = stopAngle;
+        }
+
+        private void btnAnglePlus_Click(object sender, EventArgs e)
+        {
+            if (trackBar1.Value < trackBar1.Maximum)
+                trackBar1.Value++;
+            lblPointerAnle.Text = "Pointer angle, deg: " + trackBar1.Value.ToString();
+        }
+
+        private void btnAngleMinus_Click(object sender, EventArgs e)
+        {
+            if (trackBar1.Value > trackBar1.Minimum)
+                trackBar1.Value--;
+            lblPointerAnle.Text = "Pointer angle, deg: " + trackBar1.Value.ToString();
         }
     }
 }

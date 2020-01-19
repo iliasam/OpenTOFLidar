@@ -47,8 +47,10 @@ namespace LidarScanningTest1
 
         int RXPacketCnt = 0;
 
-        ScanPoint[] ScanPoints = new ScanPoint[360];
-        RadarPoint[] RadarPoints = new RadarPoint[400];
+        int CurentPointsCnt = 360;
+
+        ScanPoint[] ScanPoints = new ScanPoint[1000];
+        RadarPoint[] RadarPoints = new RadarPoint[1000];
 
         /// <summary>
         /// Additional rotation, deg
@@ -156,28 +158,38 @@ namespace LidarScanningTest1
         /// <summary>
         /// Process packet received from the Lidar
         /// </summary>
-        /// <param name="data_array"></param>
-        void ProcessRxData(UInt16[] data_array)
+        /// <param name="dataArray"></param>
+        void ProcessRxData(UInt16[] dataArray)
         {
-            for (int i = 0; i < 360; i++)
+            int pointsCnt = dataArray.Length;
+
+            if (pointsCnt < 50)
+                return;
+
+            CurentPointsCnt = pointsCnt;
+
+            double angResolution = 360.0 / pointsCnt;
+
+            for (int i = 0; i < pointsCnt; i++)
             {
-                ScanPoints[i].RealAngleDeg = i;
-                ScanPoints[i].RawValue = data_array[i];
+                ScanPoints[i].RealAngleDeg = i * angResolution;
+                ScanPoints[i].RawValue = dataArray[i];
                 if ((ScanPoints[i].RealAngleDeg < CurrStartAngle) || 
                     (ScanPoints[i].RealAngleDeg > CurrStopAngle))
                     ScanPoints[i].DistM = 0.0;
                 else
-                    ScanPoints[i].DistM = (double)data_array[i] / 1000.0;
+                    ScanPoints[i].DistM = (double)dataArray[i] / 1000.0;
             }
 
-            CalculateRadarData();
-            radarPlotComponent1.DrawRadar(RadarPoints, (int)CurrAngularCorrection);
+            CalculateRadarData(pointsCnt);
+            radarPlotComponent1.DrawRadar(RadarPoints, pointsCnt, (int)CurrAngularCorrection);
 
             RotationPeriod = (int)(DateTime.Now - PrevScanTime).TotalMilliseconds;
             PrevScanTime = DateTime.Now;
             double freq = Math.Round(1.0 / (double)(RotationPeriod / 1000.0), 1);//ms -> sec
-            lblScanPeriod.Text = "Scan Perod: " + RotationPeriod.ToString() + " ms";
-            lblScanFreq.Text = "Scan Freq: " + freq.ToString() + " Hz";
+            lblScanPeriod.Text = $"Scan Perod: {RotationPeriod} ms";
+            lblScanFreq.Text = $"Scan Freq: {freq:0.0} Hz";
+            lblTotalPoints.Text = $"Total Scan Points: {pointsCnt}";
 
             AnalysePointerData();
         }
@@ -185,14 +197,16 @@ namespace LidarScanningTest1
         // Simple statisctilac analyse of point at given direction
         void AnalysePointerData()
         {
-            int pointer_angle = radarPlotComponent1.GetPointerAngle();
+            int pointer_angle = radarPlotComponent1.GetPointerAngle();//deg
 
-            int raw_val = ScanPoints[pointer_angle].RawValue;
-            double dist = ScanPoints[pointer_angle].DistM;
+            int pos = CurentPointsCnt * pointer_angle / 360;
+
+            int rawValue = ScanPoints[pos].RawValue;
+            double dist = ScanPoints[pos].DistM;
 
             DataAnalyseObj.AddDataPoint(dist);
 
-            lblRawValue.Text = "Raw Value: " + raw_val.ToString();
+            lblRawValue.Text = "Raw Value: " + rawValue.ToString();
             lblDistValue.Text = "Distance: " + dist.ToString("0.00") + " m";
 
             lblAVRValue.Text = "Average: " + DataAnalyseObj.average.ToString("0.00") + " m";
@@ -200,34 +214,33 @@ namespace LidarScanningTest1
             lblMaxMIn.Text = "MaxMin: " + DataAnalyseObj.min_max.ToString("0.00") + " m";
         }
 
-        void CalculateRadarData()
+        void CalculateRadarData(int pointsCnt)
         {
             int i;
             double x = 0;
             double y = 0;
             double angle_rad = 0;
             double dist;
-            int offset1_deg;
+            double offset1_deg;
+
+            double angResolution = 360.0 / pointsCnt;//deg
 
             // Radar rotation
             double ang5 = 90 + RADAR_ROTATION_DEG;
 
-            for (i = 0; i < 360; i++)
+            for (i = 0; i < pointsCnt; i++)
             {
                 dist = ScanPoints[i].DistM;
-                offset1_deg = i;//angle
-                if (offset1_deg > 359)
-                    offset1_deg = offset1_deg - 360;
-
+                offset1_deg = i * angResolution;//angle, deg
                 angle_rad = (double)(offset1_deg + CurrAngularCorrection + ang5) / 180.0 * (Math.PI);
 
-                RadarPoints[offset1_deg].dist = dist;
-                RadarPoints[offset1_deg].x = (Math.Cos(angle_rad) * dist);
-                RadarPoints[offset1_deg].y = (Math.Sin(angle_rad) * dist);
-                if (RadarPoints[offset1_deg].dist < 0.03)
-                    RadarPoints[offset1_deg].NotVisible = true;
+                RadarPoints[i].dist = dist;
+                RadarPoints[i].x = (Math.Cos(angle_rad) * dist);
+                RadarPoints[i].y = (Math.Sin(angle_rad) * dist);
+                if (RadarPoints[i].dist < 0.03)
+                    RadarPoints[i].NotVisible = true;
                 else
-                    RadarPoints[offset1_deg].NotVisible = false;
+                    RadarPoints[i].NotVisible = false;
             }
         }
 
