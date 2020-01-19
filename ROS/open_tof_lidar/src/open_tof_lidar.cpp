@@ -38,10 +38,6 @@
 #include <cmath>
 #include <ros/ros.h>
 
-#define TOTAL_POINTS          360
-#define TOTAL_DATA_BYTES      (TOTAL_POINTS * 2)
-#define ANGLE_STEP            1.0
-
 namespace lidar_driver
 {
   openTOFLidarDriver::openTOFLidarDriver(const std::string& port, uint32_t baud_rate, boost::asio::io_service& io): port_(port),
@@ -96,31 +92,35 @@ namespace lidar_driver
     return false;
   }
   
-  void openTOFLidarDriver::ProcessLidarData(uint8_t* scanData)
+  void openTOFLidarDriver::ProcessLidarData(uint8_t* scanData, uint16_t dataSizeBytes)
   {
-    uint16_t scanValues[TOTAL_POINTS];
-    memcpy(scanValues, scanData, TOTAL_DATA_BYTES);
+    uint16_t scanPointsCnt = dataSizeBytes / 2; // every point is uint16_t value
+    
+    double angularStep = 360.0 / scanPointsCnt;
+    
+    uint16_t scanValues[scanPointsCnt];
+    memcpy(scanValues, scanData, dataSizeBytes);
 
     //currScan->angle_min = 0.0;
     //currScan->angle_max = 2.0 * M_PI;
     currScan->angle_min = -M_PI ;
     currScan->angle_max =  M_PI;
     
-    currScan->angle_increment = ANGLE_STEP * M_PI /  180.0;
-    currScan->time_increment =  1.0/(TOTAL_POINTS * 15.0);//1 sec
+    currScan->angle_increment = angularStep * M_PI /  180.0;
+    currScan->time_increment =  1.0/(scanPointsCnt * 15.0);//1 sec
     currScan->range_min = 0.05;
     currScan->range_max = 20.0;
     currScan->scan_time = 1.0/15.0;//seconds
-    currScan->ranges.reserve(TOTAL_POINTS);
-    currScan->intensities.reserve(TOTAL_POINTS);
+    currScan->ranges.reserve(scanPointsCnt);
+    currScan->intensities.reserve(scanPointsCnt);
     
     int i;
     
-    double distBuf[TOTAL_POINTS];
-    for (i = 0; i < TOTAL_POINTS; i++)
+    double distBuf[scanPointsCnt];
+    for (i = 0; i < scanPointsCnt; i++)
     {
       double dist_m = (double)scanValues[i] / 1000.0;
-      double angleDeg = (double)i * ANGLE_STEP;
+      double angleDeg = (double)i * angularStep;
       
       if ((angleDeg < (double)LidarStartAngleDeg) || (angleDeg > (double)LidarStopAngleDeg))
         dist_m = 0.0;
@@ -128,11 +128,11 @@ namespace lidar_driver
       double correctedAngleDeg = angleDeg + LidarCorrRotationDeg;
       if (correctedAngleDeg > 359.0)
         correctedAngleDeg = correctedAngleDeg - 359.0;
-      uint16_t pos = round(correctedAngleDeg);
+      uint16_t pos = round(correctedAngleDeg / angularStep);
       distBuf[pos] = dist_m;
     }
     
-    for (i = 0; i < TOTAL_POINTS; i++)
+    for (i = 0; i < scanPointsCnt; i++)
     {
       currScan->ranges.push_back(distBuf[i]);
       currScan->intensities.push_back(0);
@@ -146,11 +146,12 @@ namespace lidar_driver
   {
     if (longPacket.dataCode == 2) //scan data
     {
-      if (longPacket.byteDataList.size() == TOTAL_DATA_BYTES)
+      uint16_t rxDataSize = longPacket.byteDataList.size();
+      if (rxDataSize > 200)
       {
-        uint8_t scanData[TOTAL_DATA_BYTES];
+        uint8_t scanData[rxDataSize];
         std::copy(longPacket.byteDataList.begin(), longPacket.byteDataList.end(), scanData);
-        ProcessLidarData(scanData);
+        ProcessLidarData(scanData, rxDataSize);
         return true;//got scan
       }
     }

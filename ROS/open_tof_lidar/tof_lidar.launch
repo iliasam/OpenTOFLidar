@@ -6,9 +6,9 @@
     name="lidar_driver" output="screen">
     <param name="port" value="/dev/ttyUSB0"/>
     <param name="baud_rate" value="500000"/>
-    <param name="start_angle" value="69"/>
-    <param name="stop_angle" value="286"/>
-<param name="corr_angle" value="3.0"/>
+    <param name="start_angle" value="65"/>
+    <param name="stop_angle" value="276"/>
+<param name="corr_angle" value="5.0"/>
    </node>
 
 </launch>

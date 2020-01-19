@@ -84,7 +84,7 @@ namespace lidar_driver {
             LongPacketStruct AddNewLongPacket(mavlink_long_packet_t packet);
             int LongPacketAddSubpacket(mavlink_long_packet_t packet);
             bool ParseLongPacket(mavlink_long_packet_t packet);
-            void ProcessLidarData(uint8_t* scanData);
+            void ProcessLidarData(uint8_t* scanData, uint16_t dataSizeBytes);
             bool ProcessLongPacket();
             void SetStartStopAngles(uint16_t start_deg, uint16_t stop_deg);
             void SetCorrRotationAngle(double angle_deg);
