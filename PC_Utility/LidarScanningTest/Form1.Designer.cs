@@ -64,6 +64,7 @@
             this.lblPacketCnt = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblTotalPoints = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.lblWrongPointsCnt = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAngCorrection)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -192,7 +193,7 @@
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.lblDistValue);
             this.groupBox2.Controls.Add(this.lblRawValue);
-            this.groupBox2.Location = new System.Drawing.Point(731, 8);
+            this.groupBox2.Location = new System.Drawing.Point(731, 39);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
@@ -351,7 +352,7 @@
             this.groupBox3.Controls.Add(this.lblCompVolt);
             this.groupBox3.Controls.Add(this.lblAPDVolt);
             this.groupBox3.Controls.Add(this.lblLaserVolt);
-            this.groupBox3.Location = new System.Drawing.Point(699, 291);
+            this.groupBox3.Location = new System.Drawing.Point(699, 322);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(186, 186);
             this.groupBox3.TabIndex = 17;
@@ -430,7 +431,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.radarPlotComponent1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.radarPlotComponent1.Location = new System.Drawing.Point(8, 63);
-            this.radarPlotComponent1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.radarPlotComponent1.Margin = new System.Windows.Forms.Padding(2);
             this.radarPlotComponent1.Name = "radarPlotComponent1";
             this.radarPlotComponent1.Size = new System.Drawing.Size(686, 449);
             this.radarPlotComponent1.TabIndex = 4;
@@ -441,7 +442,7 @@
             this.groupBox4.Controls.Add(this.label5);
             this.groupBox4.Controls.Add(this.btnSetAPD_TargVoltage);
             this.groupBox4.Controls.Add(this.numAPD_TargVoltage);
-            this.groupBox4.Location = new System.Drawing.Point(699, 185);
+            this.groupBox4.Location = new System.Drawing.Point(699, 216);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(186, 100);
             this.groupBox4.TabIndex = 18;
@@ -518,11 +519,23 @@
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // lblWrongPointsCnt
+            // 
+            this.lblWrongPointsCnt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblWrongPointsCnt.AutoSize = true;
+            this.lblWrongPointsCnt.Location = new System.Drawing.Point(730, 11);
+            this.lblWrongPointsCnt.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblWrongPointsCnt.Name = "lblWrongPointsCnt";
+            this.lblWrongPointsCnt.Size = new System.Drawing.Size(97, 13);
+            this.lblWrongPointsCnt.TabIndex = 19;
+            this.lblWrongPointsCnt.Text = "Wrong Points: N/A";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(893, 538);
+            this.Controls.Add(this.lblWrongPointsCnt);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.numStopAngle);
@@ -597,6 +610,7 @@
         private System.Windows.Forms.ToolStripStatusLabel lblPacketCnt;
         private System.Windows.Forms.ToolStripStatusLabel lblTotalPoints;
         private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.Label lblWrongPointsCnt;
     }
 }
 

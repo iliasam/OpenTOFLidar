@@ -10,6 +10,8 @@
 // Distance to Reference Plate, mm
 #define REF_PLATE_DIST                  (30)
 
+#define MAX_DISTANCE_MM                 (30000)
+
 #define LED_GPIO                        GPIOA
 #define LED_PIN                         GPIO_Pin_3
 

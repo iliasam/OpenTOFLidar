@@ -12,8 +12,9 @@ namespace LidarScanningTest1
         public double x;
         public double y;
         public double dist;
+        public double angleDeg;
         public bool corr;
-        public bool black;
+        public bool Wrong;
         public bool NotVisible;
     }
 
@@ -29,6 +30,10 @@ namespace LidarScanningTest1
             public double RealAngleDeg;
 
             public double DistM;//meters
+
+            public bool WrongValue;
+
+            public bool DeadZone;
         }
 
 
@@ -174,11 +179,18 @@ namespace LidarScanningTest1
             {
                 ScanPoints[i].RealAngleDeg = i * angResolution;
                 ScanPoints[i].RawValue = dataArray[i];
-                if ((ScanPoints[i].RealAngleDeg < CurrStartAngle) || 
+                ScanPoints[i].WrongValue = (bool)(dataArray[i] < 10);
+                if ((ScanPoints[i].RealAngleDeg < CurrStartAngle) ||
                     (ScanPoints[i].RealAngleDeg > CurrStopAngle))
+                {
                     ScanPoints[i].DistM = 0.0;
+                    ScanPoints[i].DeadZone = true;
+                }
                 else
+                {
                     ScanPoints[i].DistM = (double)dataArray[i] / 1000.0;
+                    ScanPoints[i].DeadZone = false;
+                } 
             }
 
             CalculateRadarData(pointsCnt);
@@ -192,6 +204,28 @@ namespace LidarScanningTest1
             lblTotalPoints.Text = $"Total Scan Points: {pointsCnt}";
 
             AnalysePointerData();
+            ScanDataAnalyse();
+        }
+
+        //Simple Data Analyse;
+        void ScanDataAnalyse()
+        {
+            int visiblePointsCnt = 0;
+            int badPointsCnt = 0;
+
+            for (int i = 0; i < CurentPointsCnt; i++)
+            {
+                if (ScanPoints[i].DeadZone == false)
+                {
+                    visiblePointsCnt++;
+
+                    if (ScanPoints[i].WrongValue)
+                        badPointsCnt++;
+                }
+            }
+
+            double BadPercent = (double)badPointsCnt / visiblePointsCnt * 100;
+            lblWrongPointsCnt.Text = $"Wrong Points: {BadPercent:0.0} %";
         }
 
         // Simple statisctilac analyse of point at given direction
@@ -232,8 +266,11 @@ namespace LidarScanningTest1
             {
                 dist = ScanPoints[i].DistM;
                 offset1_deg = i * angResolution;//angle, deg
-                angle_rad = (double)(offset1_deg + CurrAngularCorrection + ang5) / 180.0 * (Math.PI);
 
+                double pointAngleDeg = offset1_deg + CurrAngularCorrection + ang5;
+                angle_rad = pointAngleDeg / 180.0 * (Math.PI);
+
+                RadarPoints[i].angleDeg = pointAngleDeg;
                 RadarPoints[i].dist = dist;
                 RadarPoints[i].x = (Math.Cos(angle_rad) * dist);
                 RadarPoints[i].y = (Math.Sin(angle_rad) * dist);
@@ -241,6 +278,11 @@ namespace LidarScanningTest1
                     RadarPoints[i].NotVisible = true;
                 else
                     RadarPoints[i].NotVisible = false;
+
+                if ((ScanPoints[i].DeadZone == false) && ScanPoints[i].WrongValue)
+                    RadarPoints[i].Wrong = true;
+                else
+                    RadarPoints[i].Wrong = false;
             }
         }
 

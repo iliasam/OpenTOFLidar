@@ -49,9 +49,11 @@ namespace LidarScanningTest1
             img = new Bitmap(BoxWidth, BoxWidth);
 
             Pen linesPen;
-            
+            Pen wrongPointsPen;
+
             Pen yellowPen = new System.Drawing.Pen(Color.FromArgb(200, 255, 255, 0), 2);
             Pen blackPen = new System.Drawing.Pen(Color.FromArgb(255, 0, 0, 0), 2);//black
+            Pen redPen = new System.Drawing.Pen(Color.FromArgb(255, 255, 0, 0), 3);
 
             g = Graphics.FromImage(img);
 
@@ -59,11 +61,13 @@ namespace LidarScanningTest1
             if (chkBlackMode.Checked)
             {
                 linesPen = new System.Drawing.Pen(Color.LightGray, 1);
+                wrongPointsPen = new System.Drawing.Pen(Color.Blue, 3);
                 g.FillRectangle(new SolidBrush(Color.FromArgb(0, 0, 0)), 0, 0, BoxWidth, BoxWidth);
             }
             else
             {
                 linesPen = new System.Drawing.Pen(Color.BlueViolet, 1);
+                wrongPointsPen = redPen;
                 g.FillRectangle(new SolidBrush(Color.FromArgb(0, 0, 200)), 0, 0, BoxWidth, BoxWidth);
             }
 
@@ -87,20 +91,18 @@ namespace LidarScanningTest1
             //Scan points
             for (i = 0; i < pointsCnt; i++)
             {
-                Pen curPen;
-                if (points[i].black == true)
-                    curPen = blackPen;//black
-                else
-                    curPen = yellowPen;
-
                 if (points[i].NotVisible == false)
-                    DrawXYPoint(curPen, points[i].x, points[i].y);
+                    DrawXYPoint(yellowPen, points[i].x, points[i].y);
+
+                if (chkDrawWrongPoints.Checked && points[i].Wrong)
+                {
+                    DrawWrongPoint(wrongPointsPen, points[i].angleDeg);
+                }
             }
 
             int angle = trackBar1.Value;
             DrawCenterdLine(yellowPen, angle + angularCorr);
 
-            Pen redPen = new System.Drawing.Pen(Color.FromArgb(100, 255, 0, 0), 3);
             DrawCenterdLine(redPen, StartLineAngle + angularCorr);
             DrawCenterdLine(redPen, StopLineAngle + angularCorr);
 
@@ -155,6 +157,28 @@ namespace LidarScanningTest1
             y_end = y_start - y_end;
 
             g.DrawLine(curPen, x_start, y_start, x_end, y_end);
+        }
+
+        /// <summary>
+        ///  Draw a line going from image center
+        /// </summary>
+        /// <param name="curPen"></param>
+        /// <param name="angleDeg"></param>
+        void DrawWrongPoint(Pen curPen, double angleDeg)
+        {
+            float length = BoxWidth * 0.95f / 2;//pixels
+
+            float x_start = (float)(BoxWidth / 2);
+            float y_start = (float)(BoxWidth / 2);
+
+            float angle_rad = (float)(angleDeg * Math.PI / 180);
+            float x_end = (float)(length * Math.Cos(angle_rad));
+            float y_end = (float)(length * Math.Sin(angle_rad));
+
+            x_end = x_start + x_end;
+            y_end = y_start - y_end;
+
+            g.DrawEllipse(curPen, x_end, y_end, 1 * 2, 1 * 2);
         }
 
         int GetImageSize()

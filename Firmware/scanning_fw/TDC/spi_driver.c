@@ -73,11 +73,11 @@ void tdc_write_register(uint8_t opcode_address,  uint32_t reg_data)
   GPIO_WriteBit(TDC_SPI_CSN_PORT, TDC_SPI_CSN, Bit_SET);
 }
 
-//Read register without ID (bits 7-0)
-uint32_t tdc_read_register(uint8_t opcode_address)
+//Read register - upper 16 bits
+uint32_t tdc_read_register_upper(uint8_t opcode_address)
 {
-  uint32_t read_result = tdc_read_n_bytes(3, opcode_address);
-  return (read_result << 8);
+  uint32_t read_result = tdc_read_n_bytes(2, opcode_address);
+  return read_result;
 }
 
 uint32_t tdc_read_n_bytes(uint8_t n_bytes, uint8_t opcode_address)

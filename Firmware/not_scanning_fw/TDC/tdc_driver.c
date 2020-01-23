@@ -273,8 +273,8 @@ void configure_reg1_start(void)
   uint32_t reg1 = 0;
   //REG 1
   //mode1 -> HIT1 - HIT2
-  reg1|= (uint32_t)9 << REG1_HIT1; // 0x9 -> 1. Stop Ch2
-  reg1|= 1 << REG1_HIT2; // 0x1 -> 1. Stop Ch1
+  reg1|= (uint32_t)9 << REG1_HIT1; // 0x9 -> 1. Stop Ch2 (photo)
+  reg1|= 1 << REG1_HIT2; // 0x1 -> 1. Stop Ch1 (laser)
   
   reg1|= 1 << REG1_HITIN1; // 1 hit on ch1 expected (laser)
   reg1|= 2 << REG1_HITIN2; // 2 hits on ch2 expected (photo)  
@@ -294,8 +294,8 @@ void configure_reg1_width(void)
   uint32_t reg1 = 0;
   //REG 1
   //mode1 -> HIT1 - HIT2
-  reg1|= (uint32_t)0x0A << REG1_HIT1; // 0xA -> 2. Stop Ch2
-  reg1|= (uint32_t)9 << REG1_HIT2; // 0x9 -> 1. Stop Ch2
+  reg1|= (uint32_t)0x0A << REG1_HIT1; // 0xA -> 2. Stop Ch2 (photo)
+  reg1|= (uint32_t)9 << REG1_HIT2; // 0x9 -> 1. Stop Ch2 (photo)
   
   reg1|= 1 << REG1_HITIN1; // 1 hit on ch1 expected (laser)
   reg1|= 2 << REG1_HITIN2; // 2 hits on ch2 expected (photo)  

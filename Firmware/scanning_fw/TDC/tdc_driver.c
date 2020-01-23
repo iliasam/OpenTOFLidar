@@ -165,6 +165,7 @@ extern uint16_t device_state_mask;
 // Private function prototypes -----------------------------------------------
 void configure_reg1_start(void);
 void configure_reg1_width(void);
+uint8_t tdc_quick_check_status(void);
 
 // Private functions ---------------------------------------------------------
 
@@ -246,6 +247,18 @@ void tdc_check_status(void)
   status = status >> 3;
 }
 
+// Check measurement state
+// Return 1 if NO timeout
+uint8_t tdc_quick_check_status(void)
+{
+  uint16_t status = (uint16_t)tdc_read_n_bytes(2, OPCODE_READ_REG + 4);
+  
+  if ((status & (1 << 9)) != 0)//timeout
+    return 0;
+  else
+    return 1;
+}
+
 void tdc_start_pulse(void)
 {
   configure_reg1_start();
@@ -262,11 +275,32 @@ uint16_t tdc_read_raw_value(void)
 tdc_point_t tdc_read_two_registers(void)
 {
   // time of flight
-  tmp_res0 = (uint16_t)(tdc_read_register(OPCODE_READ_REG + 0) >> 16);
+  tmp_res0 = (uint16_t)tdc_read_register_upper(OPCODE_READ_REG + 0);
   configure_reg1_width();
   //dwt_delay_us(5);//working good without waiting for ALU
   // pulse width
-  tmp_res1 = (uint16_t)(tdc_read_register(OPCODE_READ_REG + 1) >> 16);
+  tmp_res1 = (uint16_t)tdc_read_register_upper(OPCODE_READ_REG + 1);
+  
+  tdc_point_t tmp_point;
+  tmp_point.start_value = tmp_res0;
+  tmp_point.width_value = tmp_res1;
+  return tmp_point;
+}
+
+tdc_point_t tdc_read_tree_registers(void)
+{
+  // time of flight
+  tmp_res0 = (uint16_t)tdc_read_register_upper(OPCODE_READ_REG + 0);
+  configure_reg1_width();
+  //dwt_delay_us(5);//working good without waiting for ALU
+  // pulse width
+  tmp_res1 = (uint16_t)tdc_read_register_upper(OPCODE_READ_REG + 1);
+  uint8_t tdc_result = tdc_quick_check_status();
+  if (tdc_result == 0)
+  {
+    tmp_res0 = 0xFFFF;
+    tmp_res1 = 0xFFFF;
+  }
   
   tdc_point_t tmp_point;
   tmp_point.start_value = tmp_res0;

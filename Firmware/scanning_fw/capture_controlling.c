@@ -50,6 +50,7 @@ uint16_t scan_dist_buffer1[CAPT_POINTS_CNT];
 uint16_t *capture_ctr_dist_write_ptr = scan_dist_buffer0;
 uint16_t *capture_ctr_dist_read_ptr  = scan_dist_buffer1;
 
+
 uint8_t dist_measurenent_enabled = 0;
 
 extern uint16_t device_state_mask;
@@ -133,7 +134,8 @@ void capture_ctr_make_measurement(float angle)
   
   uint16_t pos = (uint16_t)roundf(angle / CAPTURE_ANG_RESOL);
   // Read previous measurement
-  capture_ctr_write_ptr[pos] = tdc_read_two_registers();
+  //capture_ctr_write_ptr[pos] = tdc_read_two_registers();
+  capture_ctr_write_ptr[pos] = tdc_read_tree_registers();
   tdc_start_pulse();
 }
 

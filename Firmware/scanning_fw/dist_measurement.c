@@ -37,6 +37,18 @@ typedef struct
 //#define DIST_BIN_LENGTH                 (13.5f)
 #define DIST_BIN_LENGTH                 (14.5f)
 
+// TDC did not receive signal from APD
+#define DIST_MEAS_NO_SIGNAL_VALUE       0
+
+// Negative distance result
+#define DIST_MEAS_NEG_DIST_VALUE        1
+
+// Measured distance is too high
+#define DIST_MEAS_MAX_DIST_VALUE        2
+
+// Pulse width is too short -> amplitud is low
+#define DIST_MEAS_SHORT_PULSE_VALUE     3
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 tdc_point_t tdc_capture_buf[DIST_MEAS_MAX_BATCH_POINTS];
@@ -54,6 +66,9 @@ uint16_t dist_meas_ref_dist_mm = 0;
 // It must be subtracted from measured distance in bins to get true distance in bins
 // Updated automatically by measuring distance to the Reference Plate
 uint16_t dist_meas_zero_offset_bin = 0;
+
+// Minimal allowed pulse width
+uint16_t dist_meas_min_width = 0;
 
 dist_meas_ref_meas_state_t dist_meas_need_ref_measurement = 
   DIST_MEAS_REF_MEAS_IDLE;
@@ -134,7 +149,8 @@ void dist_measurement_do_batch_meas(void)
   {
     tdc_start_pulse();
     dwt_delay_ms(1);
-    tdc_read_two_registers();
+    //tdc_read_two_registers();
+    tdc_read_tree_registers();
     
     tdc_capture_buf[i].start_value = tmp_res0;
     tdc_capture_buf[i].width_value = tmp_res1;
@@ -221,6 +237,12 @@ uint16_t dist_measurement_process_data(uint16_t start, uint16_t width)
   if ((start == 0) || (width == 0))
     return 0;
   
+  if (start == 0xFFFF)
+    return DIST_MEAS_NO_SIGNAL_VALUE;
+  
+  if (width < dist_meas_min_width)
+    return DIST_MEAS_SHORT_PULSE_VALUE;
+  
   // Calculate corrected distance in bins (correct width change)
   float corr_dist_bin = 
     dist_measurement_calc_corrected_dist_bin(start, width);
@@ -270,6 +292,13 @@ uint16_t dist_measurement_calc_dist(float corr_dist_bin)
 {
   float dist_mm = 
     (corr_dist_bin - (float)dist_meas_zero_offset_bin) * DIST_BIN_LENGTH;
+  
+  if (dist_mm < -0.01f)
+    return DIST_MEAS_NEG_DIST_VALUE;
+  
+  if (dist_mm > MAX_DISTANCE_MM)
+    return DIST_MEAS_MAX_DIST_VALUE;
+  
   return (uint16_t)roundf(dist_mm);
 }
 
@@ -283,10 +312,11 @@ float dist_measurement_calc_corrected_dist_bin(
   if (dist_meas_width_coef_a == 0.0f)
     return 0.0f;
   
+  if (dist_bin == 0xFFFF)
+    return (float)dist_bin;
+  
   float correction = expf((dist_meas_width_coef_a - (float)width_bin) / 
     dist_meas_width_coef_b);
-  //float correction = ((dist_meas_width_coef_a - (float)width_bin) / 
-  //  dist_meas_width_coef_b);
                          
   float result = (float)dist_bin - correction;
   return result;
