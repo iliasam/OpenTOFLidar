@@ -251,6 +251,10 @@ namespace TDC_Testing_v1
             UInt16[] histogramData = new ushort[histSize];
             chart1.Series["Series1"].Points.Clear();
 
+            chart1.ChartAreas[0].AxisX.Minimum = -histSize / 2;
+            chart1.ChartAreas[0].AxisX.Maximum = histSize / 2;
+            chart1.ChartAreas[0].AxisX.Interval = 2;
+
             for (int i = 0; i < TdcList.Count; i++)
             {
                 int curValue = TdcList[i].Start;
@@ -261,10 +265,9 @@ namespace TDC_Testing_v1
                 }
             }
 
-            //int start = avr_value - (histSize/2 - 1);
             for (int i = 0; i < histSize; i++)
             {
-                chart1.Series["Series1"].Points.AddXY(i, histogramData[i]);
+                chart1.Series["Series1"].Points.AddXY(i - (histSize/2), histogramData[i]);
             }
         }
 

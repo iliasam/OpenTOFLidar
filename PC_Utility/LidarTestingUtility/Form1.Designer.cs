@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageMain = new System.Windows.Forms.TabPage();
             this.chkSkipFirst = new System.Windows.Forms.CheckBox();
@@ -147,28 +147,31 @@
             // 
             // chart1
             // 
-            this.chart1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
+            this.chart1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            chartArea3.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea3);
             this.chart1.Location = new System.Drawing.Point(316, 312);
             this.chart1.Margin = new System.Windows.Forms.Padding(2);
             this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
+            series3.ChartArea = "ChartArea1";
+            series3.Name = "Series1";
+            this.chart1.Series.Add(series3);
             this.chart1.Size = new System.Drawing.Size(366, 161);
             this.chart1.TabIndex = 17;
             this.chart1.Text = "chart1";
             // 
             // lblResults
             // 
-            this.lblResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblResults.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblResults.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.lblResults.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lblResults.Location = new System.Drawing.Point(315, 105);
             this.lblResults.Name = "lblResults";
-            this.lblResults.Size = new System.Drawing.Size(357, 205);
+            this.lblResults.Size = new System.Drawing.Size(367, 205);
             this.lblResults.TabIndex = 16;
             this.lblResults.Text = "Results";
             // 
@@ -183,7 +186,7 @@
             this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox3.Size = new System.Drawing.Size(297, 69);
+            this.groupBox3.Size = new System.Drawing.Size(297, 88);
             this.groupBox3.TabIndex = 20;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Slow Recording";
@@ -191,7 +194,7 @@
             // lblRecFileName
             // 
             this.lblRecFileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblRecFileName.Location = new System.Drawing.Point(7, 50);
+            this.lblRecFileName.Location = new System.Drawing.Point(7, 54);
             this.lblRecFileName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblRecFileName.Name = "lblRecFileName";
             this.lblRecFileName.Size = new System.Drawing.Size(284, 19);
@@ -634,8 +637,8 @@
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToOrderColumns = true;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
@@ -673,7 +676,7 @@
             this.tabPageCalibration.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageCalibration.Name = "tabPageCalibration";
             this.tabPageCalibration.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageCalibration.Size = new System.Drawing.Size(961, 453);
+            this.tabPageCalibration.Size = new System.Drawing.Size(996, 485);
             this.tabPageCalibration.TabIndex = 1;
             this.tabPageCalibration.Text = "Calibration";
             this.tabPageCalibration.UseVisualStyleBackColor = true;
@@ -692,7 +695,7 @@
             this.tabPageMotor.Location = new System.Drawing.Point(4, 22);
             this.tabPageMotor.Name = "tabPageMotor";
             this.tabPageMotor.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMotor.Size = new System.Drawing.Size(961, 453);
+            this.tabPageMotor.Size = new System.Drawing.Size(996, 485);
             this.tabPageMotor.TabIndex = 2;
             this.tabPageMotor.Text = "Motor Settings";
             this.tabPageMotor.UseVisualStyleBackColor = true;
