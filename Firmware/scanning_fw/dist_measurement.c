@@ -31,12 +31,6 @@ typedef struct
 // Max number of measured points in batch mode
 #define DIST_MEAS_MAX_BATCH_POINTS      200
 
-// IMPORTAINT VALUE !!!!!!!!
-// "Length" of one bin in mm
-//#define DIST_BIN_LENGTH                 (13.63f)
-//#define DIST_BIN_LENGTH                 (13.5f)
-#define DIST_BIN_LENGTH                 (14.5f)
-
 // TDC did not receive signal from APD
 #define DIST_MEAS_NO_SIGNAL_VALUE       0
 

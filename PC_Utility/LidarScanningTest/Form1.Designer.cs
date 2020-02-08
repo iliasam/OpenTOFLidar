@@ -56,8 +56,10 @@
             this.lblCompVolt = new System.Windows.Forms.Label();
             this.lblAPDVolt = new System.Windows.Forms.Label();
             this.lblLaserVolt = new System.Windows.Forms.Label();
-            this.radarPlotComponent1 = new LidarScanningTest1.RadarPlotComponent();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.btnSetComparatorVoltage = new System.Windows.Forms.Button();
+            this.numComparatorVoltage = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.btnSetAPD_TargVoltage = new System.Windows.Forms.Button();
             this.numAPD_TargVoltage = new System.Windows.Forms.NumericUpDown();
@@ -65,6 +67,7 @@
             this.lblTotalPoints = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblWrongPointsCnt = new System.Windows.Forms.Label();
+            this.radarPlotComponent1 = new LidarScanningTest1.RadarPlotComponent();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAngCorrection)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -73,6 +76,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numStopAngle)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numComparatorVoltage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAPD_TargVoltage)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -424,21 +428,12 @@
             this.lblLaserVolt.TabIndex = 25;
             this.lblLaserVolt.Text = "Laser Volt: N/A";
             // 
-            // radarPlotComponent1
-            // 
-            this.radarPlotComponent1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.radarPlotComponent1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.radarPlotComponent1.Location = new System.Drawing.Point(8, 63);
-            this.radarPlotComponent1.Margin = new System.Windows.Forms.Padding(2);
-            this.radarPlotComponent1.Name = "radarPlotComponent1";
-            this.radarPlotComponent1.Size = new System.Drawing.Size(686, 449);
-            this.radarPlotComponent1.TabIndex = 4;
-            // 
             // groupBox4
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.label6);
+            this.groupBox4.Controls.Add(this.btnSetComparatorVoltage);
+            this.groupBox4.Controls.Add(this.numComparatorVoltage);
             this.groupBox4.Controls.Add(this.label5);
             this.groupBox4.Controls.Add(this.btnSetAPD_TargVoltage);
             this.groupBox4.Controls.Add(this.numAPD_TargVoltage);
@@ -448,6 +443,51 @@
             this.groupBox4.TabIndex = 18;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Configure";
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 46);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(58, 13);
+            this.label6.TabIndex = 23;
+            this.label6.Text = "Comp, mV:";
+            // 
+            // btnSetComparatorVoltage
+            // 
+            this.btnSetComparatorVoltage.Location = new System.Drawing.Point(141, 44);
+            this.btnSetComparatorVoltage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnSetComparatorVoltage.Name = "btnSetComparatorVoltage";
+            this.btnSetComparatorVoltage.Size = new System.Drawing.Size(40, 20);
+            this.btnSetComparatorVoltage.TabIndex = 22;
+            this.btnSetComparatorVoltage.Text = "SET";
+            this.btnSetComparatorVoltage.UseVisualStyleBackColor = true;
+            this.btnSetComparatorVoltage.Click += new System.EventHandler(this.btnSetComparatorVoltage_Click);
+            // 
+            // numComparatorVoltage
+            // 
+            this.numComparatorVoltage.Location = new System.Drawing.Point(86, 44);
+            this.numComparatorVoltage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numComparatorVoltage.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.numComparatorVoltage.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numComparatorVoltage.Name = "numComparatorVoltage";
+            this.numComparatorVoltage.Size = new System.Drawing.Size(49, 20);
+            this.numComparatorVoltage.TabIndex = 21;
+            this.numComparatorVoltage.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
             // 
             // label5
             // 
@@ -476,7 +516,7 @@
             this.numAPD_TargVoltage.Location = new System.Drawing.Point(87, 18);
             this.numAPD_TargVoltage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numAPD_TargVoltage.Maximum = new decimal(new int[] {
-            140,
+            150,
             0,
             0,
             0});
@@ -530,6 +570,18 @@
             this.lblWrongPointsCnt.TabIndex = 19;
             this.lblWrongPointsCnt.Text = "Wrong Points: N/A";
             // 
+            // radarPlotComponent1
+            // 
+            this.radarPlotComponent1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.radarPlotComponent1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.radarPlotComponent1.Location = new System.Drawing.Point(8, 63);
+            this.radarPlotComponent1.Margin = new System.Windows.Forms.Padding(2);
+            this.radarPlotComponent1.Name = "radarPlotComponent1";
+            this.radarPlotComponent1.Size = new System.Drawing.Size(686, 449);
+            this.radarPlotComponent1.TabIndex = 4;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -565,6 +617,7 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numComparatorVoltage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAPD_TargVoltage)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -611,6 +664,9 @@
         private System.Windows.Forms.ToolStripStatusLabel lblTotalPoints;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.Label lblWrongPointsCnt;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnSetComparatorVoltage;
+        private System.Windows.Forms.NumericUpDown numComparatorVoltage;
     }
 }
 

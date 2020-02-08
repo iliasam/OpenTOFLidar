@@ -186,8 +186,16 @@ void motor_ctrl_timer_init(void)
   TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
   TIM_OCInitStructure.TIM_Pulse = motor_ctrl_manual_pwm_duty;
   TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+  
+  #if (MOTOR_TIMER_CHANNEL == 2)
   TIM_OC2Init(MOTOR_TIMER, &TIM_OCInitStructure);
   TIM_OC2PreloadConfig(MOTOR_TIMER, TIM_OCPreload_Enable);
+  #elif (MOTOR_TIMER_CHANNEL == 3)
+  TIM_OC3Init(MOTOR_TIMER, &TIM_OCInitStructure);
+  TIM_OC3PreloadConfig(MOTOR_TIMER, TIM_OCPreload_Enable);
+  #else
+  #error "Channel not defined!"
+  #endif
 
   TIM_CtrlPWMOutputs(MOTOR_TIMER, ENABLE);
 

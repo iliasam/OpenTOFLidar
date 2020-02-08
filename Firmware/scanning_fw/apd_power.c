@@ -19,9 +19,6 @@
 // Delay between pwm decrease steps
 #define APD_PWR_DOWN_STEP_MS    200
 
-// Protection value
-#define APD_PWR_MAX_PWM_VALUE   65
-
 //Voltage, V
 #define APD_PWR_DOWN_THRESHOLD  (2.0f)
 

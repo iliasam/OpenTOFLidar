@@ -4,8 +4,22 @@
 
 /* Includes ------------------------------------------------------------------*/
 
-#define LED_GPIO                GPIOA
-#define LED_PIN                 GPIO_Pin_3
+#define BOARD_VERSION_2019              1
+#define BOARD_VERSION_2020              2
+
+#define BOARD_VERSION                   BOARD_VERSION_2020
+
+// IMPORTAINT VALUE !!!!!!!!
+// Length im mm
+#if (BOARD_VERSION == BOARD_VERSION_2019)
+#define DIST_BIN_LENGTH                 (14.5f) //PCB version 2019
+#else
+#define DIST_BIN_LENGTH                 (15.5f) //PCB version 2020
+#endif
+
+
+#define LED_GPIO                        GPIOA
+#define LED_PIN                         GPIO_Pin_3
 
 // APD ADC DC-DC feedback *****************************************************
 
@@ -20,6 +34,13 @@
 #define APD_FB_ADC_LOWER_R              20.0f//KOhm
 
 #define MCU_VREF                        3.29f //volts
+
+// Protection value
+#if (BOARD_VERSION == BOARD_VERSION_2019)
+#define APD_PWR_MAX_PWM_VALUE           65 //for AD500-8
+#else
+#define APD_PWR_MAX_PWM_VALUE           130 //for MTAPD-07
+#endif
 
 // APD ADC DMA ****************************************************************
 

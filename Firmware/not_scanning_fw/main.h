@@ -14,7 +14,7 @@ extern volatile uint32_t ms_tick;
 // No return signal was found
 #define TDC_STATE_PULSE_TIMEOUT         (1 << 1)
 
-// Wrond hits number from laser comparator
+// Wrong hits number from laser comparator
 #define TDC_STATE_LASER_COMP_FAIL       (1 << 2)
 
 /* Exported macro ------------------------------------------------------------*/

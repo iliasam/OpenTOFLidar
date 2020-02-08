@@ -54,7 +54,8 @@ namespace TDC_Testing_v1
                 */
                 if (numFieldsNeedUpdate)
                 {
-                    numMotorDuty.Value = (decimal)msg.setted_pwm_duty;
+                    if (msg.setted_pwm_duty < numMotorDuty.Maximum)
+                        numMotorDuty.Value = (decimal)msg.setted_pwm_duty;
                     numMotorTargetSpeed.Value = (decimal)msg.setted_motor_speed;
                     numFieldsNeedUpdate = false;
                 }

@@ -171,6 +171,9 @@ namespace LidarScanningTest1
             if (pointsCnt < 50)
                 return;
 
+            if (pointsCnt > 720)
+                return;
+
             CurentPointsCnt = pointsCnt;
 
             double angResolution = 360.0 / pointsCnt;
@@ -375,6 +378,21 @@ namespace LidarScanningTest1
             SendMavlinkPaket(mvp);
         }
 
+        public void SetComparatorThreshold(int voltage_mv)
+        {
+            MavLink.Msg_set_comp_threshold mav_msg = new MavLink.Msg_set_comp_threshold();
+
+            mav_msg.voltage_mv = (ushort)voltage_mv;
+
+            var mvp = new MavlinkPacket
+            {
+                ComponentId = 1,
+                SystemId = 2,//PC
+                Message = mav_msg
+            };
+            SendMavlinkPaket(mvp);
+        }
+
         void SendMavlinkPaket(MavlinkPacket packet)
         {
             byte[] dataToSend = MavlinkObj.Send(packet);
@@ -421,6 +439,12 @@ namespace LidarScanningTest1
         {
             float ApdTargVoltage = (float)numAPD_TargVoltage.Value;
             SetAPD_TargetVoltage(ApdTargVoltage);
+        }
+
+        private void btnSetComparatorVoltage_Click(object sender, EventArgs e)
+        {
+            ushort voltage_mv = (ushort)numComparatorVoltage.Value;
+            SetComparatorThreshold(voltage_mv);
         }
     }
 }

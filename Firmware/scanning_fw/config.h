@@ -4,6 +4,21 @@
 
 /* Includes ------------------------------------------------------------------*/
 
+#define BOARD_VERSION_2019              1
+#define BOARD_VERSION_2020              2
+
+#define BOARD_VERSION                   BOARD_VERSION_2020
+
+// IMPORTAINT VALUE !!!!!!!!
+// Length im mm
+#if (BOARD_VERSION == BOARD_VERSION_2019)
+#define DIST_BIN_LENGTH                 (14.5f) //PCB version 2019
+#else
+#define DIST_BIN_LENGTH                 (15.5f) //PCB version 2020
+#endif
+
+
+
 // Number of captured points is defined by angular resolution:
 // constant "CAPTURE_ANG_RESOL" below
 
@@ -28,6 +43,13 @@
 #define APD_FB_ADC_LOWER_R              20.0f//KOhm
 
 #define MCU_VREF                        3.29f //volts
+
+// Protection value
+#if (BOARD_VERSION == BOARD_VERSION_2019)
+#define APD_PWR_MAX_PWM_VALUE           65 //for AD500-8
+#else
+#define APD_PWR_MAX_PWM_VALUE           90 //for MTAPD-07
+#endif
 
 // APD ADC DMA ****************************************************************
 
@@ -170,15 +192,25 @@
 #define MOTOR_TIMER_PRESCALER           (1)
 #define MOTOR_TIMER_FREQ                20000  //Hz
 
+// Protection value
+#if (BOARD_VERSION == BOARD_VERSION_2019)
 #define MOTOR_TIMER_GPIO_CLK            RCC_AHBPeriph_GPIOA
 #define MOTOR_TIMER_GPIO                GPIOA
 #define MOTOR_TIMER_PIN                 GPIO_Pin_1
 #define MOTOR_TIMER_AF_SOURCE           GPIO_PinSource1
 #define MOTOR_TIMER_PIN_AFIO            GPIO_AF_1
-
-//Timer channel is hardcoded !!
-
+#define MOTOR_TIMER_CHANNEL             2
 #define MOTOR_TIMER_PWM_REG             CCR2
+#else
+#define MOTOR_TIMER_GPIO_CLK            RCC_AHBPeriph_GPIOB
+#define MOTOR_TIMER_GPIO                GPIOB
+#define MOTOR_TIMER_PIN                 GPIO_Pin_10
+#define MOTOR_TIMER_AF_SOURCE           GPIO_PinSource10
+#define MOTOR_TIMER_PIN_AFIO            GPIO_AF_1
+#define MOTOR_TIMER_CHANNEL             3
+#define MOTOR_TIMER_PWM_REG             CCR3
+#endif
+
 
 #define MOTOR_DEFAULT_PWM_DUTY          (340)
 // Rotations per second

@@ -23,7 +23,6 @@ typedef enum
 
 // "Length" of one bin in mm
 //#define DIST_BIN_LENGTH                 (13.63f)
-//#define DIST_BIN_LENGTH                 (13.5f)
 #define DIST_BIN_LENGTH                 (14.5f)
 
 /* Private macro -------------------------------------------------------------*/

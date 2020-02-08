@@ -109,7 +109,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(969, 479);
+            this.tabControl1.Size = new System.Drawing.Size(1004, 511);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -128,7 +128,7 @@
             this.tabPageMain.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageMain.Name = "tabPageMain";
             this.tabPageMain.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageMain.Size = new System.Drawing.Size(961, 453);
+            this.tabPageMain.Size = new System.Drawing.Size(996, 485);
             this.tabPageMain.TabIndex = 0;
             this.tabPageMain.Text = "Main";
             this.tabPageMain.UseVisualStyleBackColor = true;
@@ -150,13 +150,13 @@
             this.chart1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             chartArea1.Name = "ChartArea1";
             this.chart1.ChartAreas.Add(chartArea1);
-            this.chart1.Location = new System.Drawing.Point(340, 271);
+            this.chart1.Location = new System.Drawing.Point(316, 312);
             this.chart1.Margin = new System.Windows.Forms.Padding(2);
             this.chart1.Name = "chart1";
             series1.ChartArea = "ChartArea1";
             series1.Name = "Series1";
             this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(306, 161);
+            this.chart1.Size = new System.Drawing.Size(366, 161);
             this.chart1.TabIndex = 17;
             this.chart1.Text = "chart1";
             // 
@@ -166,9 +166,9 @@
             this.lblResults.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.lblResults.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblResults.Location = new System.Drawing.Point(331, 105);
+            this.lblResults.Location = new System.Drawing.Point(315, 105);
             this.lblResults.Name = "lblResults";
-            this.lblResults.Size = new System.Drawing.Size(306, 155);
+            this.lblResults.Size = new System.Drawing.Size(357, 205);
             this.lblResults.TabIndex = 16;
             this.lblResults.Text = "Results";
             // 
@@ -179,7 +179,7 @@
             this.groupBox3.Controls.Add(this.lblRecordedCount);
             this.groupBox3.Controls.Add(this.btnStopRecording);
             this.groupBox3.Controls.Add(this.btnStartRecording);
-            this.groupBox3.Location = new System.Drawing.Point(652, 379);
+            this.groupBox3.Location = new System.Drawing.Point(687, 385);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
@@ -280,7 +280,7 @@
             this.groupBox2.Controls.Add(this.lblAPDVolt);
             this.groupBox2.Controls.Add(this.lblLaserVolt);
             this.groupBox2.Controls.Add(this.btnStateRequest);
-            this.groupBox2.Location = new System.Drawing.Point(652, 6);
+            this.groupBox2.Location = new System.Drawing.Point(687, 6);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
@@ -397,7 +397,7 @@
             this.numAPD_TargVoltage.Location = new System.Drawing.Point(190, 141);
             this.numAPD_TargVoltage.Margin = new System.Windows.Forms.Padding(2);
             this.numAPD_TargVoltage.Maximum = new decimal(new int[] {
-            140,
+            150,
             0,
             0,
             0});
@@ -476,6 +476,11 @@
             // 
             this.numAPD_PWM.Location = new System.Drawing.Point(190, 110);
             this.numAPD_PWM.Margin = new System.Windows.Forms.Padding(2);
+            this.numAPD_PWM.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
             this.numAPD_PWM.Name = "numAPD_PWM";
             this.numAPD_PWM.Size = new System.Drawing.Size(49, 20);
             this.numAPD_PWM.TabIndex = 9;
@@ -639,7 +644,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(8, 106);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(310, 326);
+            this.dataGridView1.Size = new System.Drawing.Size(301, 371);
             this.dataGridView1.TabIndex = 15;
             // 
             // Column1
@@ -713,7 +718,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(969, 479);
+            this.ClientSize = new System.Drawing.Size(1004, 511);
             this.Controls.Add(this.tabControl1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
