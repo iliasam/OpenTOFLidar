@@ -39,9 +39,10 @@
             this.numAngCorrection = new System.Windows.Forms.NumericUpDown();
             this.btnSaveCoeff = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnOpenHistogram = new System.Windows.Forms.Button();
             this.lblMaxMIn = new System.Windows.Forms.Label();
             this.lblAVRValue = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.nudPointsNumber = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.lblDistValue = new System.Windows.Forms.Label();
             this.lblRawValue = new System.Windows.Forms.Label();
@@ -71,7 +72,7 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAngCorrection)).BeginInit();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPointsNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numStartAngle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numStopAngle)).BeginInit();
             this.groupBox3.SuspendLayout();
@@ -191,9 +192,10 @@
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.btnOpenHistogram);
             this.groupBox2.Controls.Add(this.lblMaxMIn);
             this.groupBox2.Controls.Add(this.lblAVRValue);
-            this.groupBox2.Controls.Add(this.numericUpDown1);
+            this.groupBox2.Controls.Add(this.nudPointsNumber);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.lblDistValue);
             this.groupBox2.Controls.Add(this.lblRawValue);
@@ -201,15 +203,25 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Size = new System.Drawing.Size(154, 172);
+            this.groupBox2.Size = new System.Drawing.Size(154, 187);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Data Analyse";
             // 
+            // btnOpenHistogram
+            // 
+            this.btnOpenHistogram.Location = new System.Drawing.Point(72, 156);
+            this.btnOpenHistogram.Name = "btnOpenHistogram";
+            this.btnOpenHistogram.Size = new System.Drawing.Size(75, 23);
+            this.btnOpenHistogram.TabIndex = 6;
+            this.btnOpenHistogram.Text = "Histogram";
+            this.btnOpenHistogram.UseVisualStyleBackColor = true;
+            this.btnOpenHistogram.Click += new System.EventHandler(this.btnOpenHistogram_Click);
+            // 
             // lblMaxMIn
             // 
             this.lblMaxMIn.AutoSize = true;
-            this.lblMaxMIn.Location = new System.Drawing.Point(12, 146);
+            this.lblMaxMIn.Location = new System.Drawing.Point(12, 140);
             this.lblMaxMIn.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblMaxMIn.Name = "lblMaxMIn";
             this.lblMaxMIn.Size = new System.Drawing.Size(70, 13);
@@ -219,41 +231,41 @@
             // lblAVRValue
             // 
             this.lblAVRValue.AutoSize = true;
-            this.lblAVRValue.Location = new System.Drawing.Point(12, 122);
+            this.lblAVRValue.Location = new System.Drawing.Point(12, 119);
             this.lblAVRValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblAVRValue.Name = "lblAVRValue";
             this.lblAVRValue.Size = new System.Drawing.Size(73, 13);
             this.lblAVRValue.TabIndex = 4;
             this.lblAVRValue.Text = "Average: N/A";
             // 
-            // numericUpDown1
+            // nudPointsNumber
             // 
-            this.numericUpDown1.Increment = new decimal(new int[] {
+            this.nudPointsNumber.Increment = new decimal(new int[] {
             5,
             0,
             0,
             0});
-            this.numericUpDown1.Location = new System.Drawing.Point(38, 93);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.nudPointsNumber.Location = new System.Drawing.Point(38, 93);
+            this.nudPointsNumber.Margin = new System.Windows.Forms.Padding(2);
+            this.nudPointsNumber.Maximum = new decimal(new int[] {
             50,
             0,
             0,
             0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
+            this.nudPointsNumber.Minimum = new decimal(new int[] {
             5,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(68, 20);
-            this.numericUpDown1.TabIndex = 3;
-            this.numericUpDown1.Value = new decimal(new int[] {
+            this.nudPointsNumber.Name = "nudPointsNumber";
+            this.nudPointsNumber.Size = new System.Drawing.Size(68, 20);
+            this.nudPointsNumber.TabIndex = 3;
+            this.nudPointsNumber.Value = new decimal(new int[] {
             5,
             0,
             0,
             0});
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.nudPointsNumber.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // label4
             // 
@@ -437,9 +449,9 @@
             this.groupBox4.Controls.Add(this.label5);
             this.groupBox4.Controls.Add(this.btnSetAPD_TargVoltage);
             this.groupBox4.Controls.Add(this.numAPD_TargVoltage);
-            this.groupBox4.Location = new System.Drawing.Point(699, 216);
+            this.groupBox4.Location = new System.Drawing.Point(699, 240);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(186, 100);
+            this.groupBox4.Size = new System.Drawing.Size(186, 76);
             this.groupBox4.TabIndex = 18;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Configure";
@@ -496,9 +508,9 @@
             this.label5.Location = new System.Drawing.Point(7, 20);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(74, 13);
+            this.label5.Size = new System.Drawing.Size(71, 13);
             this.label5.TabIndex = 20;
-            this.label5.Text = "Targ. Voltage:";
+            this.label5.Text = "APD Voltage:";
             // 
             // btnSetAPD_TargVoltage
             // 
@@ -610,7 +622,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numAngCorrection)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPointsNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numStartAngle)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numStopAngle)).EndInit();
             this.groupBox3.ResumeLayout(false);
@@ -641,7 +653,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label lblRawValue;
         private System.Windows.Forms.Label lblDistValue;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown nudPointsNumber;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblAVRValue;
         private System.Windows.Forms.Label lblMaxMIn;
@@ -667,6 +679,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btnSetComparatorVoltage;
         private System.Windows.Forms.NumericUpDown numComparatorVoltage;
+        private System.Windows.Forms.Button btnOpenHistogram;
     }
 }
 

@@ -41,6 +41,7 @@ namespace LidarScanningTest1
         Mavlink MavlinkObj;
         MavlinkLongPacketClass LongPacketObj = new MavlinkLongPacketClass();
         DataAnalyseClass DataAnalyseObj = new DataAnalyseClass();
+        HistogramForm HistogramFormObj;
 
         public IniParser SettingsHolder;//Used for storing settings
 
@@ -63,6 +64,8 @@ namespace LidarScanningTest1
         double CurrAngularCorrection = 0.0;//degrees
         int CurrStartAngle = 50;
         int CurrStopAngle = (360 - 50);
+
+        //***************************************************************
 
         public Form1()
         {
@@ -243,6 +246,9 @@ namespace LidarScanningTest1
 
             DataAnalyseObj.AddDataPoint(dist);
 
+            if (HistogramFormObj != null)
+                HistogramFormObj.AddNewDisatnceValue(dist);
+
             lblRawValue.Text = "Raw Value: " + rawValue.ToString();
             lblDistValue.Text = "Distance: " + dist.ToString("0.00") + " m";
 
@@ -401,6 +407,17 @@ namespace LidarScanningTest1
 
         // GUI *********************************************************
 
+        void OpenHistogramForm()
+        {
+            if (HistogramFormObj == null)
+                HistogramFormObj = new HistogramForm();
+
+            if (HistogramFormObj.IsDisposed)
+                HistogramFormObj = new HistogramForm();
+
+            HistogramFormObj.Show();
+        }
+
         private void btnSaveCoeff_Click(object sender, EventArgs e)
         {
             string ang_corr_str = CurrAngularCorrection.ToString(System.Globalization.CultureInfo.InvariantCulture);
@@ -417,7 +434,7 @@ namespace LidarScanningTest1
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            DataAnalyseObj.SetLength((int)numericUpDown1.Value);
+            DataAnalyseObj.SetLength((int)nudPointsNumber.Value);
         }
 
         private void cmbPortList_DropDown(object sender, EventArgs e)
@@ -445,6 +462,11 @@ namespace LidarScanningTest1
         {
             ushort voltage_mv = (ushort)numComparatorVoltage.Value;
             SetComparatorThreshold(voltage_mv);
+        }
+
+        private void btnOpenHistogram_Click(object sender, EventArgs e)
+        {
+            OpenHistogramForm();
         }
     }
 }
