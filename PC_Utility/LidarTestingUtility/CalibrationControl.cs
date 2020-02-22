@@ -135,7 +135,7 @@ namespace TDC_Testing_v1
 
             var leftAxis = new LinearAxis();
             leftAxis.Position = AxisPosition.Left;
-            leftAxis.Title = "Singal Delay, bin";
+            leftAxis.Title = "Signal Delay, bin";
             model.Axes.Add(leftAxis);
 
             var downAxis = new LinearAxis();

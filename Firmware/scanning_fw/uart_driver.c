@@ -175,7 +175,7 @@ void uart_driver_tx_process(void)
   */
 }
 
-// Returns 0 if adition fails
+// Returns 0 if addition fails
 uint8_t uart_driver_add_data_for_tx(uint8_t* data, uint16_t size)
 {
   return fifo_add_data((fifo_struct_t*)&uart_tx_fifo, data, size);

@@ -14,7 +14,7 @@
 
 typedef enum
 {
-  // Waiting for motor speed stabilisation
+  // Waiting for motor speed stabilization
   MOTOR_STARTUP_WAIT = 0,
   MOTOR_FEEDBACK_RUN,
 } motor_ctrl_state_t;
@@ -40,7 +40,7 @@ float motor_ctrl_current_speed = 0.0f;
 uint16_t motor_ctrl_manual_pwm_duty = MOTOR_DEFAULT_PWM_DUTY;
 uint16_t motor_ctrl_current_pwm_duty = MOTOR_DEFAULT_PWM_DUTY;
 
-// Atomatical speed feedback using encoder data
+// Automated speed feedback using encoder data
 uint8_t motor_ctrl_auto_speed_enabled = 0;
 
 motor_ctrl_state_t motor_ctrl_state = MOTOR_STARTUP_WAIT;

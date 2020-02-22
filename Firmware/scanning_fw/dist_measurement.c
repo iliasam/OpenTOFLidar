@@ -6,6 +6,7 @@
 #include "mavlink_handling.h"
 #include "nvram.h"
 #include "main.h"
+#include "config.h"
 
 
 /* Private typedef -----------------------------------------------------------*/
@@ -40,7 +41,7 @@ typedef struct
 // Measured distance is too high
 #define DIST_MEAS_MAX_DIST_VALUE        2
 
-// Pulse width is too short -> amplitud is low
+// Pulse width is too short -> amplitude is low
 #define DIST_MEAS_SHORT_PULSE_VALUE     3
 
 /* Private macro -------------------------------------------------------------*/
@@ -50,7 +51,7 @@ uint8_t dist_meas_batch_measurement_needed = 0;
 
 uint16_t dist_meas_batch_points = 100;//max is DIST_MEAS_MAX_BATCH_POINTS
 
-//testing distange to an object in mm
+//testing distance to an object in mm
 uint16_t test_dist_value = 0;
 
 // Distance to a reference object, used only in non-scanning mode
@@ -73,7 +74,7 @@ float dist_meas_width_coef_a = 0.0f;
 // Width correction coefficient B
 float dist_meas_width_coef_b = 0.0f;
 
-// Measured and filetered distance to Reference Plate in bins 
+// Measured and filtered distance to Reference Plate in bins 
 tdc_point_float_t dist_meas_ref_dist_bin;
 tdc_point_float_t dist_meas_prev_ref_dist_bin;
 float dist_meas_ref_dist_filter_coef = 0.2f;
@@ -126,7 +127,7 @@ void dist_measurement_handler(void)
 
 // Called by mavlink command
 // This command only enables capture process
-// It is donne in "dist_measurement_do_batch_meas()"
+// It is done in "dist_measurement_do_batch_meas()"
 void dist_measurement_start_batch_meas(uint16_t size)
 {
   if (size > DIST_MEAS_MAX_BATCH_POINTS)
@@ -164,7 +165,7 @@ void dist_measurement_start_measure_ref(uint16_t dist_mm)
 }
 
 // Used for controlling manual reference object calibration
-// It is not usefull is scanning mode
+// It is not useful is scanning mode
 void  dist_measurement_measure_ref_bins_handler(void)
 {
   if (dist_meas_need_ref_measurement == DIST_MEAS_REF_MEAS_WAIT_FOR_START)
@@ -224,7 +225,7 @@ uint16_t dist_measurement_process_current_data(void)
 }
 
 // Take distance value and return real distance in mm
-// start - time of fligth in bins
+// start - time of flight in bins
 // width - pulse width in bins
 uint16_t dist_measurement_process_data(uint16_t start, uint16_t width)
 {
@@ -253,7 +254,7 @@ uint16_t dist_measurement_process_data(uint16_t start, uint16_t width)
 void dist_measurement_update_ref_value(tdc_point_t ref_dist)
 {
 //REF_PLATE_DIST
-  // Exponetial filter
+  // Exponential filter
   dist_meas_ref_dist_bin.start_value = dist_meas_ref_dist_filter_coef * 
     (float)ref_dist.start_value + (1.0f - dist_meas_ref_dist_filter_coef) * 
     dist_meas_prev_ref_dist_bin.start_value;
@@ -273,7 +274,7 @@ void dist_measurement_recalculate_ref_distance(void)
   // True distance in bins (with no offset)
   float true_dist_bin = (float)REF_PLATE_DIST / (float)DIST_BIN_LENGTH;
 
-  // Corrected measured distance to the Reference Platein in bins
+  // Corrected measured distance to the Reference Plate in in bins
   float corr_ref_dist_bins = dist_measurement_calc_corrected_dist_bin_float(
     dist_meas_ref_dist_bin.start_value, dist_meas_ref_dist_bin.width_value);
   
@@ -281,7 +282,7 @@ void dist_measurement_recalculate_ref_distance(void)
 }
 
 // Return distance to an object in mm
-// "corr_dist_bin" - distance in bins, previosly corrected for width
+// "corr_dist_bin" - distance in bins, previously corrected for width
 uint16_t dist_measurement_calc_dist(float corr_dist_bin)
 {
   float dist_mm = 

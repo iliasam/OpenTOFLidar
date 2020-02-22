@@ -1,4 +1,4 @@
-// Controlling APD high voltage gentration by changing PWM duty
+// Controlling APD high voltage generation by changing PWM duty
 // Measuring APD voltage (ADC + DMA)
 
 /* Includes ------------------------------------------------------------------*/
@@ -200,7 +200,7 @@ void apd_power_adc_init(void)
   ADC_InitStructure.ADC_ExternalTrigEventEdge = ADC_ExternalTrigEventEdge_RisingEdge;
     
   ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
-  ADC_InitStructure.ADC_OverrunMode = ADC_OverrunMode_Enable;//Importaint ??
+  ADC_InitStructure.ADC_OverrunMode = ADC_OverrunMode_Enable;//Important ??
   ADC_InitStructure.ADC_AutoInjMode = ADC_AutoInjec_Disable;
   ADC_InitStructure.ADC_NbrOfRegChannel = 1;// One channel for this ADC
   ADC_Init(APD_FB_ADC_NAME, &ADC_InitStructure);
@@ -322,7 +322,7 @@ void apd_power_voltage_feedback_controlling(void)
 // Increase PWM value for one step
 void apd_power_increase_voltage(void)
 {
-  if (apd_power_pwm_duty_value > APD_PWR_MAX_PWM_VALUE) //protetion
+  if (apd_power_pwm_duty_value > APD_PWR_MAX_PWM_VALUE) //protection
     return;
   
   apd_power_pwm_duty_value++;
@@ -332,7 +332,7 @@ void apd_power_increase_voltage(void)
 // Decrease PWM value for one step
 void apd_power_decrease_voltage(void)
 {
-  if (apd_power_pwm_duty_value < 10) //protetion
+  if (apd_power_pwm_duty_value < 10) //protection
     return;
   
   apd_power_pwm_duty_value--;

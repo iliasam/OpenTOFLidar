@@ -205,7 +205,7 @@ namespace LidarScanningTest1
             RotationPeriod = (int)(DateTime.Now - PrevScanTime).TotalMilliseconds;
             PrevScanTime = DateTime.Now;
             double freq = Math.Round(1.0 / (double)(RotationPeriod / 1000.0), 1);//ms -> sec
-            lblScanPeriod.Text = $"Scan Perod: {RotationPeriod} ms";
+            lblScanPeriod.Text = $"Scan Period: {RotationPeriod} ms";
             lblScanFreq.Text = $"Scan Freq: {freq:0.0} Hz";
             lblTotalPoints.Text = $"Total Scan Points: {pointsCnt}";
 
@@ -234,7 +234,7 @@ namespace LidarScanningTest1
             lblWrongPointsCnt.Text = $"Wrong Points: {BadPercent:0.0} %";
         }
 
-        // Simple statisctilac analyse of point at given direction
+        // Simple statistic analyse of point at given direction
         void AnalysePointerData()
         {
             int pointer_angle = radarPlotComponent1.GetPointerAngle();//deg

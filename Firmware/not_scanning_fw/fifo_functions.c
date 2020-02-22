@@ -18,7 +18,7 @@ void fifo_init_struct(fifo_struct_t* fifo, uint8_t* data_buffer, uint16_t size)
 }
 
 // Add "byte" to FIFO
-// Returns 0 if adition fails
+// Returns 0 if addition fails
 uint8_t fifo_add_byte(fifo_struct_t* fifo, uint8_t value)
 {
   uint8_t result = 0;
@@ -44,7 +44,7 @@ uint8_t fifo_add_byte(fifo_struct_t* fifo, uint8_t value)
   return result;
 }
 
-// Returns 0 if adition fails
+// Returns 0 if addition fails
 uint8_t fifo_add_data(fifo_struct_t* fifo, uint8_t* data, uint16_t size)
 {
   uint16_t fifo_available = fifo->fifo_size - fifo->fifo_count;

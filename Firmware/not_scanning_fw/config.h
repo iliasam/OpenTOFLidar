@@ -10,7 +10,7 @@
 #define BOARD_VERSION                   BOARD_VERSION_2020
 
 // IMPORTAINT VALUE !!!!!!!!
-// Length im mm
+// Length in mm
 #if (BOARD_VERSION == BOARD_VERSION_2019)
 #define DIST_BIN_LENGTH                 (14.5f) //PCB version 2019
 #else

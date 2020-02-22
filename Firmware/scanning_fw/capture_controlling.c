@@ -172,7 +172,7 @@ void capture_ctr_switch_buffers(void)
     capture_ctr_write_ptr = scan_raw_buffer0;
     capture_ctr_read_ptr  = scan_raw_buffer1;
   }
-  // Fuffers have the same size
+  // Buffers have the same size
   memset(capture_ctr_write_ptr, 0, sizeof(scan_raw_buffer0));
 }
 

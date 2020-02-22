@@ -10,7 +10,7 @@
 #define BOARD_VERSION                   BOARD_VERSION_2020
 
 // IMPORTAINT VALUE !!!!!!!!
-// Length im mm
+// Length in mm
 #if (BOARD_VERSION == BOARD_VERSION_2019)
 #define DIST_BIN_LENGTH                 (14.5f) //PCB version 2019
 #else
@@ -157,16 +157,16 @@
 #define ENCODER_COMP_GPIO               GPIOA
 // Comparator 7
 #define ENCODER_COMP                    COMP_Selection_COMP7
-// Comarator negative sourse
+// Comparator negative source
 #define ENCODER_COMP_NEG_SRC            COMP_InvertingInput_1_2VREFINT
-// Comarator positive sourse
+// Comparator positive source
 #define ENCODER_COMP_POS_SRC            COMP_NonInvertingInput_IO1
 
-// Comparator is connected to TIM1 {line is pecific for COMP7}
+// Comparator is connected to TIM1 {line is specific for COMP7}
 #define ENCODER_COMP_OUTPUT             COMP_Output_TIM1IC2 
 
 // Encoder comparator  *********************************************
-// Timer is used for processing events from ecnoder comparator 
+// Timer is used for processing events from encoder comparator 
 #define ENCODER_COMP_TIMER_CLK          RCC_APB2Periph_TIM1
 
 #define ENCODER_COMP_TIMER              TIM1
@@ -181,7 +181,7 @@
 #define ENCODER_COMP_TIMER_IRQ_HANDLER  TIM1_CC_IRQHandler
 #define ENCODER_COMP_GET_CAPTURD_VALUE  TIM_GetCapture2
 
-// Incuding closed one
+// Including closed one
 #define ENCODER_HOLES_CNT               65
 
 // MOTOR PWM TIMER ***********************************************************

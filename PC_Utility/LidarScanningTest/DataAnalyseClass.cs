@@ -22,7 +22,7 @@ namespace LidarScanningTest1
 
         public void AddDataPoint(double value)
         {
-            //small distancec are not used in analyse
+            //small distances are not used in analyse
             if (value < 0.05)
                 return;
 

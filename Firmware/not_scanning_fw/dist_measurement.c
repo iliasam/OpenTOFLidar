@@ -5,6 +5,7 @@
 #include "tdc_driver.h"
 #include "mavlink_handling.h"
 #include "nvram.h"
+#include "config.h"
 
 
 /* Private typedef -----------------------------------------------------------*/
@@ -21,10 +22,6 @@ typedef enum
 // Max number of measured points in batch mode
 #define DIST_MEAS_MAX_BATCH_POINTS      300
 
-// "Length" of one bin in mm
-//#define DIST_BIN_LENGTH                 (13.63f)
-#define DIST_BIN_LENGTH                 (14.5f)
-
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 tdc_point_t tdc_capture_buf[DIST_MEAS_MAX_BATCH_POINTS];
@@ -32,7 +29,7 @@ uint8_t dist_meas_batch_measurement_needed = 0;
 
 uint16_t dist_meas_batch_points = 100;//max is DIST_MEAS_MAX_BATCH_POINTS
 
-//testing distange to an object in mm
+//testing distance to an object in mm
 uint16_t test_dist_value = 0;
 
 // Distance to a reference object
@@ -83,8 +80,8 @@ void dist_measurement_handler(void)
 }
 
 // Called by mavlink command
-// This command only enables racture process
-// It is donne in "dist_measurement_do_batch_meas()"
+// This command only enables capture process
+// It is done in "dist_measurement_do_batch_meas()"
 void dist_measurement_start_batch_meas(uint16_t size)
 {
   if (size > DIST_MEAS_MAX_BATCH_POINTS)
@@ -108,7 +105,7 @@ void dist_measurement_do_batch_meas(void)
   }
 }
 
-//Start measurememt reference distance and zero offset
+//Start measurement the reference distance and zero offset
 // dist_mm - real dist to ref object
 void dist_measurement_start_measure_ref(uint16_t dist_mm)
 {

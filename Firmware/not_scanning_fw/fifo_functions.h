@@ -15,7 +15,7 @@ typedef struct
   // Current writing pointer, in bytes
   uint16_t write_ptr;
   
-  // Currrent reading pointer, in bytes
+  // Current reading pointer, in bytes
   uint16_t read_ptr;
   
   // Pointer to FIFO data
