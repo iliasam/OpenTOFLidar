@@ -14,7 +14,7 @@
 #if (BOARD_VERSION == BOARD_VERSION_2019)
 #define DIST_BIN_LENGTH                 (14.5f) //PCB version 2019
 #else
-#define DIST_BIN_LENGTH                 (14.5f) //PCB version 2020
+#define DIST_BIN_LENGTH                 (14.85f) //PCB version 2020
 #endif
 
 
@@ -64,7 +64,7 @@
 
 #define APD_POWER_TIMER                 TIM3
 #define APD_POWER_TIMER_PRESCALER       (1)
-#define APD_POWER_TIMER_FREQ            100000  //Hz
+#define APD_POWER_TIMER_FREQ            (100 * 1000)  //Hz
 
 #define APD_POWER_TIMER_GPIO_CLK        RCC_AHBPeriph_GPIOA
 #define APD_POWER_TIMER_GPIO            GPIOA
