@@ -164,12 +164,12 @@
             this.numAngCorrection.Location = new System.Drawing.Point(614, 8);
             this.numAngCorrection.Margin = new System.Windows.Forms.Padding(2);
             this.numAngCorrection.Maximum = new decimal(new int[] {
-            20,
+            30,
             0,
             0,
             0});
             this.numAngCorrection.Minimum = new decimal(new int[] {
-            20,
+            30,
             0,
             0,
             -2147483648});
