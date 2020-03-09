@@ -206,7 +206,7 @@
             this.groupBox2.Size = new System.Drawing.Size(154, 187);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Data Analyse";
+            this.groupBox2.Text = "Data Analysis";
             // 
             // btnOpenHistogram
             // 
