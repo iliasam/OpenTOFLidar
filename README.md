@@ -17,7 +17,7 @@ See BOM with all calculations: "TotalBOM.xlsx".
 This LIDAR is using COTS (Commercial Off-The-Shelf) optical components - standard lenses for surveillance cameras.  
   
 There is a big article in Russian about this project: https://habr.com/ru/post/485574/ 
-https://translate.google.com/translate?hl=en&sl=auto&tl=en&u=https%3A%2F%2Fhabr.com%2Fru%2Fpost%2F485574%2F
+Google translation: https://translate.google.com/translate?hl=en&sl=auto&tl=en&u=https%3A%2F%2Fhabr.com%2Fru%2Fpost%2F485574%2F  
 
 ![](https://github.com/iliasam/OpenTOFLidar/blob/develop/Images/lidar_photo_small.jpg)  
 
