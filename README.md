@@ -32,3 +32,5 @@ See project's Wiki for more information: https://github.com/iliasam/OpenTOFLidar
   
 Video about OpenTOFLidar:
 https://youtu.be/lTPH_Xa9yCk
+  
+Please leave me feedback if you will be able to reproduce this project.  
