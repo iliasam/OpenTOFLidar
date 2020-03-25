@@ -29,8 +29,11 @@ Structure schematic of this LIDAR:
 
 This repository is still under development.  
 See project's Wiki for more information: https://github.com/iliasam/OpenTOFLidar/wiki  
+
+Example of Hector SLAM result:  
+<img src="https://github.com/iliasam/OpenTOFLidar/blob/develop/Images/slam_result_example.png" width="700">  
   
-Video about OpenTOFLidar:
+**Video** about OpenTOFLidar:
 https://youtu.be/lTPH_Xa9yCk
   
 Please leave me feedback if you will be able to reproduce this project.  
