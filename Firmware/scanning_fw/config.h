@@ -4,8 +4,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 
-#define BOARD_VERSION_2019              1
-#define BOARD_VERSION_2020              2
+#define BOARD_VERSION_2019              1 //PCB_v1
+#define BOARD_VERSION_2020              2 //PCB_v4
 
 #define BOARD_VERSION                   BOARD_VERSION_2020
 

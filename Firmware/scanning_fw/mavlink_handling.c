@@ -340,6 +340,5 @@ void mavlink_send_scan_data(uint16_t* data_source, uint16_t points_cnt)
       MAVLINK_MSG_LONG_PACKET_FIELD_DATA_LEN;
   
   mavlink_long_packet_state.packet_cnt = 0;
-  //mavlink_tx_scan_state = MAVLINK_TX_SCAN_READY_TO_TX;
   mavlink_long_packet_tx_active = 1;
 }
