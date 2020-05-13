@@ -4,6 +4,9 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f30x.h"
+#if defined(__ICCARM__) // IAR
+  #include "intrinsics.h"
+#endif
 
 /* Exported types ------------------------------------------------------------*/
 extern volatile uint32_t ms_tick;
