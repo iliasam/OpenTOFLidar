@@ -19,6 +19,9 @@ This LIDAR is using COTS (Commercial Off-The-Shelf) optical components - standar
 There is a big article in Russian about this project: https://habr.com/ru/post/485574/   
 Google translation: https://translate.google.com/translate?hl=en&sl=auto&tl=en&u=https%3A%2F%2Fhabr.com%2Fru%2Fpost%2F485574%2F  
 
+**See project's Wiki for more information:** https://github.com/iliasam/OpenTOFLidar/wiki  
+
+
 ![](https://github.com/iliasam/OpenTOFLidar/blob/develop/Images/lidar_photo_small.jpg)  
 
 That is how its components are assembled:  
@@ -26,9 +29,6 @@ That is how its components are assembled:
   
 Structure schematic of this LIDAR:  
 <img src="https://github.com/iliasam/OpenTOFLidar/blob/develop/Images/structure.png" width="600">  
-
-This repository is still under development.  
-**See project's Wiki for more information:** https://github.com/iliasam/OpenTOFLidar/wiki
 
 Example of Hector SLAM result:  
 <img src="https://github.com/iliasam/OpenTOFLidar/blob/develop/Images/slam_result_example.png" width="700">  
