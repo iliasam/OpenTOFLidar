@@ -10,5 +10,7 @@ Supported work with "LidarTestingUtility", "LidarScanningTest", ROS driver.
 This firmware contains protection from long laser radiation exposure - laser is working only when mirror is rotating stably. 
 
 Firmware configuration is placed in "config.h" file.  
+   
+See "BUILD_FW_HEX" folder - it is containing already build HEX files.
 
 
