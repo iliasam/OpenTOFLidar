@@ -84,9 +84,9 @@
             this.tabPageMotor = new System.Windows.Forms.TabPage();
             this.timer_batch = new System.Windows.Forms.Timer(this.components);
             this.timer_req = new System.Windows.Forms.Timer(this.components);
+            this.btnStateInfo = new System.Windows.Forms.Button();
             this.calibrationControl1 = new TDC_Testing_v1.CalibrationControl();
             this.motorControl1 = new TDC_Testing_v1.MotorControl();
-            this.btnStateInfo = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -757,6 +757,17 @@
             this.timer_req.Interval = 200;
             this.timer_req.Tick += new System.EventHandler(this.timer_req_Tick);
             // 
+            // btnStateInfo
+            // 
+            this.btnStateInfo.Location = new System.Drawing.Point(142, 373);
+            this.btnStateInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.btnStateInfo.Name = "btnStateInfo";
+            this.btnStateInfo.Size = new System.Drawing.Size(39, 21);
+            this.btnStateInfo.TabIndex = 28;
+            this.btnStateInfo.Text = "Info";
+            this.btnStateInfo.UseVisualStyleBackColor = true;
+            this.btnStateInfo.Click += new System.EventHandler(this.btnStateInfo_Click);
+            // 
             // calibrationControl1
             // 
             this.calibrationControl1.Location = new System.Drawing.Point(4, 5);
@@ -772,17 +783,6 @@
             this.motorControl1.Size = new System.Drawing.Size(572, 279);
             this.motorControl1.TabIndex = 0;
             // 
-            // btnStateInfo
-            // 
-            this.btnStateInfo.Location = new System.Drawing.Point(142, 373);
-            this.btnStateInfo.Margin = new System.Windows.Forms.Padding(2);
-            this.btnStateInfo.Name = "btnStateInfo";
-            this.btnStateInfo.Size = new System.Drawing.Size(39, 21);
-            this.btnStateInfo.TabIndex = 28;
-            this.btnStateInfo.Text = "Info";
-            this.btnStateInfo.UseVisualStyleBackColor = true;
-            this.btnStateInfo.Click += new System.EventHandler(this.btnStateInfo_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -791,7 +791,7 @@
             this.Controls.Add(this.tabControl1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
-            this.Text = "OpenTOFLidar Testing Utility v1.0";
+            this.Text = "OpenTOFLidar Testing Utility v1.1";
             this.tabControl1.ResumeLayout(false);
             this.tabPageMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
