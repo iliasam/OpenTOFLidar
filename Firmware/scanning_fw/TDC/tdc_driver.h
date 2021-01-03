@@ -22,6 +22,6 @@ void tdc_start_pulse(void);
 void tdc_check_status(void);
 uint16_t tdc_read_raw_value(void);
 tdc_point_t tdc_read_two_registers(void);
-tdc_point_t tdc_read_tree_registers(void);
+tdc_point_t tdc_read_three_registers(void);
 
 #endif //__TDC_DRIVER_H

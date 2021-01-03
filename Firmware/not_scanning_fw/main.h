@@ -13,12 +13,12 @@ extern volatile uint32_t ms_tick;
 
 /* Exported constants --------------------------------------------------------*/
 // Bad communication with TDC after init
-#define TDC_STATE_INIT_FAIL_FLAG        (1 << 0)
+#define TDC_STATE_INIT_FAIL_FLAG        (1 << 0) //1
 // No return signal was found
-#define TDC_STATE_PULSE_TIMEOUT         (1 << 1)
+#define TDC_STATE_PULSE_TIMEOUT         (1 << 1) //2
 
 // Wrong hits number from laser comparator
-#define TDC_STATE_LASER_COMP_FAIL       (1 << 2)
+#define TDC_STATE_LASER_COMP_FAIL       (1 << 2)  //4
 
 /* Exported macro ------------------------------------------------------------*/
 #define START_TIMER(x, duration)  (x = (ms_tick + duration))

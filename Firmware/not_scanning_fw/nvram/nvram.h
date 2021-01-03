@@ -38,6 +38,9 @@ typedef struct
   // Reference object distance value, mm
   uint16_t ref_obj_dist_mm;
   
+  // TDC BIN length, mm
+  float tdc_bin_length;
+  
 } nvram_data_t;
 
 extern nvram_data_t nvram_data;

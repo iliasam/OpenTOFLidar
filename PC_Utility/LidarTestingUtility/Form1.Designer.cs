@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageMain = new System.Windows.Forms.TabPage();
             this.chkSkipFirst = new System.Windows.Forms.CheckBox();
@@ -44,6 +44,9 @@
             this.chkAutoBatch = new System.Windows.Forms.CheckBox();
             this.btnRunBatch = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnSetBinLength = new System.Windows.Forms.Button();
+            this.nudBinLength = new System.Windows.Forms.NumericUpDown();
+            this.lblTDCBinLength = new System.Windows.Forms.Label();
             this.lblStateMask = new System.Windows.Forms.Label();
             this.btnResetMCU = new System.Windows.Forms.Button();
             this.btnSetRefDistance = new System.Windows.Forms.Button();
@@ -78,16 +81,18 @@
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageCalibration = new System.Windows.Forms.TabPage();
-            this.calibrationControl1 = new TDC_Testing_v1.CalibrationControl();
             this.tabPageMotor = new System.Windows.Forms.TabPage();
-            this.motorControl1 = new TDC_Testing_v1.MotorControl();
             this.timer_batch = new System.Windows.Forms.Timer(this.components);
             this.timer_req = new System.Windows.Forms.Timer(this.components);
+            this.calibrationControl1 = new TDC_Testing_v1.CalibrationControl();
+            this.motorControl1 = new TDC_Testing_v1.MotorControl();
+            this.btnStateInfo = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudBinLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numRefDistance)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAPD_TargVoltage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCompVolt)).BeginInit();
@@ -109,7 +114,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1004, 511);
+            this.tabControl1.Size = new System.Drawing.Size(1004, 541);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -128,7 +133,7 @@
             this.tabPageMain.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageMain.Name = "tabPageMain";
             this.tabPageMain.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageMain.Size = new System.Drawing.Size(996, 485);
+            this.tabPageMain.Size = new System.Drawing.Size(996, 515);
             this.tabPageMain.TabIndex = 0;
             this.tabPageMain.Text = "Main";
             this.tabPageMain.UseVisualStyleBackColor = true;
@@ -150,15 +155,15 @@
             this.chart1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea3.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea3);
-            this.chart1.Location = new System.Drawing.Point(316, 312);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            this.chart1.Location = new System.Drawing.Point(316, 314);
             this.chart1.Margin = new System.Windows.Forms.Padding(2);
             this.chart1.Name = "chart1";
-            series3.ChartArea = "ChartArea1";
-            series3.Name = "Series1";
-            this.chart1.Series.Add(series3);
-            this.chart1.Size = new System.Drawing.Size(366, 161);
+            series1.ChartArea = "ChartArea1";
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
+            this.chart1.Size = new System.Drawing.Size(366, 175);
             this.chart1.TabIndex = 17;
             this.chart1.Text = "chart1";
             // 
@@ -182,7 +187,7 @@
             this.groupBox3.Controls.Add(this.lblRecordedCount);
             this.groupBox3.Controls.Add(this.btnStopRecording);
             this.groupBox3.Controls.Add(this.btnStartRecording);
-            this.groupBox3.Location = new System.Drawing.Point(687, 385);
+            this.groupBox3.Location = new System.Drawing.Point(687, 416);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
@@ -214,7 +219,7 @@
             // 
             // btnStopRecording
             // 
-            this.btnStopRecording.Location = new System.Drawing.Point(71, 17);
+            this.btnStopRecording.Location = new System.Drawing.Point(71, 18);
             this.btnStopRecording.Margin = new System.Windows.Forms.Padding(2);
             this.btnStopRecording.Name = "btnStopRecording";
             this.btnStopRecording.Size = new System.Drawing.Size(56, 27);
@@ -258,6 +263,10 @@
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.btnStateInfo);
+            this.groupBox2.Controls.Add(this.btnSetBinLength);
+            this.groupBox2.Controls.Add(this.nudBinLength);
+            this.groupBox2.Controls.Add(this.lblTDCBinLength);
             this.groupBox2.Controls.Add(this.lblStateMask);
             this.groupBox2.Controls.Add(this.btnResetMCU);
             this.groupBox2.Controls.Add(this.btnSetRefDistance);
@@ -283,20 +292,66 @@
             this.groupBox2.Controls.Add(this.lblAPDVolt);
             this.groupBox2.Controls.Add(this.lblLaserVolt);
             this.groupBox2.Controls.Add(this.btnStateRequest);
-            this.groupBox2.Location = new System.Drawing.Point(687, 6);
+            this.groupBox2.Location = new System.Drawing.Point(688, 6);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Size = new System.Drawing.Size(296, 368);
+            this.groupBox2.Size = new System.Drawing.Size(296, 406);
             this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Rangefinder State";
+            // 
+            // btnSetBinLength
+            // 
+            this.btnSetBinLength.Location = new System.Drawing.Point(246, 251);
+            this.btnSetBinLength.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSetBinLength.Name = "btnSetBinLength";
+            this.btnSetBinLength.Size = new System.Drawing.Size(44, 24);
+            this.btnSetBinLength.TabIndex = 27;
+            this.btnSetBinLength.Text = "SET";
+            this.btnSetBinLength.UseVisualStyleBackColor = true;
+            this.btnSetBinLength.Click += new System.EventHandler(this.btnSetBinLength_Click);
+            // 
+            // nudBinLength
+            // 
+            this.nudBinLength.DecimalPlaces = 1;
+            this.nudBinLength.Location = new System.Drawing.Point(190, 254);
+            this.nudBinLength.Margin = new System.Windows.Forms.Padding(2);
+            this.nudBinLength.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.nudBinLength.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nudBinLength.Name = "nudBinLength";
+            this.nudBinLength.Size = new System.Drawing.Size(49, 20);
+            this.nudBinLength.TabIndex = 26;
+            this.nudBinLength.Value = new decimal(new int[] {
+            14,
+            0,
+            0,
+            0});
+            // 
+            // lblTDCBinLength
+            // 
+            this.lblTDCBinLength.AutoSize = true;
+            this.lblTDCBinLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblTDCBinLength.Location = new System.Drawing.Point(8, 254);
+            this.lblTDCBinLength.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblTDCBinLength.Name = "lblTDCBinLength";
+            this.lblTDCBinLength.Size = new System.Drawing.Size(158, 20);
+            this.lblTDCBinLength.TabIndex = 25;
+            this.lblTDCBinLength.Text = "BIN Length, mm: N/A";
             // 
             // lblStateMask
             // 
             this.lblStateMask.AutoSize = true;
             this.lblStateMask.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblStateMask.Location = new System.Drawing.Point(8, 341);
+            this.lblStateMask.Location = new System.Drawing.Point(8, 375);
             this.lblStateMask.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblStateMask.Name = "lblStateMask";
             this.lblStateMask.Size = new System.Drawing.Size(109, 17);
@@ -306,7 +361,7 @@
             // btnResetMCU
             // 
             this.btnResetMCU.BackColor = System.Drawing.Color.Yellow;
-            this.btnResetMCU.Location = new System.Drawing.Point(194, 308);
+            this.btnResetMCU.Location = new System.Drawing.Point(194, 342);
             this.btnResetMCU.Margin = new System.Windows.Forms.Padding(2);
             this.btnResetMCU.Name = "btnResetMCU";
             this.btnResetMCU.Size = new System.Drawing.Size(98, 24);
@@ -354,7 +409,7 @@
             // 
             this.lblTestDistance.AutoSize = true;
             this.lblTestDistance.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblTestDistance.Location = new System.Drawing.Point(8, 303);
+            this.lblTestDistance.Location = new System.Drawing.Point(8, 337);
             this.lblTestDistance.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTestDistance.Name = "lblTestDistance";
             this.lblTestDistance.Size = new System.Drawing.Size(124, 24);
@@ -364,7 +419,7 @@
             // btnSaveToFlash
             // 
             this.btnSaveToFlash.BackColor = System.Drawing.Color.Yellow;
-            this.btnSaveToFlash.Location = new System.Drawing.Point(194, 337);
+            this.btnSaveToFlash.Location = new System.Drawing.Point(194, 371);
             this.btnSaveToFlash.Margin = new System.Windows.Forms.Padding(2);
             this.btnSaveToFlash.Name = "btnSaveToFlash";
             this.btnSaveToFlash.Size = new System.Drawing.Size(98, 24);
@@ -517,7 +572,7 @@
             // 
             this.lblRawTOFWidth.AutoSize = true;
             this.lblRawTOFWidth.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblRawTOFWidth.Location = new System.Drawing.Point(8, 275);
+            this.lblRawTOFWidth.Location = new System.Drawing.Point(8, 312);
             this.lblRawTOFWidth.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblRawTOFWidth.Name = "lblRawTOFWidth";
             this.lblRawTOFWidth.Size = new System.Drawing.Size(151, 20);
@@ -528,7 +583,7 @@
             // 
             this.lblRawTOFValue.AutoSize = true;
             this.lblRawTOFValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblRawTOFValue.Location = new System.Drawing.Point(8, 251);
+            this.lblRawTOFValue.Location = new System.Drawing.Point(8, 288);
             this.lblRawTOFValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblRawTOFValue.Name = "lblRawTOFValue";
             this.lblRawTOFValue.Size = new System.Drawing.Size(110, 20);
@@ -647,7 +702,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(8, 106);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(301, 371);
+            this.dataGridView1.Size = new System.Drawing.Size(301, 401);
             this.dataGridView1.TabIndex = 15;
             // 
             // Column1
@@ -676,18 +731,10 @@
             this.tabPageCalibration.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageCalibration.Name = "tabPageCalibration";
             this.tabPageCalibration.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageCalibration.Size = new System.Drawing.Size(996, 485);
+            this.tabPageCalibration.Size = new System.Drawing.Size(996, 515);
             this.tabPageCalibration.TabIndex = 1;
             this.tabPageCalibration.Text = "Calibration";
             this.tabPageCalibration.UseVisualStyleBackColor = true;
-            // 
-            // calibrationControl1
-            // 
-            this.calibrationControl1.Location = new System.Drawing.Point(4, 5);
-            this.calibrationControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.calibrationControl1.Name = "calibrationControl1";
-            this.calibrationControl1.Size = new System.Drawing.Size(943, 440);
-            this.calibrationControl1.TabIndex = 0;
             // 
             // tabPageMotor
             // 
@@ -695,17 +742,10 @@
             this.tabPageMotor.Location = new System.Drawing.Point(4, 22);
             this.tabPageMotor.Name = "tabPageMotor";
             this.tabPageMotor.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMotor.Size = new System.Drawing.Size(996, 485);
+            this.tabPageMotor.Size = new System.Drawing.Size(996, 515);
             this.tabPageMotor.TabIndex = 2;
             this.tabPageMotor.Text = "Motor Settings";
             this.tabPageMotor.UseVisualStyleBackColor = true;
-            // 
-            // motorControl1
-            // 
-            this.motorControl1.Location = new System.Drawing.Point(8, 6);
-            this.motorControl1.Name = "motorControl1";
-            this.motorControl1.Size = new System.Drawing.Size(572, 279);
-            this.motorControl1.TabIndex = 0;
             // 
             // timer_batch
             // 
@@ -717,11 +757,37 @@
             this.timer_req.Interval = 200;
             this.timer_req.Tick += new System.EventHandler(this.timer_req_Tick);
             // 
+            // calibrationControl1
+            // 
+            this.calibrationControl1.Location = new System.Drawing.Point(4, 5);
+            this.calibrationControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.calibrationControl1.Name = "calibrationControl1";
+            this.calibrationControl1.Size = new System.Drawing.Size(943, 440);
+            this.calibrationControl1.TabIndex = 0;
+            // 
+            // motorControl1
+            // 
+            this.motorControl1.Location = new System.Drawing.Point(8, 6);
+            this.motorControl1.Name = "motorControl1";
+            this.motorControl1.Size = new System.Drawing.Size(572, 279);
+            this.motorControl1.TabIndex = 0;
+            // 
+            // btnStateInfo
+            // 
+            this.btnStateInfo.Location = new System.Drawing.Point(142, 373);
+            this.btnStateInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.btnStateInfo.Name = "btnStateInfo";
+            this.btnStateInfo.Size = new System.Drawing.Size(39, 21);
+            this.btnStateInfo.TabIndex = 28;
+            this.btnStateInfo.Text = "Info";
+            this.btnStateInfo.UseVisualStyleBackColor = true;
+            this.btnStateInfo.Click += new System.EventHandler(this.btnStateInfo_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1004, 511);
+            this.ClientSize = new System.Drawing.Size(1004, 541);
             this.Controls.Add(this.tabControl1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
@@ -733,6 +799,7 @@
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudBinLength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numRefDistance)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAPD_TargVoltage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCompVolt)).EndInit();
@@ -801,6 +868,10 @@
         private System.Windows.Forms.Label lblStateMask;
         private System.Windows.Forms.TabPage tabPageMotor;
         private MotorControl motorControl1;
+        private System.Windows.Forms.Button btnSetBinLength;
+        private System.Windows.Forms.NumericUpDown nudBinLength;
+        private System.Windows.Forms.Label lblTDCBinLength;
+        private System.Windows.Forms.Button btnStateInfo;
     }
 }
 

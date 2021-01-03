@@ -149,6 +149,21 @@ namespace TDC_Testing_v1
             SendMavlinkPaket(mvp);
         }
 
+        public void SetTDCBinLength(float binLengthMM)
+        {
+            MavLink.Msg_set_bin_length mav_msg = new MavLink.Msg_set_bin_length();
+
+            mav_msg.tdc_bin_length = binLengthMM;
+
+            var mvp = new MavlinkPacket
+            {
+                ComponentId = 1,
+                SystemId = 2,//PC
+                Message = mav_msg
+            };
+            SendMavlinkPaket(mvp);
+        }
+
         public void SendRunBatchMeasurement(int size)
         {
             MavLink.Msg_start_batch_measurement mav_msg = new MavLink.Msg_start_batch_measurement();

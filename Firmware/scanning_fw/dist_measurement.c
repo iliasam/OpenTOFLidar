@@ -74,6 +74,9 @@ float dist_meas_width_coef_a = 0.0f;
 // Width correction coefficient B
 float dist_meas_width_coef_b = 0.0f;
 
+// BIN length in mm
+float dist_meas_bin_length = DEFAULT_DIST_BIN_LENGTH;
+
 // Measured and filtered distance to Reference Plate in bins 
 tdc_point_float_t dist_meas_ref_dist_bin;
 tdc_point_float_t dist_meas_prev_ref_dist_bin;
@@ -102,6 +105,7 @@ void dist_measurement_init(void)
   dist_meas_width_coef_b = nvram_data.width_coef_b;
   dist_meas_zero_offset_bin = nvram_data.zero_offset_bin;
   dist_meas_ref_dist_mm = nvram_data.ref_obj_dist_mm;
+  dist_meas_bin_length = nvram_data.tdc_bin_length;
   
   memset((void*)&dist_meas_ref_dist_bin, 0, sizeof(dist_meas_ref_dist_bin));
   memset((void*)&dist_meas_prev_ref_dist_bin, 0, sizeof(dist_meas_prev_ref_dist_bin));
@@ -145,7 +149,7 @@ void dist_measurement_do_batch_meas(void)
     tdc_start_pulse();
     dwt_delay_ms(1);
     //tdc_read_two_registers();
-    tdc_read_tree_registers();
+    tdc_read_three_registers();
     
     tdc_capture_buf[i].start_value = tmp_res0;
     tdc_capture_buf[i].width_value = tmp_res1;
@@ -210,7 +214,7 @@ void dist_measurement_calculate_zero_offset(uint16_t ref_dist_bin)
 {
   // True distance in bins (with no offset)
   uint16_t true_dist_bin = 
-    (uint16_t)roundf((float)dist_meas_ref_dist_mm / (float)DIST_BIN_LENGTH);
+    (uint16_t)roundf((float)dist_meas_ref_dist_mm / dist_meas_bin_length);
   
   if (ref_dist_bin > true_dist_bin)
     dist_meas_zero_offset_bin = ref_dist_bin - true_dist_bin;
@@ -272,7 +276,7 @@ void dist_measurement_update_ref_value(tdc_point_t ref_dist)
 void dist_measurement_recalculate_ref_distance(void)
 {
   // True distance in bins (with no offset)
-  float true_dist_bin = (float)REF_PLATE_DIST / (float)DIST_BIN_LENGTH;
+  float true_dist_bin = (float)REF_PLATE_DIST / dist_meas_bin_length;
 
   // Corrected measured distance to the Reference Plate in in bins
   float corr_ref_dist_bins = dist_measurement_calc_corrected_dist_bin_float(
@@ -286,7 +290,7 @@ void dist_measurement_recalculate_ref_distance(void)
 uint16_t dist_measurement_calc_dist(float corr_dist_bin)
 {
   float dist_mm = 
-    (corr_dist_bin - (float)dist_meas_zero_offset_bin) * DIST_BIN_LENGTH;
+    (corr_dist_bin - (float)dist_meas_zero_offset_bin) * dist_meas_bin_length;
   
   if (dist_mm < -0.01f)
     return DIST_MEAS_NEG_DIST_VALUE;

@@ -59,6 +59,7 @@ extern float current_laser_volt;
 extern uint16_t apd_comp_threshold_mv;
 extern uint8_t apd_power_feedback_en_flag;
 extern uint16_t device_state_mask;
+extern float dist_meas_bin_length;
 
 extern uint16_t tmp_res0;//todo
 extern uint16_t tmp_res1;
@@ -147,6 +148,14 @@ void mavlink_parse_byte(uint8_t value)
       
       apd_comp_threshold_mv = data_msg.voltage_mv;
     }
+    else if (mavlink_rx_msg.msgid == MAVLINK_MSG_ID_SET_BIN_LENGTH)
+    {
+      mavlink_set_bin_length_t data_msg;
+      mavlink_msg_set_bin_length_decode(&mavlink_rx_msg, &data_msg);
+      
+      if ((data_msg.tdc_bin_length > 5.0f) && (data_msg.tdc_bin_length < 30.0f))
+        dist_meas_bin_length = data_msg.tdc_bin_length;
+    }
     else if (mavlink_rx_msg.msgid == MAVLINK_MSG_ID_SET_WIDTH_CORR_COEFF)
     {
       mavlink_set_width_corr_coeff_t data_msg;
@@ -194,6 +203,7 @@ void mavlink_send_device_state(void)
   device_state.pwm_state = apd_power_feedback_en_flag;
   device_state.distance = test_dist_value;
   device_state.state = device_state_mask;
+  device_state.tdc_bin_length = dist_meas_bin_length;
   
   mavlink_message_t mav_msg;
 

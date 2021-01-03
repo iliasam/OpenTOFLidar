@@ -28,6 +28,7 @@ extern uint16_t dist_meas_ref_dist_mm;
 extern uint8_t motor_ctrl_auto_speed_enabled;
 extern float motor_ctrl_target_speed;
 extern uint16_t motor_ctrl_manual_pwm_duty;
+extern float dist_meas_bin_length;
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -45,6 +46,7 @@ void nvram_use_default_settings(void)
   nvram_data.width_coef_b = 0.0f;
   nvram_data.zero_offset_bin = 0;
   nvram_data.ref_obj_dist_mm = 0;
+  nvram_data.tdc_bin_length = DEFAULT_DIST_BIN_LENGTH;
   
   nvram_data.motor_feedback_enabled = 0;//manual mode
   nvram_data.motor_manulal_pwm_duty = MOTOR_DEFAULT_PWM_DUTY;
@@ -83,6 +85,7 @@ void nvram_prepare_and_save_current_settings(void)
   nvram_data.width_coef_b = dist_meas_width_coef_b;
   nvram_data.zero_offset_bin = dist_meas_zero_offset_bin;
   nvram_data.ref_obj_dist_mm = dist_meas_ref_dist_mm;
+  nvram_data.tdc_bin_length = dist_meas_bin_length;
   
   nvram_data.motor_feedback_enabled = motor_ctrl_auto_speed_enabled;
   nvram_data.motor_manulal_pwm_duty = motor_ctrl_manual_pwm_duty;

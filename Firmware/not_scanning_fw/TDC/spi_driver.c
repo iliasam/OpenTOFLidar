@@ -152,3 +152,10 @@ void init_tdc_spi(void)
   
   SPI_Cmd(TDC_SPI_NAME, ENABLE);
 }
+
+//Read register - upper 16 bits
+uint32_t tdc_read_register_upper(uint8_t opcode_address)
+{
+  uint32_t read_result = tdc_read_n_bytes(2, opcode_address);
+  return read_result;
+}

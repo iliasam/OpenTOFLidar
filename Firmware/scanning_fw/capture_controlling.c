@@ -135,7 +135,7 @@ void capture_ctr_make_measurement(float angle)
   uint16_t pos = (uint16_t)roundf(angle / CAPTURE_ANG_RESOL);
   // Read previous measurement
   //capture_ctr_write_ptr[pos] = tdc_read_two_registers();
-  capture_ctr_write_ptr[pos] = tdc_read_tree_registers();
+  capture_ctr_write_ptr[pos] = tdc_read_three_registers();
   tdc_start_pulse();
 }
 

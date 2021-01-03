@@ -287,7 +287,7 @@ tdc_point_t tdc_read_two_registers(void)
   return tmp_point;
 }
 
-tdc_point_t tdc_read_tree_registers(void)
+tdc_point_t tdc_read_three_registers(void)
 {
   // time of flight
   tmp_res0 = (uint16_t)tdc_read_register_upper(OPCODE_READ_REG + 0);

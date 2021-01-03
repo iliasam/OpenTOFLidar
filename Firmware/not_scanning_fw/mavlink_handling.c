@@ -50,6 +50,8 @@ extern uint16_t test_dist_value;
 extern tdc_point_t tdc_capture_buf[];
 extern uint16_t dist_meas_batch_points;//max is DIST_MEAS_MAX_BATCH_POINTS
 
+extern float dist_meas_bin_length;
+
 mavlink_long_packet_params_t mavlink_long_packet_state;
 
 mavlink_tx_batch_state_t mavlink_tx_batch_state = MAVLINK_TX_BATCH_IDLE;
@@ -61,7 +63,7 @@ uint8_t  mavlink_send_message(mavlink_message_t *msg);
 void mavlink_send_device_state(void);
 uint8_t mavlink_driver_try_send_subpacket(uint8_t *data, uint16_t cnt, uint16_t payload_size);
 
-
+//Parse received byte (from PC)
 void mavlink_parse_byte(uint8_t value)
 {
   mavlink_status_t mavlink_status;
@@ -116,6 +118,14 @@ void mavlink_parse_byte(uint8_t value)
       
       apd_comp_threshold_mv = data_msg.voltage_mv;
     }
+    else if (mavlink_rx_msg.msgid == MAVLINK_MSG_ID_SET_BIN_LENGTH)
+    {
+      mavlink_set_bin_length_t data_msg;
+      mavlink_msg_set_bin_length_decode(&mavlink_rx_msg, &data_msg);
+      
+      if ((data_msg.tdc_bin_length > 5.0f) && (data_msg.tdc_bin_length < 30.0f))
+        dist_meas_bin_length = data_msg.tdc_bin_length;
+    }
     else if (mavlink_rx_msg.msgid == MAVLINK_MSG_ID_SET_WIDTH_CORR_COEFF)
     {
       mavlink_set_width_corr_coeff_t data_msg;
@@ -151,6 +161,7 @@ void mavlink_send_device_state(void)
   device_state.pwm_state = apd_power_feedback_en_flag;
   device_state.distance = test_dist_value;
   device_state.state = device_state_mask;
+  device_state.tdc_bin_length = dist_meas_bin_length;
   
   mavlink_message_t mav_msg;
 

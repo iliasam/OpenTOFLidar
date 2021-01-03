@@ -36,6 +36,8 @@ namespace TDC_Testing_v1
 
         DataRecordingClass DataRecordingObj;
 
+        UInt16 DeviceStateBitField = 0; 
+
         // ********************************************************************
 
         public Form1()
@@ -287,6 +289,8 @@ namespace TDC_Testing_v1
                 lblAPD_TargetVoltage.Text = $"APD Targ. Volt: {msg.apd_voltage_targ:0.0} V";
                 lblTestDistance.Text = $"Distance: {((float)msg.distance / 1000):0.00} m";
 
+                lblTDCBinLength.Text = $"BIN Length, mm: {msg.tdc_bin_length:0.0}";
+
                 lblStateMask.Text = $"State Mask: 0x{msg.state:X}";
 
                 if (msg.pwm_state != 0)
@@ -302,6 +306,8 @@ namespace TDC_Testing_v1
                     numAPD_TargVoltage.Value = (decimal)msg.apd_voltage_targ;
                     numFieldsNeedUpdate = false;
                 }
+
+                DeviceStateBitField = msg.state;
             });
         }
 
@@ -429,6 +435,12 @@ namespace TDC_Testing_v1
             MavlinkCommandsSendObj.SetComparatorThreshold(voltage_mv);
         }
 
+        private void btnSetBinLength_Click(object sender, EventArgs e)
+        {
+            float newTDCBinLength = (float)nudBinLength.Value;
+            MavlinkCommandsSendObj.SetTDCBinLength(newTDCBinLength);
+        }
+
         private void btnSetRefDistance_Click(object sender, EventArgs e)
         {
             ushort refDistanceMm = (ushort)numRefDistance.Value;
@@ -484,6 +496,33 @@ namespace TDC_Testing_v1
         {
             chkAutoBatch.Checked = false;
             chkAutoRequests.Checked = false;
+        }
+
+        private void btnStateInfo_Click(object sender, EventArgs e)
+        {
+            string res = "";
+            if ((DeviceStateBitField & 1) != 0)
+                res += "Bit 0: Bad communication with TDC after init\r\n";
+            if ((DeviceStateBitField & 2) != 0)
+                res += "Bit 1: No return signal was found\r\n";
+            if ((DeviceStateBitField & 4) != 0)
+                res += "Bit 2: Wrong hits number from laser comparator\r\n";
+            if ((DeviceStateBitField & 8) != 0)
+            {
+                res += "Bit 3: Wrong number of encoder events.\r\n";
+                res += "       Encoder is dirty or wrong installed\r\n";
+            }
+            if ((DeviceStateBitField & 16) != 0)
+                res += "Bit 4: Mirror is stopped or encoder is not working\r\n";
+            if ((DeviceStateBitField & 32) != 0)
+                res += "Bit 5: Mirror speed is too low or too high\r\n";
+            if ((DeviceStateBitField & 64) != 0)
+                res += "Bit 6: No calibration values are set\r\n";
+
+            if (DeviceStateBitField == 0)
+                res = "No data!";
+
+            MessageBox.Show(res, "State Bit Field");
         }
     }
 }

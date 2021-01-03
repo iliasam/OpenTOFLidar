@@ -25,6 +25,7 @@ extern float dist_meas_width_coef_a;
 extern float dist_meas_width_coef_b;
 extern uint16_t dist_meas_zero_offset_bin;
 extern uint16_t dist_meas_ref_dist_mm;
+extern float dist_meas_bin_length;
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -42,6 +43,7 @@ void nvram_use_default_settings(void)
   nvram_data.width_coef_b = 0.0f;
   nvram_data.zero_offset_bin = 0;
   nvram_data.ref_obj_dist_mm = 0;
+  nvram_data.tdc_bin_length = DEFAULT_DIST_BIN_LENGTH;
   
   nvram_data.flash_ok_flag = NVRAM_FLASH_OK_MASK;
 }
@@ -76,6 +78,7 @@ void nvram_prepare_and_save_current_settings(void)
   nvram_data.width_coef_b = dist_meas_width_coef_b;
   nvram_data.zero_offset_bin = dist_meas_zero_offset_bin;
   nvram_data.ref_obj_dist_mm = dist_meas_ref_dist_mm;
+  nvram_data.tdc_bin_length = dist_meas_bin_length;
   
   nvram_save_current_settings();
 }

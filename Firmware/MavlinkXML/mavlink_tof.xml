@@ -76,6 +76,10 @@
       <description>Set motor speed and switch to auto mode</description>
       <field type="float" name="speed">Rotations per second</field>
     </message>
+    <message id="112" name="SET_BIN_LENGTH">
+      <description>Set TDC BIN length</description>
+      <field type="float" name="tdc_bin_length">BIN length in mm</field>
+    </message>
     <message id="150" name="DEVICE_STATE">
       <description>Message with device info</description>
       <field type="int16_t" name="pwm_value">APD dc-dc PWM value, timer ticks</field>
@@ -88,6 +92,7 @@
       <field type="uint16_t" name="raw_tof_width_value">Raw TOF pulse width value in bins</field>
       <field type="uint16_t" name="distance">Distance in mm</field>
       <field type="uint16_t" name="state">Device state</field>
+      <field type="float" name="tdc_bin_length">BIN length in mm</field>
     </message>
     <message id="151" name="MOTOR_STATE">
       <description>Message with motor info</description>

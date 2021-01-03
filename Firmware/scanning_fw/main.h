@@ -30,7 +30,7 @@ extern volatile uint32_t ms_tick;
 #define MIRROR_WRONG_SPEED               (1 << 5) //32
 
 // No calibration values are set
-#define NO_CALIBRATION_FLAG             (1 << 6)
+#define NO_CALIBRATION_FLAG             (1 << 6) //64
 
 // Mask to disable distance measurements
 #define LASER_DISABLE_MASK              (TDC_STATE_INIT_FAIL_FLAG | \

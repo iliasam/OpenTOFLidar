@@ -47,6 +47,9 @@ typedef struct
   //Enable auto speed control
   uint8_t motor_feedback_enabled;
   
+  // TDC BIN length, mm
+  float tdc_bin_length;
+  
 } nvram_data_t;
 
 extern nvram_data_t nvram_data;
