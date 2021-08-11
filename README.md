@@ -36,4 +36,4 @@ Example of Hector SLAM result:
 **Video** about OpenTOFLidar:
 https://youtu.be/lTPH_Xa9yCk
   
-Please leave me feedback if you will be able to reproduce this project.  
+**Please leave me feedback if you will be able to reproduce this project.**  
