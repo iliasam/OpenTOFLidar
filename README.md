@@ -12,7 +12,7 @@ Its parameters:
 * Power: 0.1 A  at 5V (0.5 W). Start current could be bigger than 0.8 A.
 * Size: 50x50x120 mm
 
-Price of the components of this LIDAR is ~114$ (without delivery).  
+Price of the components of this LIDAR is ~94$ (without delivery).  
 See BOM with all calculations: "TotalBOM.xlsx".  
 This LIDAR is using COTS (Commercial Off-The-Shelf) optical components - standard lenses for surveillance cameras.  
   
