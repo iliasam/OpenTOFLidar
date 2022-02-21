@@ -129,7 +129,7 @@
 // UART  ***********************************************************************
 #define UART_NAME                       USART2
 #define UART_CLK                        RCC_APB1Periph_USART2
-#define UART_GPIO_CLK                   RCC_AHBPeriph_GPIOA
+#define UART_GPIO_CLK                   RCC_AHBPeriph_GPIOB
 
 #define UART_TX_PIN                     GPIO_Pin_3
 #define UART_TX_PIN_AF                  GPIO_PinSource3
