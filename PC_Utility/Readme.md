@@ -5,5 +5,5 @@ Could be used in non-scanning and scanning modes.
   
 See wiki for more information.  
   
-Both utilities are written at C#.  
+Both utilities are written at C# in Visual Studio 2017.  
 See "Debug" folder for binaries.  
