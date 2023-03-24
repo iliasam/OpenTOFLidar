@@ -12,6 +12,9 @@ Its parameters:
 * Power: 0.1 A  at 5V (0.5 W). Start current could be bigger than 0.8 A.
 * Size: 50x50x120 mm
 
+Laser is OSRAM  SPL PL90_3 (905 nm), pulse width is near 20ns.  
+APD (photosensor) is MTAPD-07-013 or AD500-8.  
+  
 Price of the components of this LIDAR is ~94$ (without delivery).  
 See BOM with all calculations: "TotalBOM.xlsx".  
 This LIDAR is using COTS (Commercial Off-The-Shelf) optical components - standard lenses for surveillance cameras.  
