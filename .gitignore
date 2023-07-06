@@ -31,3 +31,6 @@ PCB/PCB_project_v4/__Previews/
 PCB/PCB_project_v4/Project Outputs for TOF_rangefinder/
 PCB/PCB_project_v4/Job1.OutJob
 PC_Utility/LidarTestingUtility/bin/Debug/captured/
+PC_Utility/LidarScanningTest/obj/
+PCB/PCB_project_v1/Project Logs for TOF_rangefinder/
+*.pdb

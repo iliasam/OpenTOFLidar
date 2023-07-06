@@ -183,6 +183,10 @@
 // Including closed one
 #define ENCODER_HOLES_CNT               65
 
+// Delay after encoder event meaning that mirror is stopped
+// Make it bigger if ENCODER_HOLES_CNT is smaller
+#define ENCODER_TIMEOUT_MS              (5)
+
 // MOTOR PWM TIMER ***********************************************************
 // Timer used to control speed of the BLDC motor
 #define MOTOR_TIMER_CLK                 RCC_APB1Periph_TIM2

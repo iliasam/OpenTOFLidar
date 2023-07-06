@@ -12,8 +12,6 @@
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
-// Delay after encoder event meaning that mirror is stopped
-#define ENCODER_TIMEOUT_MS      (5)
 
 
 /* Private macro -------------------------------------------------------------*/
