@@ -60,7 +60,7 @@ uint16_t dist_meas_ref_dist_mm = 0;
 // Zero offset, bins
 // It must be subtracted from measured distance in bins to get true distance in bins
 // Updated automatically by measuring distance to the Reference Plate
-uint16_t dist_meas_zero_offset_bin = 0;
+float dist_meas_zero_offset_bin = 0.0f;
 
 // Minimal allowed pulse width
 uint16_t dist_meas_min_width = 0;
@@ -103,7 +103,7 @@ void dist_measurement_init(void)
 {
   dist_meas_width_coef_a = nvram_data.width_coef_a;
   dist_meas_width_coef_b = nvram_data.width_coef_b;
-  dist_meas_zero_offset_bin = nvram_data.zero_offset_bin;
+  dist_meas_zero_offset_bin = (float)nvram_data.zero_offset_bin;
   dist_meas_ref_dist_mm = nvram_data.ref_obj_dist_mm;
   dist_meas_bin_length = nvram_data.tdc_bin_length;
   
@@ -142,13 +142,13 @@ void dist_measurement_start_batch_meas(uint16_t size)
 
 // Do batch measurement
 // Called periodically form dist_measurement_handler()
+// For manual testing
 void dist_measurement_do_batch_meas(void)
 {
   for (uint16_t i = 0; i < dist_meas_batch_points; i++)
   {
     tdc_start_pulse();
     dwt_delay_ms(1);
-    //tdc_read_two_registers();
     tdc_read_three_registers();
     
     tdc_capture_buf[i].start_value = tmp_res0;
@@ -157,8 +157,9 @@ void dist_measurement_do_batch_meas(void)
   dist_measurement_process_current_data();
 }
 
-//Start measurement reference distance and zero offset
+// Start measurement reference distance and zero offset
 // dist_mm - real dist to ref object
+// For manual testing
 void dist_measurement_start_measure_ref(uint16_t dist_mm)
 {
   if (dist_meas_need_ref_measurement == DIST_MEAS_REF_MEAS_IDLE)
@@ -217,9 +218,9 @@ void dist_measurement_calculate_zero_offset(uint16_t ref_dist_bin)
     (uint16_t)roundf((float)dist_meas_ref_dist_mm / dist_meas_bin_length);
   
   if (ref_dist_bin > true_dist_bin)
-    dist_meas_zero_offset_bin = ref_dist_bin - true_dist_bin;
+    dist_meas_zero_offset_bin = (float)(ref_dist_bin - true_dist_bin);
   else
-    dist_meas_zero_offset_bin = 0;
+    dist_meas_zero_offset_bin = 0.0f;
 }
 
 //testing
@@ -283,7 +284,7 @@ void dist_measurement_recalculate_ref_distance(void)
   float corr_ref_dist_bins = dist_measurement_calc_corrected_dist_bin_float(
     dist_meas_ref_dist_bin.start_value, dist_meas_ref_dist_bin.width_value);
   
-  dist_meas_zero_offset_bin = (uint16_t)roundf(corr_ref_dist_bins - true_dist_bin);
+  dist_meas_zero_offset_bin = corr_ref_dist_bins - true_dist_bin;
 }
 
 // Return distance to an object in mm
@@ -291,7 +292,7 @@ void dist_measurement_recalculate_ref_distance(void)
 uint16_t dist_measurement_calc_dist(float corr_dist_bin)
 {
   float dist_mm = 
-    (corr_dist_bin - (float)dist_meas_zero_offset_bin) * dist_meas_bin_length;
+    (corr_dist_bin - dist_meas_zero_offset_bin) * dist_meas_bin_length;
   
   if (dist_mm < -0.01f)
     return DIST_MEAS_NEG_DIST_VALUE;

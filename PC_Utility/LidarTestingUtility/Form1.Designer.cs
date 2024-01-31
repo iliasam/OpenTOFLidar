@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageMain = new System.Windows.Forms.TabPage();
             this.chkSkipFirst = new System.Windows.Forms.CheckBox();
@@ -44,6 +44,7 @@
             this.chkAutoBatch = new System.Windows.Forms.CheckBox();
             this.btnRunBatch = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnStateInfo = new System.Windows.Forms.Button();
             this.btnSetBinLength = new System.Windows.Forms.Button();
             this.nudBinLength = new System.Windows.Forms.NumericUpDown();
             this.lblTDCBinLength = new System.Windows.Forms.Label();
@@ -81,12 +82,11 @@
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPageCalibration = new System.Windows.Forms.TabPage();
+            this.calibrationControl1 = new TDC_Testing_v1.CalibrationControl();
             this.tabPageMotor = new System.Windows.Forms.TabPage();
+            this.motorControl1 = new TDC_Testing_v1.MotorControl();
             this.timer_batch = new System.Windows.Forms.Timer(this.components);
             this.timer_req = new System.Windows.Forms.Timer(this.components);
-            this.btnStateInfo = new System.Windows.Forms.Button();
-            this.calibrationControl1 = new TDC_Testing_v1.CalibrationControl();
-            this.motorControl1 = new TDC_Testing_v1.MotorControl();
             this.tabControl1.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -125,9 +125,11 @@
             this.tabPageMain.Controls.Add(this.lblResults);
             this.tabPageMain.Controls.Add(this.groupBox3);
             this.tabPageMain.Controls.Add(this.chkAutoBatch);
+            this.tabPageMain.Controls.Add(this.btnResetMCU);
             this.tabPageMain.Controls.Add(this.btnRunBatch);
             this.tabPageMain.Controls.Add(this.groupBox2);
             this.tabPageMain.Controls.Add(this.groupBox1);
+            this.tabPageMain.Controls.Add(this.btnSaveToFlash);
             this.tabPageMain.Controls.Add(this.dataGridView1);
             this.tabPageMain.Location = new System.Drawing.Point(4, 22);
             this.tabPageMain.Margin = new System.Windows.Forms.Padding(2);
@@ -142,7 +144,7 @@
             // 
             this.chkSkipFirst.Checked = true;
             this.chkSkipFirst.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSkipFirst.Location = new System.Drawing.Point(562, 68);
+            this.chkSkipFirst.Location = new System.Drawing.Point(596, 16);
             this.chkSkipFirst.Margin = new System.Windows.Forms.Padding(2);
             this.chkSkipFirst.Name = "chkSkipFirst";
             this.chkSkipFirst.Size = new System.Drawing.Size(78, 20);
@@ -155,14 +157,14 @@
             this.chart1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            this.chart1.Location = new System.Drawing.Point(316, 314);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            this.chart1.Location = new System.Drawing.Point(314, 286);
             this.chart1.Margin = new System.Windows.Forms.Padding(2);
             this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
+            series2.ChartArea = "ChartArea1";
+            series2.Name = "Series1";
+            this.chart1.Series.Add(series2);
             this.chart1.Size = new System.Drawing.Size(366, 175);
             this.chart1.TabIndex = 17;
             this.chart1.Text = "chart1";
@@ -174,7 +176,7 @@
             this.lblResults.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.lblResults.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblResults.Location = new System.Drawing.Point(315, 105);
+            this.lblResults.Location = new System.Drawing.Point(315, 74);
             this.lblResults.Name = "lblResults";
             this.lblResults.Size = new System.Drawing.Size(367, 205);
             this.lblResults.TabIndex = 16;
@@ -268,12 +270,10 @@
             this.groupBox2.Controls.Add(this.nudBinLength);
             this.groupBox2.Controls.Add(this.lblTDCBinLength);
             this.groupBox2.Controls.Add(this.lblStateMask);
-            this.groupBox2.Controls.Add(this.btnResetMCU);
             this.groupBox2.Controls.Add(this.btnSetRefDistance);
             this.groupBox2.Controls.Add(this.numRefDistance);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.lblTestDistance);
-            this.groupBox2.Controls.Add(this.btnSaveToFlash);
             this.groupBox2.Controls.Add(this.lblAPDVoltFB);
             this.groupBox2.Controls.Add(this.btnSetAPD_TargVoltage);
             this.groupBox2.Controls.Add(this.numAPD_TargVoltage);
@@ -301,9 +301,20 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Rangefinder State";
             // 
+            // btnStateInfo
+            // 
+            this.btnStateInfo.Location = new System.Drawing.Point(142, 373);
+            this.btnStateInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.btnStateInfo.Name = "btnStateInfo";
+            this.btnStateInfo.Size = new System.Drawing.Size(39, 21);
+            this.btnStateInfo.TabIndex = 28;
+            this.btnStateInfo.Text = "Info";
+            this.btnStateInfo.UseVisualStyleBackColor = true;
+            this.btnStateInfo.Click += new System.EventHandler(this.btnStateInfo_Click);
+            // 
             // btnSetBinLength
             // 
-            this.btnSetBinLength.Location = new System.Drawing.Point(246, 251);
+            this.btnSetBinLength.Location = new System.Drawing.Point(246, 248);
             this.btnSetBinLength.Margin = new System.Windows.Forms.Padding(2);
             this.btnSetBinLength.Name = "btnSetBinLength";
             this.btnSetBinLength.Size = new System.Drawing.Size(44, 24);
@@ -315,7 +326,7 @@
             // nudBinLength
             // 
             this.nudBinLength.DecimalPlaces = 1;
-            this.nudBinLength.Location = new System.Drawing.Point(190, 254);
+            this.nudBinLength.Location = new System.Drawing.Point(190, 251);
             this.nudBinLength.Margin = new System.Windows.Forms.Padding(2);
             this.nudBinLength.Maximum = new decimal(new int[] {
             20,
@@ -340,7 +351,7 @@
             // 
             this.lblTDCBinLength.AutoSize = true;
             this.lblTDCBinLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblTDCBinLength.Location = new System.Drawing.Point(8, 254);
+            this.lblTDCBinLength.Location = new System.Drawing.Point(8, 251);
             this.lblTDCBinLength.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTDCBinLength.Name = "lblTDCBinLength";
             this.lblTDCBinLength.Size = new System.Drawing.Size(158, 20);
@@ -361,7 +372,7 @@
             // btnResetMCU
             // 
             this.btnResetMCU.BackColor = System.Drawing.Color.Yellow;
-            this.btnResetMCU.Location = new System.Drawing.Point(194, 342);
+            this.btnResetMCU.Location = new System.Drawing.Point(463, 470);
             this.btnResetMCU.Margin = new System.Windows.Forms.Padding(2);
             this.btnResetMCU.Name = "btnResetMCU";
             this.btnResetMCU.Size = new System.Drawing.Size(98, 24);
@@ -398,7 +409,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(8, 222);
+            this.label1.Location = new System.Drawing.Point(8, 223);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(137, 20);
@@ -419,7 +430,7 @@
             // btnSaveToFlash
             // 
             this.btnSaveToFlash.BackColor = System.Drawing.Color.Yellow;
-            this.btnSaveToFlash.Location = new System.Drawing.Point(194, 371);
+            this.btnSaveToFlash.Location = new System.Drawing.Point(576, 470);
             this.btnSaveToFlash.Margin = new System.Windows.Forms.Padding(2);
             this.btnSaveToFlash.Name = "btnSaveToFlash";
             this.btnSaveToFlash.Size = new System.Drawing.Size(98, 24);
@@ -432,7 +443,7 @@
             // 
             this.lblAPDVoltFB.AutoSize = true;
             this.lblAPDVoltFB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblAPDVoltFB.Location = new System.Drawing.Point(8, 166);
+            this.lblAPDVoltFB.Location = new System.Drawing.Point(8, 167);
             this.lblAPDVoltFB.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblAPDVoltFB.Name = "lblAPDVoltFB";
             this.lblAPDVoltFB.Size = new System.Drawing.Size(187, 20);
@@ -441,7 +452,7 @@
             // 
             // btnSetAPD_TargVoltage
             // 
-            this.btnSetAPD_TargVoltage.Location = new System.Drawing.Point(246, 138);
+            this.btnSetAPD_TargVoltage.Location = new System.Drawing.Point(246, 135);
             this.btnSetAPD_TargVoltage.Margin = new System.Windows.Forms.Padding(2);
             this.btnSetAPD_TargVoltage.Name = "btnSetAPD_TargVoltage";
             this.btnSetAPD_TargVoltage.Size = new System.Drawing.Size(44, 24);
@@ -452,7 +463,7 @@
             // 
             // numAPD_TargVoltage
             // 
-            this.numAPD_TargVoltage.Location = new System.Drawing.Point(190, 141);
+            this.numAPD_TargVoltage.Location = new System.Drawing.Point(190, 138);
             this.numAPD_TargVoltage.Margin = new System.Windows.Forms.Padding(2);
             this.numAPD_TargVoltage.Maximum = new decimal(new int[] {
             150,
@@ -477,7 +488,7 @@
             // 
             this.lblAPD_TargetVoltage.AutoSize = true;
             this.lblAPD_TargetVoltage.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblAPD_TargetVoltage.Location = new System.Drawing.Point(8, 140);
+            this.lblAPD_TargetVoltage.Location = new System.Drawing.Point(8, 139);
             this.lblAPD_TargetVoltage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblAPD_TargetVoltage.Name = "lblAPD_TargetVoltage";
             this.lblAPD_TargetVoltage.Size = new System.Drawing.Size(131, 20);
@@ -486,7 +497,7 @@
             // 
             // btnSetCompVolt
             // 
-            this.btnSetCompVolt.Location = new System.Drawing.Point(246, 191);
+            this.btnSetCompVolt.Location = new System.Drawing.Point(246, 192);
             this.btnSetCompVolt.Margin = new System.Windows.Forms.Padding(2);
             this.btnSetCompVolt.Name = "btnSetCompVolt";
             this.btnSetCompVolt.Size = new System.Drawing.Size(44, 24);
@@ -519,7 +530,7 @@
             // 
             // numCompVolt
             // 
-            this.numCompVolt.Location = new System.Drawing.Point(190, 193);
+            this.numCompVolt.Location = new System.Drawing.Point(190, 194);
             this.numCompVolt.Margin = new System.Windows.Forms.Padding(2);
             this.numCompVolt.Maximum = new decimal(new int[] {
             1000,
@@ -583,7 +594,7 @@
             // 
             this.lblRawTOFValue.AutoSize = true;
             this.lblRawTOFValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblRawTOFValue.Location = new System.Drawing.Point(8, 288);
+            this.lblRawTOFValue.Location = new System.Drawing.Point(8, 286);
             this.lblRawTOFValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblRawTOFValue.Name = "lblRawTOFValue";
             this.lblRawTOFValue.Size = new System.Drawing.Size(110, 20);
@@ -594,7 +605,7 @@
             // 
             this.lblCompVolt.AutoSize = true;
             this.lblCompVolt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblCompVolt.Location = new System.Drawing.Point(8, 192);
+            this.lblCompVolt.Location = new System.Drawing.Point(8, 195);
             this.lblCompVolt.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCompVolt.Name = "lblCompVolt";
             this.lblCompVolt.Size = new System.Drawing.Size(117, 20);
@@ -605,7 +616,7 @@
             // 
             this.lblAPD_PWM.AutoSize = true;
             this.lblAPD_PWM.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblAPD_PWM.Location = new System.Drawing.Point(8, 110);
+            this.lblAPD_PWM.Location = new System.Drawing.Point(8, 111);
             this.lblAPD_PWM.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblAPD_PWM.Name = "lblAPD_PWM";
             this.lblAPD_PWM.Size = new System.Drawing.Size(118, 20);
@@ -736,6 +747,14 @@
             this.tabPageCalibration.Text = "Calibration";
             this.tabPageCalibration.UseVisualStyleBackColor = true;
             // 
+            // calibrationControl1
+            // 
+            this.calibrationControl1.Location = new System.Drawing.Point(4, 5);
+            this.calibrationControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.calibrationControl1.Name = "calibrationControl1";
+            this.calibrationControl1.Size = new System.Drawing.Size(943, 440);
+            this.calibrationControl1.TabIndex = 0;
+            // 
             // tabPageMotor
             // 
             this.tabPageMotor.Controls.Add(this.motorControl1);
@@ -747,6 +766,13 @@
             this.tabPageMotor.Text = "Motor Settings";
             this.tabPageMotor.UseVisualStyleBackColor = true;
             // 
+            // motorControl1
+            // 
+            this.motorControl1.Location = new System.Drawing.Point(8, 6);
+            this.motorControl1.Name = "motorControl1";
+            this.motorControl1.Size = new System.Drawing.Size(572, 279);
+            this.motorControl1.TabIndex = 0;
+            // 
             // timer_batch
             // 
             this.timer_batch.Interval = 1000;
@@ -757,32 +783,6 @@
             this.timer_req.Interval = 200;
             this.timer_req.Tick += new System.EventHandler(this.timer_req_Tick);
             // 
-            // btnStateInfo
-            // 
-            this.btnStateInfo.Location = new System.Drawing.Point(142, 373);
-            this.btnStateInfo.Margin = new System.Windows.Forms.Padding(2);
-            this.btnStateInfo.Name = "btnStateInfo";
-            this.btnStateInfo.Size = new System.Drawing.Size(39, 21);
-            this.btnStateInfo.TabIndex = 28;
-            this.btnStateInfo.Text = "Info";
-            this.btnStateInfo.UseVisualStyleBackColor = true;
-            this.btnStateInfo.Click += new System.EventHandler(this.btnStateInfo_Click);
-            // 
-            // calibrationControl1
-            // 
-            this.calibrationControl1.Location = new System.Drawing.Point(4, 5);
-            this.calibrationControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.calibrationControl1.Name = "calibrationControl1";
-            this.calibrationControl1.Size = new System.Drawing.Size(943, 440);
-            this.calibrationControl1.TabIndex = 0;
-            // 
-            // motorControl1
-            // 
-            this.motorControl1.Location = new System.Drawing.Point(8, 6);
-            this.motorControl1.Name = "motorControl1";
-            this.motorControl1.Size = new System.Drawing.Size(572, 279);
-            this.motorControl1.TabIndex = 0;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -791,7 +791,7 @@
             this.Controls.Add(this.tabControl1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
-            this.Text = "OpenTOFLidar Testing Utility v1.1";
+            this.Text = "OpenTOFLidar Testing Utility v1.2";
             this.tabControl1.ResumeLayout(false);
             this.tabPageMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();

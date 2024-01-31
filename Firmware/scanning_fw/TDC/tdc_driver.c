@@ -216,37 +216,6 @@ void tdc_send_reset(void)
   dwt_delay_ms(100);
 }
 
-//NOT used here!
-void tdc_check_status(void)
-{
-  uint16_t status = (uint16_t)tdc_read_n_bytes(2, OPCODE_READ_REG + 4);
-  
-  tdc_debug_status = status;
-  
-  if ((status & (1 << 9)) != 0)//timeout
-  {
-    tmp_res0 = 0xFFFF;
-    device_state_mask |= TDC_STATE_PULSE_TIMEOUT_FLAG;
-  }
-  else
-    device_state_mask &= ~TDC_STATE_PULSE_TIMEOUT_FLAG;
-  
-  //uint8_t alu_ptr = (uint8_t)(status & 3);
-  status = status >> 3;
-  
-  uint8_t ch1_hits = (uint8_t)(status & 3); //stop 1 {laser} hits
-  status = status >> 3;
-  
-  if (ch1_hits != 1)
-    device_state_mask |= TDC_STATE_LASER_COMP_FAIL_FLAG;
-  else
-    device_state_mask &= ~TDC_STATE_LASER_COMP_FAIL_FLAG;
-
-  //stop 2 {photo} hits. Two hits (rise+fall) expected
-  uint8_t ch2_hits = (uint8_t)(status & 3);
-  status = status >> 3;
-}
-
 // Check measurement state
 // Return 1 if NO timeout
 uint8_t tdc_quick_check_status(void)
@@ -270,21 +239,6 @@ uint16_t tdc_read_raw_value(void)
 {
   uint32_t value = tdc_read_n_bytes(4, OPCODE_READ_REG + 0);
   return (uint16_t)(value >> 16);
-}
-
-tdc_point_t tdc_read_two_registers(void)
-{
-  // time of flight
-  tmp_res0 = (uint16_t)tdc_read_register_upper(OPCODE_READ_REG + 0);
-  configure_reg1_width();
-  //dwt_delay_us(5);//working good without waiting for ALU
-  // pulse width
-  tmp_res1 = (uint16_t)tdc_read_register_upper(OPCODE_READ_REG + 1);
-  
-  tdc_point_t tmp_point;
-  tmp_point.start_value = tmp_res0;
-  tmp_point.width_value = tmp_res1;
-  return tmp_point;
 }
 
 tdc_point_t tdc_read_three_registers(void)

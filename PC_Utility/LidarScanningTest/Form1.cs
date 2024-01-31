@@ -346,6 +346,12 @@ namespace LidarScanningTest1
                 lblCompVolt.Text = $"Comp Volt: {msg.voltage_mv} mv";
                 lblStateMask.Text = $"State Mask: 0x{msg.state:X}";
 
+                if (msg.state != 0)
+                    lblStateMask.BackColor = System.Drawing.Color.Yellow;
+                else
+                    lblStateMask.BackColor = this.BackColor;
+
+
                 if (msg.pwm_state != 0)
                     lblAPDVoltFB.Text = "APD Volt. FB: Auto";
                 else
@@ -389,6 +395,21 @@ namespace LidarScanningTest1
             MavLink.Msg_set_comp_threshold mav_msg = new MavLink.Msg_set_comp_threshold();
 
             mav_msg.voltage_mv = (ushort)voltage_mv;
+
+            var mvp = new MavlinkPacket
+            {
+                ComponentId = 1,
+                SystemId = 2,//PC
+                Message = mav_msg
+            };
+            SendMavlinkPaket(mvp);
+        }
+
+        public void SetMotorSpeed(float speed_rps)
+        {
+            MavLink.Msg_set_motor_speed mav_msg = new MavLink.Msg_set_motor_speed();
+
+            mav_msg.speed = speed_rps;
 
             var mvp = new MavlinkPacket
             {
@@ -467,6 +488,12 @@ namespace LidarScanningTest1
         private void btnOpenHistogram_Click(object sender, EventArgs e)
         {
             OpenHistogramForm();
+        }
+
+        private void btnSetMotorTargetSpeed_Click(object sender, EventArgs e)
+        {
+            float speed = (float)numMotorTargetSpeed.Value;
+            SetMotorSpeed(speed);
         }
     }
 }

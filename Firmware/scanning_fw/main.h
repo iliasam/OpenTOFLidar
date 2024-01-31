@@ -32,6 +32,9 @@ extern volatile uint32_t ms_tick;
 // No calibration values are set
 #define NO_CALIBRATION_FLAG             (1 << 6) //64
 
+// UART busy. To much data to send. Only for "long packet"
+#define UART_BUSY_FLAG                  (1 << 7) //128
+
 // Mask to disable distance measurements
 #define LASER_DISABLE_MASK              (TDC_STATE_INIT_FAIL_FLAG | \
                                          ENCODER_SYNC_FAIL_FLAG | \

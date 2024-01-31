@@ -23,7 +23,7 @@ extern uint8_t apd_power_feedback_en_flag;
 extern uint16_t apd_power_pwm_manual_duty_value;
 extern float dist_meas_width_coef_a;
 extern float dist_meas_width_coef_b;
-extern uint16_t dist_meas_zero_offset_bin;
+extern float dist_meas_zero_offset_bin;
 extern uint16_t dist_meas_ref_dist_mm;
 extern uint8_t motor_ctrl_auto_speed_enabled;
 extern float motor_ctrl_target_speed;
@@ -83,7 +83,7 @@ void nvram_prepare_and_save_current_settings(void)
   nvram_data.comparator_voltage = apd_comp_threshold_mv;
   nvram_data.width_coef_a = dist_meas_width_coef_a;
   nvram_data.width_coef_b = dist_meas_width_coef_b;
-  nvram_data.zero_offset_bin = dist_meas_zero_offset_bin;
+  nvram_data.zero_offset_bin = (uint16_t)dist_meas_zero_offset_bin;
   nvram_data.ref_obj_dist_mm = dist_meas_ref_dist_mm;
   nvram_data.tdc_bin_length = dist_meas_bin_length;
   

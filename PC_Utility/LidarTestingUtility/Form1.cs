@@ -518,6 +518,8 @@ namespace TDC_Testing_v1
                 res += "Bit 5: Mirror speed is too low or too high\r\n";
             if ((DeviceStateBitField & 64) != 0)
                 res += "Bit 6: No calibration values are set\r\n";
+            if ((DeviceStateBitField & 128) != 0)
+                res += "Bit 7: UART is busy - too much data\r\n";
 
             if (DeviceStateBitField == 0)
                 res = "No data!";

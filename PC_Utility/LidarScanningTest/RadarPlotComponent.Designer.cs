@@ -26,11 +26,11 @@
             this.chkBlackMode = new System.Windows.Forms.CheckBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.chkDrawWrongPoints = new System.Windows.Forms.CheckBox();
             this.btnAngleMinus = new System.Windows.Forms.Button();
             this.btnAnglePlus = new System.Windows.Forms.Button();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.lblPointerAnle = new System.Windows.Forms.Label();
-            this.chkDrawWrongPoints = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -77,7 +77,7 @@
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(486, 415);
+            this.pictureBox1.Size = new System.Drawing.Size(488, 415);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
@@ -105,9 +105,22 @@
             this.splitContainer1.Panel2.Controls.Add(this.chkBlackMode);
             this.splitContainer1.Panel2.Controls.Add(this.cmbRadiusList);
             this.splitContainer1.Size = new System.Drawing.Size(615, 415);
-            this.splitContainer1.SplitterDistance = 486;
+            this.splitContainer1.SplitterDistance = 488;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 5;
+            // 
+            // chkDrawWrongPoints
+            // 
+            this.chkDrawWrongPoints.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkDrawWrongPoints.AutoSize = true;
+            this.chkDrawWrongPoints.Location = new System.Drawing.Point(9, 83);
+            this.chkDrawWrongPoints.Margin = new System.Windows.Forms.Padding(2);
+            this.chkDrawWrongPoints.Name = "chkDrawWrongPoints";
+            this.chkDrawWrongPoints.Size = new System.Drawing.Size(90, 17);
+            this.chkDrawWrongPoints.TabIndex = 10;
+            this.chkDrawWrongPoints.Text = "Wrong Points";
+            this.chkDrawWrongPoints.UseVisualStyleBackColor = true;
             // 
             // btnAngleMinus
             // 
@@ -144,6 +157,7 @@
             this.trackBar1.SmallChange = 2;
             this.trackBar1.TabIndex = 7;
             this.trackBar1.TickFrequency = 10;
+            this.trackBar1.Value = 180;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // lblPointerAnle
@@ -151,22 +165,9 @@
             this.lblPointerAnle.Location = new System.Drawing.Point(8, 110);
             this.lblPointerAnle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblPointerAnle.Name = "lblPointerAnle";
-            this.lblPointerAnle.Size = new System.Drawing.Size(75, 28);
+            this.lblPointerAnle.Size = new System.Drawing.Size(91, 36);
             this.lblPointerAnle.TabIndex = 6;
             this.lblPointerAnle.Text = "Pointer angle, deg: 0";
-            // 
-            // chkDrawWrongPoints
-            // 
-            this.chkDrawWrongPoints.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkDrawWrongPoints.AutoSize = true;
-            this.chkDrawWrongPoints.Location = new System.Drawing.Point(9, 83);
-            this.chkDrawWrongPoints.Margin = new System.Windows.Forms.Padding(2);
-            this.chkDrawWrongPoints.Name = "chkDrawWrongPoints";
-            this.chkDrawWrongPoints.Size = new System.Drawing.Size(90, 17);
-            this.chkDrawWrongPoints.TabIndex = 10;
-            this.chkDrawWrongPoints.Text = "Wrong Points";
-            this.chkDrawWrongPoints.UseVisualStyleBackColor = true;
             // 
             // RadarPlotComponent
             // 

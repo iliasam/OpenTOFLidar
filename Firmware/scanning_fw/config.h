@@ -239,7 +239,7 @@
 #define CAPTURE_TIMER_CLK               RCC_APB2Periph_TIM8
 
 // This timer is generating interrupts so, that we have needed number of
-//measurements per one ratation
+// measurements per one ratation
 #define CAPTURE_TIMER                   TIM8
 #define CAPTURE_TIMER_PRESCALER         ENCODER_COMP_TIMER_PRESCALER
 

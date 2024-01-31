@@ -30,6 +30,7 @@ uint8_t uart_tx_dma_buf[UART_TX_DMA_BUF_SIZE];
 volatile fifo_struct_t uart_rx_fifo;
 fifo_struct_t uart_tx_fifo;
 
+
 // Private function prototypes -----------------------------------------------
 void uart_driver_init_fifo(void);
 void init_uart_dma(void);

@@ -65,6 +65,21 @@ void capture_ctr_switch_dist_buffers(void);
 
 /* Private functions ---------------------------------------------------------*/
 
+// Capture timer interrupt
+void CAPTURE_TIMER_IRQ_HANDLER(void)
+{
+  TEST_GPIO->ODR |= TEST_PIN;
+  if (TIM_GetITStatus(CAPTURE_TIMER, CAPTURE_TIMER_IT_FLAG) != RESET)
+  {
+    TIM_ClearITPendingBit(CAPTURE_TIMER, CAPTURE_TIMER_IT_FLAG);
+    
+    capture_ctr_current_angle_deg += CAPTURE_ANG_RESOL_DEG;
+    if (dist_measurenent_enabled == 1)
+      capture_ctr_make_measurement(capture_ctr_current_angle_deg);//take a lot of time
+  }
+  TEST_GPIO->ODR &= ~TEST_PIN;
+}
+
 // Capture controlling init
 void capture_ctr_init(void)
 {
@@ -110,21 +125,6 @@ void capture_ctr_data_processing(void)
   }
 }
 
-// Capture timer interrupt
-void CAPTURE_TIMER_IRQ_HANDLER(void)
-{
-  TEST_GPIO->ODR |= TEST_PIN;
-  if (TIM_GetITStatus(CAPTURE_TIMER, CAPTURE_TIMER_IT_FLAG) != RESET)
-  {
-    TIM_ClearITPendingBit(CAPTURE_TIMER, CAPTURE_TIMER_IT_FLAG);
-    
-    capture_ctr_current_angle_deg += CAPTURE_ANG_RESOL_DEG;
-    if (dist_measurenent_enabled == 1)
-      capture_ctr_make_measurement(capture_ctr_current_angle_deg);//take a lot of time
-    
-    TEST_GPIO->ODR &= ~TEST_PIN;
-  }
-}
 
 /// Read already measured value and start new measurements
 void capture_ctr_make_measurement(float angle_deg)
@@ -162,6 +162,7 @@ void capture_ctr_encoder_zero_event(void)
   capture_ctr_reset_timer();
 }
 
+// Swich buffer pointers with  RAW measurements
 void capture_ctr_switch_buffers(void)
 {
   if (capture_ctr_write_ptr == scan_raw_buffer0)
@@ -178,6 +179,7 @@ void capture_ctr_switch_buffers(void)
   memset(capture_ctr_write_ptr, 0, sizeof(scan_raw_buffer0));
 }
 
+// Swich buffer pointers with distance measurements
 void capture_ctr_switch_dist_buffers(void)
 {
   if (capture_ctr_dist_write_ptr == scan_dist_buffer0)

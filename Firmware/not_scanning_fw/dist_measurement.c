@@ -76,7 +76,7 @@ void dist_measurement_handler(void)
 {
   if (dist_meas_batch_measurement_needed)
   {
-    dist_measurement_do_batch_meas();
+    dist_measurement_do_batch_meas(); //blocking - long
     mavlink_send_batch_data();
     dist_meas_batch_measurement_needed = DIST_MEAS_REF_MEAS_IDLE;
   }

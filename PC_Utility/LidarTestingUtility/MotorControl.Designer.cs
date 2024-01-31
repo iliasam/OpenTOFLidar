@@ -41,6 +41,7 @@
             this.lblMotorManualPWM = new System.Windows.Forms.Label();
             this.lblState = new System.Windows.Forms.Label();
             this.btnResetMCU = new System.Windows.Forms.Button();
+            this.lblWwarning = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numMotorDuty)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMotorTargetSpeed)).BeginInit();
             this.SuspendLayout();
@@ -191,10 +192,23 @@
             this.btnResetMCU.UseVisualStyleBackColor = false;
             this.btnResetMCU.Click += new System.EventHandler(this.btnResetMCU_Click);
             // 
+            // lblWwarning
+            // 
+            this.lblWwarning.AutoSize = true;
+            this.lblWwarning.BackColor = System.Drawing.Color.Yellow;
+            this.lblWwarning.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblWwarning.Location = new System.Drawing.Point(240, 89);
+            this.lblWwarning.Name = "lblWwarning";
+            this.lblWwarning.Size = new System.Drawing.Size(117, 15);
+            this.lblWwarning.TabIndex = 31;
+            this.lblWwarning.Text = "Set min. manual PWM!";
+            this.lblWwarning.Visible = false;
+            // 
             // MotorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblWwarning);
             this.Controls.Add(this.btnResetMCU);
             this.Controls.Add(this.lblState);
             this.Controls.Add(this.lblMotorManualPWM);
@@ -229,5 +243,6 @@
         private System.Windows.Forms.Label lblMotorManualPWM;
         private System.Windows.Forms.Label lblState;
         private System.Windows.Forms.Button btnResetMCU;
+        private System.Windows.Forms.Label lblWwarning;
     }
 }

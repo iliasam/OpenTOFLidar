@@ -69,13 +69,14 @@ int main(void)
       //tdc_start_pulse();
       if (dist_meas_batch_measurement_needed == 0)
       {
-        //read prev value
+        //read prev. value
         tdc_read_two_registers();
         tdc_check_status();
         dist_measurement_process_current_data();
         
         tdc_start_pulse();
       }
+      //See dist_measurement_start_batch_meas() - fast measurements
     }
     
     if (TIMER_ELAPSED(timer_10ms))

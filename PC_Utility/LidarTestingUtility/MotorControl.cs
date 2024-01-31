@@ -43,9 +43,13 @@ namespace TDC_Testing_v1
                 lblMotorManualPWM.Text = $"Motor Manual PWM: {msg.setted_pwm_duty}";
                 lblState.Text = $"State: 0x{msg.state:X}";
 
+
+                bool autoControllingAllowed = !(msg.setted_pwm_duty == 0);
+
+                numMotorTargetSpeed.Enabled = autoControllingAllowed;
+                btnSetMotorTargetSpeed.Enabled = autoControllingAllowed;
+                lblWwarning.Visible = !autoControllingAllowed;
                 /*
-
-
                 if (msg.pwm_state != 0)
                     lblAPDVoltFB.Text = "APD Volt. Feedback: Auto";
                 else

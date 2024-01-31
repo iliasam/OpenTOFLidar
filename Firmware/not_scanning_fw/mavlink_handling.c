@@ -252,25 +252,16 @@ uint8_t mavlink_driver_try_send_subpacket(uint8_t *data, uint16_t cnt, uint16_t 
     return mavlink_send_message(&tmp_msg);
 }
 
-//send batch data
+//send measured distance batch data
 void mavlink_send_batch_data(void)
 {
-  /*
-  if (mavlink_driver_tx_single_photo_state != MAVLINK_DRIVER_TX_SINGLE_IDLE)
-  {
-  //ставим в очередь
-  mavlink_driver_single_hist_request_pending = MAVLINK_DRIVER_PACKET_QUEUE_WAIT;
-  return;
-}
-  */
-  
   // Prepare long packet for tx
   mavlink_tx_batch_state = MAVLINK_TX_BATCH_READY_TO_TX;
   mavlink_long_packet_state.data_code = MAVLINK_LONG_PACKET_BATCH_CODE;
   mavlink_long_packet_state.data_ptr = (uint8_t*)&tdc_capture_buf[0];
   mavlink_long_packet_state.current_packet_id++;
   
-  // Округлить к большему
+  // Round to bigger
   mavlink_long_packet_state.total_data_size = dist_meas_batch_points * sizeof(tdc_point_t);
   mavlink_long_packet_state.total_cnt = 
     (dist_meas_batch_points * sizeof(tdc_point_t) + MAVLINK_MSG_LONG_PACKET_FIELD_DATA_LEN - 1) / 
@@ -278,5 +269,4 @@ void mavlink_send_batch_data(void)
   
   mavlink_long_packet_state.packet_cnt = 0;
   mavlink_tx_batch_state = MAVLINK_TX_BATCH_PROGRESS;
-  //mavlink_driver_single_hist_request_pending = MAVLINK_DRIVER_PACKET_IDLE;
 }

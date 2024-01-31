@@ -37,6 +37,7 @@ float current_laser_volt = LASER_DEFAULT_VOLTAGE;
 //Current comparator threshold voltage, mv
 uint16_t apd_comp_threshold_mv = APD_COMP_DEFAULT_VOLT_MV;
 
+//See TDC_STATE_INIT_FAIL_FLAG and others
 uint16_t device_state_mask = 0;
 
 extern uint8_t dist_meas_batch_measurement_needed;
@@ -74,8 +75,6 @@ int main(void)
     {
       START_TIMER(timer_1ms, 1);
       capture_ctr_data_processing();
-      uart_driver_process();
-      mavlink_long_packet_sending_process();
     }
     
     if (TIMER_ELAPSED(timer_10ms))
@@ -96,6 +95,9 @@ int main(void)
       motor_ctrl_handling();
       dist_measurement_handler();
     }
+    
+    uart_driver_process();
+    mavlink_long_packet_sending_process();
   }
 }
 

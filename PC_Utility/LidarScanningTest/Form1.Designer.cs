@@ -69,6 +69,10 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblWrongPointsCnt = new System.Windows.Forms.Label();
             this.radarPlotComponent1 = new LidarScanningTest1.RadarPlotComponent();
+            this.gAngles = new System.Windows.Forms.GroupBox();
+            this.btnSetMotorTargetSpeed = new System.Windows.Forms.Button();
+            this.numMotorTargetSpeed = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAngCorrection)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -80,6 +84,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numComparatorVoltage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAPD_TargVoltage)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            this.gAngles.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numMotorTargetSpeed)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -145,7 +151,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(546, 10);
+            this.label3.Location = new System.Drawing.Point(14, 29);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 13);
@@ -161,7 +167,7 @@
             0,
             0,
             65536});
-            this.numAngCorrection.Location = new System.Drawing.Point(614, 8);
+            this.numAngCorrection.Location = new System.Drawing.Point(82, 27);
             this.numAngCorrection.Margin = new System.Windows.Forms.Padding(2);
             this.numAngCorrection.Maximum = new decimal(new int[] {
             30,
@@ -180,10 +186,10 @@
             // btnSaveCoeff
             // 
             this.btnSaveCoeff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveCoeff.Location = new System.Drawing.Point(672, 8);
+            this.btnSaveCoeff.Location = new System.Drawing.Point(52, 101);
             this.btnSaveCoeff.Margin = new System.Windows.Forms.Padding(2);
             this.btnSaveCoeff.Name = "btnSaveCoeff";
-            this.btnSaveCoeff.Size = new System.Drawing.Size(51, 43);
+            this.btnSaveCoeff.Size = new System.Drawing.Size(81, 25);
             this.btnSaveCoeff.TabIndex = 11;
             this.btnSaveCoeff.Text = "Save Coeff.";
             this.btnSaveCoeff.UseVisualStyleBackColor = true;
@@ -199,7 +205,7 @@
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.lblDistValue);
             this.groupBox2.Controls.Add(this.lblRawValue);
-            this.groupBox2.Location = new System.Drawing.Point(731, 39);
+            this.groupBox2.Location = new System.Drawing.Point(772, 12);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
@@ -300,7 +306,7 @@
             // numStartAngle
             // 
             this.numStartAngle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numStartAngle.Location = new System.Drawing.Point(486, 34);
+            this.numStartAngle.Location = new System.Drawing.Point(82, 51);
             this.numStartAngle.Margin = new System.Windows.Forms.Padding(2);
             this.numStartAngle.Maximum = new decimal(new int[] {
             360,
@@ -321,7 +327,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(423, 37);
+            this.label1.Location = new System.Drawing.Point(19, 54);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(62, 13);
@@ -331,7 +337,7 @@
             // numStopAngle
             // 
             this.numStopAngle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numStopAngle.Location = new System.Drawing.Point(613, 34);
+            this.numStopAngle.Location = new System.Drawing.Point(82, 75);
             this.numStopAngle.Margin = new System.Windows.Forms.Padding(2);
             this.numStopAngle.Maximum = new decimal(new int[] {
             360,
@@ -352,7 +358,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(550, 37);
+            this.label2.Location = new System.Drawing.Point(19, 78);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(62, 13);
@@ -368,9 +374,9 @@
             this.groupBox3.Controls.Add(this.lblCompVolt);
             this.groupBox3.Controls.Add(this.lblAPDVolt);
             this.groupBox3.Controls.Add(this.lblLaserVolt);
-            this.groupBox3.Location = new System.Drawing.Point(699, 322);
+            this.groupBox3.Location = new System.Drawing.Point(632, 385);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(186, 186);
+            this.groupBox3.Size = new System.Drawing.Size(294, 127);
             this.groupBox3.TabIndex = 17;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "State";
@@ -389,7 +395,7 @@
             // 
             this.lblStateMask.AutoSize = true;
             this.lblStateMask.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblStateMask.Location = new System.Drawing.Point(5, 150);
+            this.lblStateMask.Location = new System.Drawing.Point(161, 45);
             this.lblStateMask.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblStateMask.Name = "lblStateMask";
             this.lblStateMask.Size = new System.Drawing.Size(104, 16);
@@ -400,7 +406,7 @@
             // 
             this.lblAPDVoltFB.AutoSize = true;
             this.lblAPDVoltFB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblAPDVoltFB.Location = new System.Drawing.Point(4, 98);
+            this.lblAPDVoltFB.Location = new System.Drawing.Point(5, 97);
             this.lblAPDVoltFB.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblAPDVoltFB.Name = "lblAPDVoltFB";
             this.lblAPDVoltFB.Size = new System.Drawing.Size(159, 16);
@@ -411,7 +417,7 @@
             // 
             this.lblCompVolt.AutoSize = true;
             this.lblCompVolt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblCompVolt.Location = new System.Drawing.Point(5, 124);
+            this.lblCompVolt.Location = new System.Drawing.Point(161, 71);
             this.lblCompVolt.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCompVolt.Name = "lblCompVolt";
             this.lblCompVolt.Size = new System.Drawing.Size(99, 16);
@@ -422,7 +428,7 @@
             // 
             this.lblAPDVolt.AutoSize = true;
             this.lblAPDVolt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblAPDVolt.Location = new System.Drawing.Point(5, 73);
+            this.lblAPDVolt.Location = new System.Drawing.Point(5, 71);
             this.lblAPDVolt.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblAPDVolt.Name = "lblAPDVolt";
             this.lblAPDVolt.Size = new System.Drawing.Size(91, 16);
@@ -443,15 +449,18 @@
             // groupBox4
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.label7);
+            this.groupBox4.Controls.Add(this.btnSetMotorTargetSpeed);
+            this.groupBox4.Controls.Add(this.numMotorTargetSpeed);
             this.groupBox4.Controls.Add(this.label6);
             this.groupBox4.Controls.Add(this.btnSetComparatorVoltage);
             this.groupBox4.Controls.Add(this.numComparatorVoltage);
             this.groupBox4.Controls.Add(this.label5);
             this.groupBox4.Controls.Add(this.btnSetAPD_TargVoltage);
             this.groupBox4.Controls.Add(this.numAPD_TargVoltage);
-            this.groupBox4.Location = new System.Drawing.Point(699, 240);
+            this.groupBox4.Location = new System.Drawing.Point(740, 204);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(186, 76);
+            this.groupBox4.Size = new System.Drawing.Size(186, 114);
             this.groupBox4.TabIndex = 18;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Configure";
@@ -469,7 +478,7 @@
             // 
             // btnSetComparatorVoltage
             // 
-            this.btnSetComparatorVoltage.Location = new System.Drawing.Point(141, 44);
+            this.btnSetComparatorVoltage.Location = new System.Drawing.Point(142, 44);
             this.btnSetComparatorVoltage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSetComparatorVoltage.Name = "btnSetComparatorVoltage";
             this.btnSetComparatorVoltage.Size = new System.Drawing.Size(40, 20);
@@ -480,7 +489,7 @@
             // 
             // numComparatorVoltage
             // 
-            this.numComparatorVoltage.Location = new System.Drawing.Point(86, 44);
+            this.numComparatorVoltage.Location = new System.Drawing.Point(87, 44);
             this.numComparatorVoltage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numComparatorVoltage.Maximum = new decimal(new int[] {
             200,
@@ -555,7 +564,7 @@
             // lblTotalPoints
             // 
             this.lblTotalPoints.Name = "lblTotalPoints";
-            this.lblTotalPoints.Size = new System.Drawing.Size(100, 17);
+            this.lblTotalPoints.Size = new System.Drawing.Size(99, 17);
             this.lblTotalPoints.Text = "Total Scan Points:";
             // 
             // statusStrip1
@@ -567,7 +576,7 @@
             this.statusStrip1.Location = new System.Drawing.Point(0, 516);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(893, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(934, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -575,7 +584,7 @@
             // 
             this.lblWrongPointsCnt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblWrongPointsCnt.AutoSize = true;
-            this.lblWrongPointsCnt.Location = new System.Drawing.Point(730, 11);
+            this.lblWrongPointsCnt.Location = new System.Drawing.Point(507, 12);
             this.lblWrongPointsCnt.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblWrongPointsCnt.Name = "lblWrongPointsCnt";
             this.lblWrongPointsCnt.Size = new System.Drawing.Size(97, 13);
@@ -591,25 +600,80 @@
             this.radarPlotComponent1.Location = new System.Drawing.Point(8, 63);
             this.radarPlotComponent1.Margin = new System.Windows.Forms.Padding(2);
             this.radarPlotComponent1.Name = "radarPlotComponent1";
-            this.radarPlotComponent1.Size = new System.Drawing.Size(686, 449);
+            this.radarPlotComponent1.Size = new System.Drawing.Size(613, 449);
             this.radarPlotComponent1.TabIndex = 4;
+            // 
+            // gAngles
+            // 
+            this.gAngles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gAngles.Controls.Add(this.numAngCorrection);
+            this.gAngles.Controls.Add(this.label3);
+            this.gAngles.Controls.Add(this.numStartAngle);
+            this.gAngles.Controls.Add(this.label1);
+            this.gAngles.Controls.Add(this.numStopAngle);
+            this.gAngles.Controls.Add(this.btnSaveCoeff);
+            this.gAngles.Controls.Add(this.label2);
+            this.gAngles.Location = new System.Drawing.Point(626, 12);
+            this.gAngles.Name = "gAngles";
+            this.gAngles.Size = new System.Drawing.Size(140, 140);
+            this.gAngles.TabIndex = 20;
+            this.gAngles.TabStop = false;
+            this.gAngles.Text = "Plot Angles";
+            // 
+            // btnSetMotorTargetSpeed
+            // 
+            this.btnSetMotorTargetSpeed.Location = new System.Drawing.Point(142, 75);
+            this.btnSetMotorTargetSpeed.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSetMotorTargetSpeed.Name = "btnSetMotorTargetSpeed";
+            this.btnSetMotorTargetSpeed.Size = new System.Drawing.Size(40, 20);
+            this.btnSetMotorTargetSpeed.TabIndex = 29;
+            this.btnSetMotorTargetSpeed.Text = "SET";
+            this.btnSetMotorTargetSpeed.UseVisualStyleBackColor = true;
+            this.btnSetMotorTargetSpeed.Click += new System.EventHandler(this.btnSetMotorTargetSpeed_Click);
+            // 
+            // numMotorTargetSpeed
+            // 
+            this.numMotorTargetSpeed.Location = new System.Drawing.Point(87, 75);
+            this.numMotorTargetSpeed.Margin = new System.Windows.Forms.Padding(2);
+            this.numMotorTargetSpeed.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.numMotorTargetSpeed.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numMotorTargetSpeed.Name = "numMotorTargetSpeed";
+            this.numMotorTargetSpeed.Size = new System.Drawing.Size(49, 20);
+            this.numMotorTargetSpeed.TabIndex = 28;
+            this.numMotorTargetSpeed.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.Location = new System.Drawing.Point(7, 71);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(71, 36);
+            this.label7.TabIndex = 30;
+            this.label7.Text = "Motor speed, RPS";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(893, 538);
+            this.ClientSize = new System.Drawing.Size(934, 538);
+            this.Controls.Add(this.gAngles);
             this.Controls.Add(this.lblWrongPointsCnt);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.numStopAngle);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.numStartAngle);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.btnSaveCoeff);
-            this.Controls.Add(this.numAngCorrection);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.radarPlotComponent1);
             this.Controls.Add(this.lblScanFreq);
             this.Controls.Add(this.lblScanPeriod);
@@ -617,7 +681,7 @@
             this.Controls.Add(this.groupBox1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
-            this.Text = "TOF LidarScanningTest v1.0";
+            this.Text = "TOF LidarScanningTest v1.1";
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numAngCorrection)).EndInit();
             this.groupBox2.ResumeLayout(false);
@@ -633,6 +697,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.numAPD_TargVoltage)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.gAngles.ResumeLayout(false);
+            this.gAngles.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numMotorTargetSpeed)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -680,6 +747,10 @@
         private System.Windows.Forms.Button btnSetComparatorVoltage;
         private System.Windows.Forms.NumericUpDown numComparatorVoltage;
         private System.Windows.Forms.Button btnOpenHistogram;
+        private System.Windows.Forms.GroupBox gAngles;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnSetMotorTargetSpeed;
+        private System.Windows.Forms.NumericUpDown numMotorTargetSpeed;
     }
 }
 

@@ -46,12 +46,6 @@ void encoder_proc_zero_crossing(void);
 
 /* Private functions ---------------------------------------------------------*/
 
-void encoder_proc_init(void)
-{
-  encoder_proc_init_comparator();
-  encoder_proc_init_encoder_timer();
-}
-
 // Interrupt from timer (connected to encoder comparator)
 void ENCODER_COMP_TIMER_IRQ_HANDLER(void)
 {
@@ -81,6 +75,12 @@ void ENCODER_COMP_TIMER_IRQ_HANDLER(void)
       capture_ctr_encoder_event(encoder_proc_event_cnt, enc_period);
     }
   }// end of interrupt check
+}
+
+void encoder_proc_init(void)
+{
+  encoder_proc_init_comparator();
+  encoder_proc_init_encoder_timer();
 }
 
 // Process zero crossing event

@@ -5,6 +5,7 @@
 #include "dist_measurement.h"
 #include "motor_controlling.h"
 #include "nvram.h"
+#include "main.h"
 
 // Defines ********************************************************************
 #define MAVLINK_TOF_SYS_ID              1 //system id
@@ -16,6 +17,8 @@
 
 // Scan capture data 
 #define MAVLINK_LONG_PACKET_SCAN_CODE   2
+
+#define MAVLINK_UART_BUSY_TIMEOUT_MS    1000
 
 typedef enum 
 {
@@ -82,6 +85,9 @@ mavlink_tx_scan_state_t  mavlink_tx_scan_state = MAVLINK_TX_SCAN_IDLE;
 uint8_t mavlink_long_packet_tx_active = 0;
 
 mavlink_message_t mavlink_rx_msg;
+
+//Set when MCU is trying to send packet while UART is busy
+uint32_t mavlink_busy_timestamp = 0xFFFFFFF;
 
 // Functions ******************************************************************
 uint8_t  mavlink_send_message(mavlink_message_t *msg);
@@ -255,15 +261,28 @@ uint8_t mavlink_send_message(mavlink_message_t *msg)
 // Long packet sending by mavlink
 void mavlink_long_packet_sending_process(void)
 {
+  uint32_t curr_time_ms;
+  START_TIMER(curr_time_ms, 0);
+  uint32_t diff_ms = curr_time_ms - mavlink_busy_timestamp;
+  if ((diff_ms > MAVLINK_UART_BUSY_TIMEOUT_MS) || 
+      (mavlink_busy_timestamp > curr_time_ms))
+  {
+    device_state_mask &= ~UART_BUSY_FLAG;
+  }
+  else
+    device_state_mask |= UART_BUSY_FLAG;
+  
   if (mavlink_long_packet_tx_active != 0)
   {
     if (mavlink_long_packet_state.packet_cnt < mavlink_long_packet_state.total_cnt)
     {
       // Calculate payload size
       uint8_t data_size = MAVLINK_MSG_LONG_PACKET_FIELD_DATA_LEN;
-      if (mavlink_long_packet_state.packet_cnt == (mavlink_long_packet_state.total_cnt - 1)) //last packet
+      if (mavlink_long_packet_state.packet_cnt == 
+          (mavlink_long_packet_state.total_cnt - 1)) //last packet
       {
-        data_size = mavlink_long_packet_state.total_data_size % MAVLINK_MSG_LONG_PACKET_FIELD_DATA_LEN;
+        data_size = mavlink_long_packet_state.total_data_size % 
+          MAVLINK_MSG_LONG_PACKET_FIELD_DATA_LEN;
         if (data_size == 0)
         {
           data_size = MAVLINK_MSG_LONG_PACKET_FIELD_DATA_LEN;
@@ -296,7 +315,8 @@ void mavlink_long_packet_sending_process(void)
 
 // Try to send part of the long packet
 // return 0 if can't send packet
-uint8_t mavlink_driver_try_send_subpacket(uint8_t *data, uint16_t cnt, uint16_t payload_size)
+uint8_t mavlink_driver_try_send_subpacket(
+  uint8_t *data, uint16_t cnt, uint16_t payload_size)
 {
     mavlink_long_packet_t long_packet_msg;
     long_packet_msg.data_code = mavlink_long_packet_state.data_code;
@@ -324,9 +344,11 @@ void mavlink_send_batch_data(void)
   mavlink_long_packet_state.current_packet_id++;
   
   // Round to bigger value
-  mavlink_long_packet_state.total_data_size = dist_meas_batch_points * sizeof(tdc_point_t);
+  mavlink_long_packet_state.total_data_size = 
+    dist_meas_batch_points * sizeof(tdc_point_t);
   mavlink_long_packet_state.total_cnt = 
-    (dist_meas_batch_points * sizeof(tdc_point_t) + MAVLINK_MSG_LONG_PACKET_FIELD_DATA_LEN - 1) / 
+    (dist_meas_batch_points * sizeof(tdc_point_t) + 
+     MAVLINK_MSG_LONG_PACKET_FIELD_DATA_LEN - 1) / 
       MAVLINK_MSG_LONG_PACKET_FIELD_DATA_LEN;
   
   mavlink_long_packet_state.packet_cnt = 0;
@@ -338,6 +360,12 @@ void mavlink_send_batch_data(void)
 // points_cnt - number of captured point, not bytes
 void mavlink_send_scan_data(uint16_t* data_source, uint16_t points_cnt)
 {
+  if (mavlink_long_packet_tx_active)
+  {
+    START_TIMER(mavlink_busy_timestamp, 0);
+    return;
+  }
+  
   // Prepare long packet for tx
   mavlink_long_packet_state.data_code = MAVLINK_LONG_PACKET_SCAN_CODE;
   mavlink_long_packet_state.data_ptr = (uint8_t*)data_source;
