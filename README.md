@@ -2,7 +2,7 @@
 Open Hardware scanning laser rangefinder based on Time-of-Flight principle. No standalone laser rangefinder modules were used in this LIDAR, so its schematic and firmware are fully open.  
  
 Its parameters:  
-* Scanning speed: 15 scans/second
+* Scanning speed: 15 scans/second, 19 scans/second with small accuracy fall at some points.
 * Resolution: ~ 1% of distance, but not better than ±2 cm
 * Minimal distance: 5 cm
 * Maximal distance: ~25 m (white surface)
