@@ -103,7 +103,7 @@ void hardware_init_dac(void)
   DAC_Cmd(DAC_NAME, LASER_DAC_CHANNEL, ENABLE);
   DAC_Cmd(DAC_NAME, APD_COMP_DAC_CHANNEL, ENABLE);
 
-  hardware_set_laser_voltage(10.0);
+  hardware_set_laser_voltage(10.0f);
 }
 
 

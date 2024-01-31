@@ -50,7 +50,7 @@ void nvram_use_default_settings(void)
   
   nvram_data.motor_feedback_enabled = 0;//manual mode
   nvram_data.motor_manulal_pwm_duty = MOTOR_DEFAULT_PWM_DUTY;
-  nvram_data.motor_target_speed = MOTOR_DEFAULT_SPEED;
+  nvram_data.motor_target_speed = MOTOR_DEFAULT_SPEED_RPS;
   
   nvram_data.flash_ok_flag = NVRAM_FLASH_OK_MASK;
 }

@@ -37,6 +37,8 @@ typedef enum
 // Current motor speed - rotations per second (RPS)
 float motor_ctrl_current_speed = 0.0f;
 
+// This value vill be set if motor is not working stable (like zero speed)
+// So it must be not-zero in automatic mode
 uint16_t motor_ctrl_manual_pwm_duty = MOTOR_DEFAULT_PWM_DUTY;
 uint16_t motor_ctrl_current_pwm_duty = MOTOR_DEFAULT_PWM_DUTY;
 
@@ -47,7 +49,7 @@ motor_ctrl_state_t motor_ctrl_state = MOTOR_STARTUP_WAIT;
 
 volatile float motor_ctrl_i_coeff = MOTOR_CONTROLLING_I_COEF;
 float motor_ctrl_i_part = 0.0f;
-float motor_ctrl_target_speed = MOTOR_DEFAULT_SPEED;
+float motor_ctrl_target_speed = MOTOR_DEFAULT_SPEED_RPS;
 
 extern uint32_t encoder_proc_rotation_period_us;
 extern uint16_t device_state_mask;
@@ -65,7 +67,7 @@ void motor_ctrl_init(void)
   motor_ctrl_timer_init();
   
   motor_ctrl_auto_speed_enabled = nvram_data.motor_feedback_enabled;
-  if (nvram_data.motor_target_speed < MOTOR_MAX_SPEED)
+  if (nvram_data.motor_target_speed < MOTOR_MAX_SPEED_RPS)
     motor_ctrl_target_speed = nvram_data.motor_target_speed;
   //starting in manual mode
   motor_ctrl_manual_pwm_duty = nvram_data.motor_manulal_pwm_duty;
@@ -78,8 +80,8 @@ void motor_ctrl_handling(void)
 {
   motor_ctrl_current_speed = US_IN_SEC / encoder_proc_rotation_period_us;
   
-  if ((motor_ctrl_current_speed > MOTOR_MAX_SPEED) || 
-      (motor_ctrl_current_speed < MOTOR_MIN_SPEED))
+  if ((motor_ctrl_current_speed > MOTOR_MAX_SPEED_RPS) || 
+      (motor_ctrl_current_speed < MOTOR_MIN_SPEED_RPS))
     device_state_mask |= MIRROR_WRONG_SPEED;
   else
     device_state_mask &= ~MIRROR_WRONG_SPEED;
@@ -173,7 +175,7 @@ void motor_ctrl_timer_init(void)
 
   TIM_TimeBaseStructure.TIM_Prescaler = MOTOR_TIMER_PRESCALER - 1;
   TIM_TimeBaseStructure.TIM_Period = 
-      (SystemCoreClock / MOTOR_TIMER_PRESCALER / MOTOR_TIMER_FREQ - 1);
+      (SystemCoreClock / MOTOR_TIMER_PRESCALER / MOTOR_TIMER_FREQ_HZ - 1);
   
   TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
   TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
@@ -222,7 +224,7 @@ void motor_ctrl_manual_set_pwm_duty(uint16_t duty)
 // Speed in RPS
 void motor_ctrl_set_auto_speed(float speed)
 {
-  if (speed > MOTOR_MAX_SPEED)
+  if (speed > MOTOR_MAX_SPEED_RPS)
     return;
   
   motor_ctrl_target_speed = speed;

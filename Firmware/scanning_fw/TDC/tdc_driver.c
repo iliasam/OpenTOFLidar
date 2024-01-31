@@ -216,7 +216,7 @@ void tdc_send_reset(void)
   dwt_delay_ms(100);
 }
 
-
+//NOT used here!
 void tdc_check_status(void)
 {
   uint16_t status = (uint16_t)tdc_read_n_bytes(2, OPCODE_READ_REG + 4);

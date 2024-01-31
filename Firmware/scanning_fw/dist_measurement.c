@@ -276,9 +276,10 @@ void dist_measurement_update_ref_value(tdc_point_t ref_dist)
 void dist_measurement_recalculate_ref_distance(void)
 {
   // True distance in bins (with no offset)
+  // This value do not change in time
   float true_dist_bin = (float)REF_PLATE_DIST / dist_meas_bin_length;
 
-  // Corrected measured distance to the Reference Plate in in bins
+  // Corrected MEASURED distance to the Reference Plate in in bins
   float corr_ref_dist_bins = dist_measurement_calc_corrected_dist_bin_float(
     dist_meas_ref_dist_bin.start_value, dist_meas_ref_dist_bin.width_value);
   

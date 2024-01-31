@@ -16,11 +16,11 @@
 /* Private define ------------------------------------------------------------*/
 
 // Number of captured points
-#define CAPT_POINTS_CNT         (uint16_t)(360.0f / CAPTURE_ANG_RESOL)
+#define CAPT_POINTS_CNT         (uint16_t)(360.0f / CAPTURE_ANG_RESOL_DEG)
 
 // Encoder angular step, deg
 // ~5.5 deg per event (65 holes encoder)
-#define ENCODER_ANG_STEP        (360.0f / (float)ENCODER_HOLES_CNT)
+#define ENCODER_ANG_STEP_DEG    (360.0f / (float)ENCODER_HOLES_CNT)
 
 // Number of dist measurements that should be done during one encoder period
 #define CAPT_MEAS_PER_ENCODER_PERIOD    ((float)CAPT_POINTS_CNT / (float)ENCODER_HOLES_CNT)
@@ -30,7 +30,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 // Current mirror angle in degrees
-float capture_ctr_current_angle = 0.0f;
+float capture_ctr_current_angle_deg = 0.0f;
 
 //Buffer for storing RAW TDC values
 tdc_point_t scan_raw_buffer0[CAPT_POINTS_CNT];
@@ -58,7 +58,7 @@ extern uint16_t device_state_mask;
 /* Private function prototypes -----------------------------------------------*/
 void capture_ctr_init_capture_timer(void);
 void capture_ctr_refresh_timer(uint16_t new_period);
-void capture_ctr_make_measurement(float angle);
+void capture_ctr_make_measurement(float angle_deg);
 void capture_ctr_switch_buffers(void);
 void capture_ctr_reset_timer(void);
 void capture_ctr_switch_dist_buffers(void);
@@ -118,23 +118,25 @@ void CAPTURE_TIMER_IRQ_HANDLER(void)
   {
     TIM_ClearITPendingBit(CAPTURE_TIMER, CAPTURE_TIMER_IT_FLAG);
     
-    capture_ctr_current_angle += CAPTURE_ANG_RESOL;
+    capture_ctr_current_angle_deg += CAPTURE_ANG_RESOL_DEG;
     if (dist_measurenent_enabled == 1)
-      capture_ctr_make_measurement(capture_ctr_current_angle);//take a lot of time
+      capture_ctr_make_measurement(capture_ctr_current_angle_deg);//take a lot of time
     
     TEST_GPIO->ODR &= ~TEST_PIN;
   }
 }
 
-void capture_ctr_make_measurement(float angle)
+/// Read already measured value and start new measurements
+void capture_ctr_make_measurement(float angle_deg)
 {
   // Used during encoder "zero" hole time
-  if (angle > 360.0)
-    angle = angle - 360.0f;
+  if (angle_deg > 360.0f)
+    angle_deg = angle_deg - 360.0f;
   
-  uint16_t pos = (uint16_t)roundf(angle / CAPTURE_ANG_RESOL);
+  uint16_t pos = (uint16_t)roundf(angle_deg / CAPTURE_ANG_RESOL_DEG);
+  if (pos >= CAPT_POINTS_CNT) //additional protection
+    pos = CAPT_POINTS_CNT - 1;
   // Read previous measurement
-  //capture_ctr_write_ptr[pos] = tdc_read_two_registers();
   capture_ctr_write_ptr[pos] = tdc_read_three_registers();
   tdc_start_pulse();
 }
@@ -144,7 +146,7 @@ void capture_ctr_make_measurement(float angle)
 void capture_ctr_encoder_event(uint16_t event_cnt, uint16_t last_period)
 {
   //TEST_GPIO->ODR^= TEST_PIN;
-  capture_ctr_current_angle = (float)event_cnt * ENCODER_ANG_STEP;
+  capture_ctr_current_angle_deg = (float)event_cnt * ENCODER_ANG_STEP_DEG;
   uint16_t capture_timer_period = 
     (uint16_t)((float)last_period / CAPT_MEAS_PER_ENCODER_PERIOD);
   capture_ctr_refresh_timer(capture_timer_period);
@@ -154,7 +156,7 @@ void capture_ctr_encoder_event(uint16_t event_cnt, uint16_t last_period)
 void capture_ctr_encoder_zero_event(void)
 {
   // Zero hole is closed, we don't see real zero
-  capture_ctr_current_angle = ENCODER_ANG_STEP;
+  capture_ctr_current_angle_deg = ENCODER_ANG_STEP_DEG;
   capture_ctr_switch_buffers();
   scan_dist_raw_data_ready_flag = 1;
   capture_ctr_reset_timer();

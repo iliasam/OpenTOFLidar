@@ -19,7 +19,7 @@
 
 
 // Number of captured points is defined by angular resolution:
-// constant "CAPTURE_ANG_RESOL" below
+// constant "CAPTURE_ANG_RESOL_DEG" below
 
 // Distance to Reference Plate, mm
 #define REF_PLATE_DIST                  (30)
@@ -154,7 +154,8 @@
 
 #define ENCODER_COMP_PIN                GPIO_Pin_0
 #define ENCODER_COMP_GPIO               GPIOA
-// Comparator 7
+
+// Comparator 7, used for detecting encoder pulses
 #define ENCODER_COMP                    COMP_Selection_COMP7
 // Comparator negative source
 #define ENCODER_COMP_NEG_SRC            COMP_InvertingInput_1_2VREFINT
@@ -169,10 +170,10 @@
 #define ENCODER_COMP_TIMER_CLK          RCC_APB2Periph_TIM1
 
 #define ENCODER_COMP_TIMER              TIM1
-#define ENCODER_COMP_TIMER_FREQ         (1e6) //Hz
+#define ENCODER_COMP_TIMER_FREQ_HZ      (1e6) //Hz
 
 #define ENCODER_COMP_TIMER_PRESCALER    (uint16_t)(((SystemCoreClock) / \
-                              ENCODER_COMP_TIMER_FREQ) - 1)//APB2 = HCLK
+                              ENCODER_COMP_TIMER_FREQ_HZ) - 1)//APB2 = HCLK
 
 #define ENCODER_COMP_TIMER_CH           TIM_Channel_2
 #define ENCODER_COMP_TIMER_IT_FLAG      TIM_IT_CC2
@@ -182,6 +183,7 @@
 
 // Including closed one
 #define ENCODER_HOLES_CNT               65
+
 
 // Delay after encoder event meaning that mirror is stopped
 // Make it bigger if ENCODER_HOLES_CNT is smaller
@@ -193,7 +195,7 @@
 
 #define MOTOR_TIMER                     TIM2
 #define MOTOR_TIMER_PRESCALER           (1)
-#define MOTOR_TIMER_FREQ                20000  //Hz
+#define MOTOR_TIMER_FREQ_HZ             20000  //Hz
 
 // Protection value
 #if (BOARD_VERSION == BOARD_VERSION_2019)
@@ -217,25 +219,27 @@
 
 #define MOTOR_DEFAULT_PWM_DUTY          (340)
 // Rotations per second
-#define MOTOR_DEFAULT_SPEED             (15.0f)
+#define MOTOR_DEFAULT_SPEED_RPS         (15.0f)
 // Integration coefficient
 #define MOTOR_CONTROLLING_I_COEF        (1.5f)
 
 // Rotations per second
-#define MOTOR_MAX_SPEED                 (30.0f)
+#define MOTOR_MAX_SPEED_RPS             (30.0f)
 
 // Rotations per second
-#define MOTOR_MIN_SPEED                 (5.0f)
+#define MOTOR_MIN_SPEED_RPS             (5.0f)
 
 // CAPTURE TIMER ***********************************************************
 // Timer used to start distance measurements
 // It is synchronized with encoder events
 
 // Scanning angular resolution, in deg
-#define CAPTURE_ANG_RESOL               (0.5f)
+#define CAPTURE_ANG_RESOL_DEG           (0.5f)
 
 #define CAPTURE_TIMER_CLK               RCC_APB2Periph_TIM8
 
+// This timer is generating interrupts so, that we have needed number of
+//measurements per one ratation
 #define CAPTURE_TIMER                   TIM8
 #define CAPTURE_TIMER_PRESCALER         ENCODER_COMP_TIMER_PRESCALER
 
