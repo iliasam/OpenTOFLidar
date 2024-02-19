@@ -78,7 +78,6 @@ extern uint16_t dist_meas_batch_points;//max is DIST_MEAS_MAX_BATCH_POINTS
 
 mavlink_long_packet_params_t mavlink_long_packet_state;
 
-mavlink_tx_batch_state_t mavlink_tx_batch_state = MAVLINK_TX_BATCH_IDLE;
 mavlink_tx_scan_state_t  mavlink_tx_scan_state = MAVLINK_TX_SCAN_IDLE;
 
 // Flag - long packet tx is active
@@ -307,7 +306,6 @@ void mavlink_long_packet_sending_process(void)
     else
     {
       // All packets are sent
-      //mavlink_tx_batch_state = MAVLINK_TX_BATCH_IDLE;
       mavlink_long_packet_tx_active = 0;
     }
   }
@@ -338,6 +336,12 @@ uint8_t mavlink_driver_try_send_subpacket(
 //send batch data
 void mavlink_send_batch_data(void)
 {
+  if (mavlink_long_packet_tx_active)
+  {
+    START_TIMER(mavlink_busy_timestamp, 0);
+    return;
+  }
+  
   // Prepare long packet for tx
   mavlink_long_packet_state.data_code = MAVLINK_LONG_PACKET_BATCH_CODE;
   mavlink_long_packet_state.data_ptr = (uint8_t*)&tdc_capture_buf[0];
@@ -352,7 +356,6 @@ void mavlink_send_batch_data(void)
       MAVLINK_MSG_LONG_PACKET_FIELD_DATA_LEN;
   
   mavlink_long_packet_state.packet_cnt = 0;
-  //mavlink_tx_batch_state = MAVLINK_TX_BATCH_READY_TO_TX;
   mavlink_long_packet_tx_active = 1;
 }
 

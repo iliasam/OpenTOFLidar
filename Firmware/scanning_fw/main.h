@@ -13,27 +13,27 @@ extern volatile uint32_t ms_tick;
 
 /* Exported constants --------------------------------------------------------*/
 // Bad communication with TDC after init
-#define TDC_STATE_INIT_FAIL_FLAG        (1 << 0) // 1
+#define TDC_STATE_INIT_FAIL_FLAG        (1 << 0) // 1 = 0x1
 // No return signal was found
-#define TDC_STATE_PULSE_TIMEOUT_FLAG    (1 << 1) // 2
+#define TDC_STATE_PULSE_TIMEOUT_FLAG    (1 << 1) // 2 = 0x2
 
 // Wrong hits number from laser comparator
-#define TDC_STATE_LASER_COMP_FAIL_FLAG  (1 << 2) // 4
+#define TDC_STATE_LASER_COMP_FAIL_FLAG  (1 << 2) // 4 = 0x4
 
 // Wrong number of encoder events. Encoder is dirty or wrong installed
-#define ENCODER_SYNC_FAIL_FLAG          (1 << 3) // 8
+#define ENCODER_SYNC_FAIL_FLAG          (1 << 3) // 8 = 0x8
 
 // Mirror is stopped or encoder is not working
-#define MIRROR_STOPPED_FLAG              (1 << 4) //16
+#define MIRROR_STOPPED_FLAG              (1 << 4) //16  = 0x10
 
 // Mirror speed is too low or too high
-#define MIRROR_WRONG_SPEED               (1 << 5) //32
+#define MIRROR_WRONG_SPEED               (1 << 5) //32 = 0x20
 
 // No calibration values are set
-#define NO_CALIBRATION_FLAG             (1 << 6) //64
+#define NO_CALIBRATION_FLAG             (1 << 6) //64 = 0x40
 
 // UART busy. To much data to send. Only for "long packet"
-#define UART_BUSY_FLAG                  (1 << 7) //128
+#define UART_BUSY_FLAG                  (1 << 7) //128 = 0x80
 
 // Mask to disable distance measurements
 #define LASER_DISABLE_MASK              (TDC_STATE_INIT_FAIL_FLAG | \

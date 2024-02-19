@@ -134,6 +134,10 @@ void dist_measurement_handler(void)
 // It is done in "dist_measurement_do_batch_meas()"
 void dist_measurement_start_batch_meas(uint16_t size)
 {
+  //motor must be stopped for this masurement
+  if ((device_state_mask & MIRROR_STOPPED_FLAG) == 0)
+    return;
+  
   if (size > DIST_MEAS_MAX_BATCH_POINTS)
     size = DIST_MEAS_MAX_BATCH_POINTS;
   
