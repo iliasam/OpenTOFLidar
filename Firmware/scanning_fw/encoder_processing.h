@@ -16,5 +16,7 @@
 void encoder_proc_init(void);
 void encoder_proc_perodic_handling(void);
 
+void encoder_sim(void);
+
 
 #endif /* __ENCODER_PROCESSING_H */

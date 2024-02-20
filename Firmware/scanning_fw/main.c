@@ -47,6 +47,7 @@ void measurement_cycle(void);
 void load_nvram_values(void);
 
 /* Private functions ---------------------------------------------------------*/
+ 
 
 int main(void)
 {  

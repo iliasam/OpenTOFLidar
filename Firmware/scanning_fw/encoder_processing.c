@@ -46,6 +46,35 @@ void encoder_proc_zero_crossing(void);
 
 /* Private functions ---------------------------------------------------------*/
 
+//IRQ 1ms
+void encoder_sim(void)
+{
+  encoder_proc_capture_old = encoder_proc_capture_now;
+  encoder_proc_capture_now = TIM_GetCounter(ENCODER_COMP_TIMER);
+  
+  if (encoder_proc_capture_now >= encoder_proc_capture_old) 
+    enc_period = encoder_proc_capture_now - encoder_proc_capture_old;
+  else 
+    enc_period = 0xFFFF - encoder_proc_capture_old + encoder_proc_capture_now;
+  
+  encoder_proc_event_cnt++;
+  encoder_proc_event_timestamp_ms = ms_tick;
+  
+  if (encoder_proc_event_cnt >= ENCODER_HOLES_CNT)
+  {
+    //Zero cross detected
+    encoder_proc_zero_crossing();
+    //dist_measurement_process_current_data();
+    capture_ctr_encoder_zero_event();
+  }
+  else
+  {
+    capture_ctr_encoder_event(encoder_proc_event_cnt, enc_period);
+  }
+}
+
+
+
 // Interrupt from timer (connected to encoder comparator)
 void ENCODER_COMP_TIMER_IRQ_HANDLER(void)
 {
@@ -174,14 +203,14 @@ void encoder_proc_init_encoder_timer(void)
   TIM_ARRPreloadConfig(ENCODER_COMP_TIMER, ENABLE);
   
   TIM_ClearITPendingBit(ENCODER_COMP_TIMER, ENCODER_COMP_TIMER_IT_FLAG);
-  TIM_ITConfig(ENCODER_COMP_TIMER, ENCODER_COMP_TIMER_IT_FLAG, ENABLE);
+  //TIM_ITConfig(ENCODER_COMP_TIMER, ENCODER_COMP_TIMER_IT_FLAG, ENABLE);
   
   NVIC_InitStructure.NVIC_IRQChannel = ENCODER_COMP_TIMER_IRQ;
   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 
     ENCODER_COMP_TIMER_IRQ_PRIORITY;
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
+  //NVIC_Init(&NVIC_InitStructure);
   
   TIM_Cmd(ENCODER_COMP_TIMER, ENABLE);
 }

@@ -33,6 +33,7 @@
 #include "uart_driver.h"
 #include "main.h"
 #include "tdc_driver.h"
+#include "encoder_processing.h"
 
 /** @addtogroup STM32F30x_StdPeriph_Templates
   * @{
@@ -149,6 +150,7 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   ms_tick++;
+  encoder_sim();
 }
 
 /******************************************************************************/

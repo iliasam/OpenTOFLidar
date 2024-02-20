@@ -63,6 +63,9 @@ void nvram_read_data(void)
   {
     nvram_use_default_settings();
   }
+  
+  nvram_data.motor_feedback_enabled = 0;//manual mode
+  nvram_data.motor_manulal_pwm_duty = 0;
 }
 
 // Save "nvram_data" to the Flash
