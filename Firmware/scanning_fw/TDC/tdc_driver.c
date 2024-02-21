@@ -218,7 +218,7 @@ void tdc_send_reset(void)
 
 // Check measurement state
 // Return 1 if NO timeout
-uint8_t tdc_quick_check_status(void)
+uint8_t tdc_quick_check_status(void) //called from tdc_read_three_registers() ONLY
 {
   uint16_t status = (uint16_t)tdc_read_n_bytes(2, OPCODE_READ_REG + 4);
   
@@ -228,6 +228,7 @@ uint8_t tdc_quick_check_status(void)
     return 1;
 }
 
+//Called from capture_ctr_make_measurement and dist_measurement_do_batch_meas
 void tdc_start_pulse(void)
 {
   configure_reg1_start();
@@ -235,12 +236,14 @@ void tdc_start_pulse(void)
   send_opcode_to_tdc(OPCODE_START_TOF);
 }
 
+//Not used
 uint16_t tdc_read_raw_value(void)
 {
   uint32_t value = tdc_read_n_bytes(4, OPCODE_READ_REG + 0);
   return (uint16_t)(value >> 16);
 }
 
+//Called from capture_ctr_make_measurement and dist_measurement_do_batch_meas
 tdc_point_t tdc_read_three_registers(void)
 {
   // time of flight
