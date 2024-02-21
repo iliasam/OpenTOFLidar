@@ -75,9 +75,12 @@ void CAPTURE_TIMER_IRQ_HANDLER(void)
     
     capture_ctr_current_angle_deg += CAPTURE_ANG_RESOL_DEG;
     if (dist_measurenent_enabled == 1)
+    {
       capture_ctr_make_measurement(capture_ctr_current_angle_deg);//take a lot of time
+    }
   }
   TEST_GPIO->ODR &= ~TEST_PIN;
+    dwt_delay_us(5);
 }
 
 // Capture controlling init

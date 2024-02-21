@@ -33,7 +33,7 @@ typedef struct
 #define DIST_MEAS_MAX_BATCH_POINTS      200
 
 // TDC did not receive signal from APD
-#define DIST_MEAS_NO_SIGNAL_VALUE       0
+#define DIST_MEAS_NO_SIGNAL_VALUE       4
 
 // Negative distance result
 #define DIST_MEAS_NEG_DIST_VALUE        1
@@ -121,8 +121,8 @@ void dist_measurement_handler(void)
 {
   if (dist_meas_batch_measurement_needed)
   {
-    dist_measurement_do_batch_meas();
-    mavlink_send_batch_data();
+    //dist_measurement_do_batch_meas();
+    //mavlink_send_batch_data();
     dist_meas_batch_measurement_needed = 0;
   }
   dist_measurement_measure_ref_bins_handler();
@@ -134,7 +134,7 @@ void dist_measurement_handler(void)
 // It is done in "dist_measurement_do_batch_meas()"
 void dist_measurement_start_batch_meas(uint16_t size)
 {
-  //motor must be stopped for this masurement
+  //motor must be stopped for this measurement
   if ((device_state_mask & MIRROR_STOPPED_FLAG) == 0)
     return;
   
@@ -149,6 +149,7 @@ void dist_measurement_start_batch_meas(uint16_t size)
 // For manual testing
 void dist_measurement_do_batch_meas(void)
 {
+  return;//<<<<<<<<<<<
   for (uint16_t i = 0; i < dist_meas_batch_points; i++)
   {
     tdc_start_pulse();

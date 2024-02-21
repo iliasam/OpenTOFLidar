@@ -249,7 +249,7 @@ tdc_point_t tdc_read_three_registers(void)
   // time of flight
   tmp_res0 = (uint16_t)tdc_read_register_upper(OPCODE_READ_REG + 0);
   configure_reg1_width();
-  //dwt_delay_us(5);//working good without waiting for ALU
+  dwt_delay_us(5);//working good without waiting for ALU
   // pulse width
   tmp_res1 = (uint16_t)tdc_read_register_upper(OPCODE_READ_REG + 1);
   uint8_t tdc_result = tdc_quick_check_status();
