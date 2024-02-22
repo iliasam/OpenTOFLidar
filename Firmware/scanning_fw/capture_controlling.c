@@ -68,16 +68,16 @@ void capture_ctr_switch_dist_buffers(void);
 // Capture timer interrupt
 void CAPTURE_TIMER_IRQ_HANDLER(void)
 {
-  TEST_GPIO->ODR |= TEST_PIN;
   if (TIM_GetITStatus(CAPTURE_TIMER, CAPTURE_TIMER_IT_FLAG) != RESET)
   {
+    TEST_GPIO->ODR |= TEST_PIN;
     TIM_ClearITPendingBit(CAPTURE_TIMER, CAPTURE_TIMER_IT_FLAG);
-    
     capture_ctr_current_angle_deg += CAPTURE_ANG_RESOL_DEG;
+    TEST_GPIO->ODR &= ~TEST_PIN;
     if (dist_measurenent_enabled == 1)
       capture_ctr_make_measurement(capture_ctr_current_angle_deg);//take a lot of time
   }
-  TEST_GPIO->ODR &= ~TEST_PIN;
+  
 }
 
 // Capture controlling init
@@ -145,7 +145,6 @@ void capture_ctr_make_measurement(float angle_deg)
 // "last_period" is time from prev encoder event in encoder_timer ticks
 void capture_ctr_encoder_event(uint16_t event_cnt, uint16_t last_period)
 {
-  //TEST_GPIO->ODR^= TEST_PIN;
   capture_ctr_current_angle_deg = (float)event_cnt * ENCODER_ANG_STEP_DEG;
   uint16_t capture_timer_period = 
     (uint16_t)((float)last_period / CAPT_MEAS_PER_ENCODER_PERIOD);
@@ -208,7 +207,7 @@ void capture_ctr_init_capture_timer(void)
   TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
   TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
   TIM_TimeBaseInit(CAPTURE_TIMER, &TIM_TimeBaseStructure);
-  TIM_ARRPreloadConfig(CAPTURE_TIMER, ENABLE);
+  //TIM_ARRPreloadConfig(CAPTURE_TIMER, ENABLE);
   
   TIM_ClearITPendingBit(CAPTURE_TIMER, CAPTURE_TIMER_IT_FLAG);
   TIM_ITConfig(CAPTURE_TIMER, CAPTURE_TIMER_IT_FLAG, ENABLE);
@@ -230,6 +229,9 @@ void capture_ctr_refresh_timer(uint16_t new_period)
   TIM_SetCounter(CAPTURE_TIMER, 0);
   TIM_SetAutoreload(CAPTURE_TIMER, new_period - 1);
   CAPTURE_TIMER->EGR|= TIM_EGR_UG;//update all registers and prescaler
+  CAPTURE_TIMER->SR &= ~TIM_SR_UIF;
+  asm("nop");
+  asm("nop");
   CAPTURE_TIMER->CR1|= TIM_CR1_CEN;//enable timer
 }
 

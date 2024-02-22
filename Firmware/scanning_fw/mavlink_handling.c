@@ -97,7 +97,7 @@ uint8_t mavlink_driver_try_send_subpacket(uint8_t *data, uint16_t cnt, uint16_t 
 
 void mavlink_parse_byte(uint8_t value)
 {
-  mavlink_status_t mavlink_status;
+  static mavlink_status_t mavlink_status;
   
   if (mavlink_parse_char(0, value, &mavlink_rx_msg, &mavlink_status))
   {
@@ -158,7 +158,8 @@ void mavlink_parse_byte(uint8_t value)
       mavlink_set_bin_length_t data_msg;
       mavlink_msg_set_bin_length_decode(&mavlink_rx_msg, &data_msg);
       
-      if ((data_msg.tdc_bin_length > 5.0f) && (data_msg.tdc_bin_length < 30.0f))
+      if ((data_msg.tdc_bin_length > 5.0f) && 
+          (data_msg.tdc_bin_length < MAX_BIN_LENGTH_MM))
         dist_meas_bin_length = data_msg.tdc_bin_length;
     }
     else if (mavlink_rx_msg.msgid == MAVLINK_MSG_ID_SET_WIDTH_CORR_COEFF)
