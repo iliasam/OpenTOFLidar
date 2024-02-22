@@ -26,6 +26,9 @@
 
 #define MAX_DISTANCE_MM                 (30000)
 
+// Used for checks
+#define MAX_BIN_LENGTH_MM               (30.0f)
+
 #define LED_GPIO                        GPIOA
 #define LED_PIN                         GPIO_Pin_3
 

@@ -32,9 +32,6 @@ typedef struct
 // Max number of measured points in batch mode
 #define DIST_MEAS_MAX_BATCH_POINTS      200
 
-// TDC did not receive signal from APD
-#define DIST_MEAS_NO_SIGNAL_VALUE       0
-
 // Negative distance result
 #define DIST_MEAS_NEG_DIST_VALUE        1
 
@@ -43,6 +40,12 @@ typedef struct
 
 // Pulse width is too short -> amplitude is low
 #define DIST_MEAS_SHORT_PULSE_VALUE     3
+
+// TDC did not receive signal from APD
+#define DIST_MEAS_NO_SIGNAL_VALUE       4
+
+// Calculation error
+#define DIST_MEAS_CALC_ERROR            5
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -110,7 +113,17 @@ void dist_measurement_init(void)
   memset((void*)&dist_meas_ref_dist_bin, 0, sizeof(dist_meas_ref_dist_bin));
   memset((void*)&dist_meas_prev_ref_dist_bin, 0, sizeof(dist_meas_prev_ref_dist_bin));
   
-  if (dist_meas_width_coef_a == 0.0f)
+  if ((dist_meas_bin_length > MAX_BIN_LENGTH_MM) || 
+      (dist_meas_bin_length < 1.0f) || 
+      (isnan(dist_meas_bin_length) != 0) || (isinf(dist_meas_bin_length) != 0))
+  {
+    device_state_mask |= NO_CALIBRATION_FLAG;
+  }
+  
+  if ((dist_meas_width_coef_a == 0.0f) || 
+      (dist_meas_width_coef_a > 1e6) ||
+      (isnan(dist_meas_width_coef_a) != 0) || 
+      (isinf(dist_meas_width_coef_a) != 0) )
   {
     device_state_mask |= NO_CALIBRATION_FLAG;
   }
@@ -297,6 +310,9 @@ uint16_t dist_measurement_calc_dist(float corr_dist_bin)
 {
   float dist_mm = 
     (corr_dist_bin - dist_meas_zero_offset_bin) * dist_meas_bin_length;
+  
+  if ( (isnan(dist_mm) != 0) || (isinf(dist_mm) != 0) )
+    return DIST_MEAS_CALC_ERROR;
   
   if (dist_mm < -0.01f)
     return DIST_MEAS_NEG_DIST_VALUE;
